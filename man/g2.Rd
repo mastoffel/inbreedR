@@ -9,7 +9,7 @@ g2(genotypes)
 \item{genotypes}{genotype matrix with each locus in two adjacent columns}
 }
 \value{
-estimated
+g2
 }
 \description{
 estimating second-order heterozygosity from genotype data

@@ -1,7 +1,8 @@
 #' estimating second-order heterozygosity from genotype data
 #'
 #' @param genotypes genotype matrix with each locus in two adjacent columns
-#' @return g2 index
+#' @return g2
+#'
 #'
 #'
 #'
