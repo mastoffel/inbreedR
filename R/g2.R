@@ -8,30 +8,8 @@
 #'
 g2 <- function(genotypes) {
 
-# turn data into 0 (homozygote), 1 (heterozygote) or -1 (NA on one locus)
-checkhet <- function(x) {
-
-        s1 <- seq(1, length(x), 2)
-        newx <- as.vector(rep(NA, length(x)/2))
-        count <- 1
-
-        for(i in s1){
-                if (is.na(x[i] | x[i + 1])) {
-                        newx[count] = -1
-                        count = count + 1
-                } else if (x[i] == x[i + 1]) {
-                        newx[count] = 0
-                        count = count + 1
-                } else if (x[i] != x[i + 1]) {
-                        newx[count] = 1
-                        count = count + 1
-                }
-        }
-        newx
-}
-
-# original full data matrix
-origin <- apply(genotypes, 1, checkhet)
+# transposing
+origin <- t(genotypes)
 
 # define matrix with 1 for missing and 0 for all others
 m <- origin

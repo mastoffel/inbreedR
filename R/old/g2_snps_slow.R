@@ -4,7 +4,7 @@ library(dplyr)
 genotypes <- (tbl_df(fread("mice_snps.txt")))
 genotypes[genotypes == -99] <- -1
 genotypes[genotypes == NA] <- -1
-# genotypes <- as.data.table(genotypes)
+genotypes <- as.data.table(genotypes)
 
 # genotypes <- read.table("raw_41loci_ordered.txt", row.names = 1)
 # genotypes <- convert_raw(genotypes, NAval = NA)
@@ -27,14 +27,14 @@ g2_snps <- function(genotypes) {
         l <- nrow(origin) # number of loci
 
         # vector with rowsums for missing data matrix
-        m_loc_temp <- rowSums(m, na.rm = TRUE)
+        m_loc_temp <- apply(m, 1, sum, na.rm = TRUE)
         m_loc <- m_loc_temp / n
 
         # rowsum h
-        rowsum_h <- rowSums(h, na.rm = TRUE)
-        colsum_h <- colSums(h, na.rm = TRUE)
+        rowsum_h <- apply(h, 1, sum, na.rm = TRUE)
+        colsum_h <- apply(h, 2, sum, na.rm = TRUE)
         # variance of colsums
-        B_hat <- var(colsum_h)
+        B_hat <- var((apply(h, 2, sum, na.rm = TRUE)))
 
         # matsum
         h_sum <- sum(h, na.rm = TRUE)
@@ -51,7 +51,9 @@ g2_snps <- function(genotypes) {
         M_ind <- vector()
         for (i in 1:n) {
                 M_temp <- vector()
-                M_temp <- rowsum_h * m[, i] / (1 - m_loc)
+                for (k in 1:l) {
+                        M_temp[k] <- (rowsum_h[k] * m[k, i]) / (1 - m_loc[k])
+                }
                 M_ind[i] <- (sum(M_temp, na.rm = TRUE))^2 - sum(M_temp^2, na.rm = TRUE)
         }
 
