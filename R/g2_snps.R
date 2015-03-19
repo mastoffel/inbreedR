@@ -1,15 +1,28 @@
-# g2_snps with data.table
-library(data.table)
-library(dplyr)
-genotypes <- (tbl_df(fread("mice_snps.txt")))
-genotypes[genotypes == -99] <- -1
-genotypes[genotypes == NA] <- -1
-# genotypes <- as.data.table(genotypes)
-
-# genotypes <- read.table("raw_41loci_ordered.txt", row.names = 1)
-# genotypes <- convert_raw(genotypes, NAval = NA)
-
-# genotypes2 <- tbl_df(read.table("mice_snps.txt"))
+#' Estimating g2 from SNP data
+#'
+#' @param genotypes data.frame with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote) or 1 (heterozygote)
+#'
+#' @details Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
+#'          the required format
+#'
+#' @return g2 value
+#'
+#' @references
+#' Hoffman, J.I., Simpson, F., David, P., Rijks, J.M., Kuiken, T., Thorne, M.A.S., Lacey, R.C. & Dasmahapatra, K.K. (2014) High-throughput sequencing reveals inbreeding depression in a natural population.
+#' Proceedings of the National Academy of Sciences of the United States of America, 111: 3775-3780. Doi: 10.1073/pnas.1318945111
+#'
+#' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) &
+#'         Mareike Esser (messer@@techfak.uni-bielefeld.de)
+#'
+#' @examples
+#' # load SNP genotypes, already in 0 (homozygous), 1(heterozygous) format.
+#'
+#' data(mice_snp_genotypes)
+#' g2_val <- g2_snps(genotypes)
+#'
+#'
+#' @export
 
 g2_snps <- function(genotypes) {
 
@@ -30,40 +43,25 @@ g2_snps <- function(genotypes) {
         m_loc_temp <- rowSums(m, na.rm = TRUE)
         m_loc <- m_loc_temp / n
 
-        # rowsum h
+        # precalculating sums
         rowsum_h <- rowSums(h, na.rm = TRUE)
         colsum_h <- colSums(h, na.rm = TRUE)
-        # variance of colsums
-        B_hat <- var(colsum_h)
-
-        # matsum
+        sum_rowsum_squared <- sum(rowsum_h^2)
+        sum_colsum_squared <- sum(colsum_h^2)
         h_sum <- sum(h, na.rm = TRUE)
 
-        #
-        sum_rowsum_squared <- sum(rowsum_h^2, na.rm = TRUE)
-        C_hat <- (1/(n-1)) * (h_sum - (1/n) * sum_rowsum_squared)
+        # numerator
+        numer <- (n-1) * (sum_colsum_squared - h_sum) /
+                 (h_sum^2 - sum_rowsum_squared - sum_colsum_squared + h_sum)
 
-        #
-        sum_colsum_squared <- sum(colsum_h^2)
-        A_hat <- (1/(n * (n-1))) * (h_sum^2 - sum_rowsum_squared - sum_colsum_squared - h_sum)
+        M_temp <- rowsum_h * m / (1 - m_loc)
+        M_ind <- colSums(M_temp, na.rm = TRUE)^2 - colSums(M_temp^2, na.rm = TRUE)
 
-        #
-        M_ind <- vector()
-        for (i in 1:n) {
-                M_temp <- vector()
-                M_temp <- rowsum_h * m[, i] / (1 - m_loc)
-                M_ind[i] <- (sum(M_temp, na.rm = TRUE))^2 - sum(M_temp^2, na.rm = TRUE)
-        }
-
-        M_hat <- (1/(n^2)) * sum(M_ind, na.rm = TRUE)
-
-        #
-        X_temp <- (rep(NA, l))
+        M_hat <- (1/(n)) * sum(M_ind, na.rm = TRUE)
         X_temp <- rowsum_h * m_loc / (1-m_loc)
 
-        a_hat_temp <- (1/n) * (sum(X_temp^2, na.rm = TRUE) - (sum(X_temp, na.rm = TRUE))^2)
-        a_hat_denom <- (1/n) * (h_sum^2 - sum_rowsum_squared)
-        a_hat <- (M_hat + a_hat_temp) / a_hat_denom
-        g2_snps <- ((1 + (B_hat - C_hat)/A_hat) / (1 + a_hat)) - 1
+        a_hat_temp <- (sum(X_temp^2, na.rm = TRUE) - (sum(X_temp, na.rm = TRUE))^2)
+        a_hat <- (M_hat + a_hat_temp) / (h_sum^2 - sum_rowsum_squared)
+        g2_val <- numer / (1 + a_hat) - 1
 
 }

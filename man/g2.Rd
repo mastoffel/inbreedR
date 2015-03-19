@@ -3,15 +3,33 @@
 \alias{g2}
 \title{estimating second-order heterozygosity from genotype data}
 \usage{
-g2(genotypes)
+g2(genotypes, missing = -1)
 }
 \arguments{
-\item{genotypes}{genotype matrix with each locus in two adjacent columns}
+\item{genotypes}{data.frame with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote) and 1 (heterozygote).}
+
+\item{missing}{Value of missing data. -1 if data.frame is output from \link{convert_raw}.}
 }
 \value{
 g2
 }
 \description{
 estimating second-order heterozygosity from genotype data
+}
+\examples{
+data(seal_microsats)
+# tranform raw genotypes into 0/1 format
+genotypes <- convert_raw(seal_microsats, NAval = NA)
+g2_val <- g2(genotypes)
+}
+\author{
+Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
+        Mareike Esser (messer@techfak.uni-bielefeld.de)
+}
+\references{
+DAVID, P., PUJOL, B., VIARD, F., CASTELLA, V. and GOUDET, J. (2007),
+Reliable selfing rate estimates from imperfect population genetic data. Molecular Ecology,
+16: 2474–2487. doi: 10.1111/j.1365-294X.2007.03330.x
 }
 
