@@ -3,7 +3,7 @@ Title: Estimation of second-order heterozygosity disequilibrium
 Version: 0.1
 Authors@R: "Martin Adam Stoffel <martin.adam.stoffel@gmail.com> [aut, cre]"
 Description: The methods  from this package allow  extracting  second-order
-    heterozygosity disequilibrium and selfing  rates exclusively
+    heterozygosity disequilibrium and selfing  rates
     from  among-locus  correlations  in  multilocus
     population data.
 Depends:

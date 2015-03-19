@@ -65,17 +65,10 @@ g2 <- function(genotypes, missing = -1) {
         # predefine vec
         vec <- c(1:nrow(h))
 
-
         for (i in seq(1:nrow(h))){
-                for (j in seq(1:nrow(h))[-i]){
-                        missmat_num[i,j]  <- 1/ (n * (1 - m_loc[i] - m_loc[j] + m_ij[i,j]))
-                }
-        }
-
-#         for (i in seq(1:nrow(h))){
-#                  vec <- vec[-i]
-#                  missmat_num[vec, ] <- 1/ (n * (1 - m_loc[i] - m_loc[vec] + m_ij[vec, ]))
-#         }
+                  vec_temp <- vec[-i]
+                  missmat_num[i,  vec_temp] <- 1/ (n * (1 - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp]))
+         }
 
         numerator_mat <- p * missmat_num
 
@@ -88,22 +81,12 @@ g2 <- function(genotypes, missing = -1) {
         # denominator-------------------------------------------------------------------
         missmat_denom <- matrix(rep(0, l*l), ncol = l)
 
-        # sum over loci
-
         for (i in seq(1:nrow(h))){
-                for (j in seq(1:nrow(h))[-i]){
-                        missmat_denom[i,j] <- 1/(((n * (n - 1) *
-                                                      (1 - m_loc[i] - m_loc[j] + m_loc[i] * m_loc[j]))) -
-                                                    (n * (m_ij[i, j] - m_loc[i] * m_loc[j])))
-
-                }
+                 vec_temp <- vec[-i]
+                 missmat_denom[i, vec_temp] <- 1/(n* (n - 1) * (1 - m_loc[i] - m_loc[vec_temp] + m_loc[i] * m_loc[vec_temp]) -
+                                                   (n* (m_ij[i, vec_temp] - m_loc[i] * m_loc[vec_temp])))
         }
 
-#         for (i in seq(1:nrow(h))){
-#                 vec <- vec[-i]
-#                 missmat_denom[i,vec] <- 1/((n - 1) * (1 - m_loc[i] - m_loc[vec] + m_loc[i] * m_loc[vec]) -
-#                                                    (m_ij[i, vec] - m_loc[i] * m_loc[vec]))
-#         }
         nullmat <- matrix(rep(1, n*n), ncol=n)
         diag(nullmat) <- 0
         q <- h %*% (nullmat %*% t(h))
