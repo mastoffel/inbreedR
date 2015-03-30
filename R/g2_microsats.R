@@ -118,7 +118,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                 if (boot %% 20 == 0) {
                         cat("\n", boot, "bootstraps done")
                 } else if (boot == nboot-1) {
-                        cat("\n", "### bootstrapping finished ###")
+                        cat("\n", "### bootstrapping finished, hells yeah!! ###")
                 }
 
                 g2
@@ -136,12 +136,13 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                 perm_genotypes <- function(perm, origin) {
                         # origin_perm <- origin[, lapply(.SD, sample)]
 
-                        origin_perm <- apply(origin, 2, sample) # to optimize
+                        origin_perm <- apply(origin, 1, sample) # to optimize
                         g2 <- calc_g2(origin_perm, perm = perm)
+
                 }
 
                 g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin = origin))
-                p_permut <- sum(c(g2_emp, g2_permut) >= g2_emp) / nperm
+                p_permut <- sum(g2_permut >= g2_emp) / nperm
                 perm <- 1
 
         }
