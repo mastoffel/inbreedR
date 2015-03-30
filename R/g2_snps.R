@@ -124,8 +124,8 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = 
         if (nboot > 0) {
 
                 boot_genotypes <- function(boot, origin) {
-
-                        origin_boot <- origin[sample(1:nrow(origin), replace = TRUE), ]
+                        # bootstrap over individuals in columns
+                        origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
                         g2 <- calc_g2(origin_boot, perm, boot)
                 }
 

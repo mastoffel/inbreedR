@@ -10,7 +10,7 @@
 #' @seealso \link{g2_snps}, \link{g2_microsats}, \link{plot}
 #'
 #' @export
-#'
+
 
 
 print.g2 <- function(x, ...) {
