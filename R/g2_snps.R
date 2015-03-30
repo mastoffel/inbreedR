@@ -107,7 +107,7 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = 
                 #setkey(origin, eval(parse(names(origin)[1])))
                 perm_genotypes <- function(perm, origin) {
                         # origin_perm <- origin[, lapply(.SD, sample)]
-                        origin_perm <- apply(origin, 2, sample) # to optimize
+                        origin_perm <- t(apply(origin, 1, sample)) # to optimize
                         g2 <- calc_g2(origin_perm, perm)
                 }
 
