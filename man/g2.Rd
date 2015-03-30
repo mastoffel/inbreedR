@@ -11,15 +11,6 @@
 \link{convert_raw}
 \link{plot.g2}
 }
-\note{
-Currently there is are a number of functions that use the two arguments \code{y} and \code{groups} to
-estimate standard repeatabilities (see e.g. function \link{rpt}). There is another group of
-functions (e.g. \link{rpt.adj}) that uses the agruments \code{formula} and \code{grname}, which allows
-estimating adjusted repeatabilities (controlling for fixed effects) and the estimation of multiple variance
-components simulatneously (multiple random effects). In the long run, the two groups of functions will be merged
-and will use the more flexible fomula arguments. So far, adjusted repeatabilities are only implemented for
-Gaussian data using REML estimation.
-}
 \author{
 Martin Stoffel (martin.adam.stoffel@gmail.com), Mareike Esser (messer@uni-bielefeld.de)
 }
