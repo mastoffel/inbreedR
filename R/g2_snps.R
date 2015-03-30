@@ -32,13 +32,11 @@
 #' data(mice_snp_genotypes)
 #' (g2_val <- g2_snps(mice_snp_genotypes, nperm = 100, nboot = 100, CI = 0.95))
 #'
-#' # @import data.table
+#'
 #' @export
 
 g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = -1
         # transpose for congruency with formulae in paper
-                #origin <- data.table(t(genotypes))
-                #setkeyv(origin, names(origin)[1])
         origin <- t(genotypes)
         # set all missings to -1
         origin[(origin!=0) & (origin!=1)] <- -1

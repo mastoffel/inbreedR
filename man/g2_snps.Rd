@@ -38,8 +38,6 @@ Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (w
 
 data(mice_snp_genotypes)
 (g2_val <- g2_snps(mice_snp_genotypes, nperm = 100, nboot = 100, CI = 0.95))
-
-#
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
