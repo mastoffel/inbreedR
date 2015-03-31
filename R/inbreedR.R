@@ -1,4 +1,4 @@
-#' inbreedR: Estimating identity disequilibrium for microsatellite and snp data
+#' inbreedR: Workflows for analysing variance in inbreeding based on SNP or microsatellite markers.
 #'
 #' @description
 #'

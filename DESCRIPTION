@@ -1,4 +1,4 @@
-Package: g2
+Package: inbreedR
 Title: Estimation of second-order heterozygosity disequilibrium
 Version: 0.1
 Authors@R: as.person(c(

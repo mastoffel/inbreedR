@@ -65,10 +65,10 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                 l <- nrow(origin) # number of loci
 
                 # mij: proportion of individuals missing on i and j ?s locus
-                m_ij <- (m %*% t(m)) /n
+                m_ij <- (m %*% t(m))
                 #diag(m_ij) <- 0
                 # vector with rowsums (proportion)
-                m_loc <- rowSums(m) /n
+                m_loc <- rowSums(m)
 
                 # numerator --------------------------------------------------------------------
                 # pij entry says total amount of individuals that are heterozygous at locus locus i and locus j
@@ -78,11 +78,16 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                 # predefine vec
                 vec <- c(1:nrow(h))
 
+#                 for (i in seq(1:nrow(h))){
+#                         vec_temp <- vec[-i]
+#                         missmat_num[i,  vec_temp] <- 1/ (n * (1 - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp]))
+#                 }
+                
                 for (i in seq(1:nrow(h))){
-                        vec_temp <- vec[-i]
-                        missmat_num[i,  vec_temp] <- 1/ (n * (1 - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp]))
+                    vec_temp <- vec[-i]
+                    missmat_num[i,  vec_temp] <- 1/ (n - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp])
                 }
-
+                
                 numerator_mat <- p * missmat_num
 
                 # rm(p)
@@ -94,12 +99,18 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                 # denominator-------------------------------------------------------------------
                 missmat_denom <- matrix(rep(0, l*l), ncol = l)
 
+#                 for (i in seq(1:nrow(h))){
+#                         vec_temp <- vec[-i]
+#                         missmat_denom[i, vec_temp] <- 1/(n * (n - 1) * (1 - m_loc[i] - m_loc[vec_temp] + m_loc[i] * m_loc[vec_temp]) -
+#                                                                  (n * (m_ij[i, vec_temp] - m_loc[i] * m_loc[vec_temp])))
+#                 }
+                
                 for (i in seq(1:nrow(h))){
-                        vec_temp <- vec[-i]
-                        missmat_denom[i, vec_temp] <- 1/(n * (n - 1) * (1 - m_loc[i] - m_loc[vec_temp] + m_loc[i] * m_loc[vec_temp]) -
-                                                                 (n * (m_ij[i, vec_temp] - m_loc[i] * m_loc[vec_temp])))
+                    vec_temp <- vec[-i]
+                    missmat_denom[i, vec_temp] <- 1/((n - 1) * (n - m_loc[i] - m_loc[vec_temp]) + m_loc[i] * m_loc[vec_temp] -
+                                                         m_ij[i, vec_temp])
                 }
-
+                
                 nullmat <- matrix(rep(1, n*n), ncol=n)
                 diag(nullmat) <- 0
                 q <- h %*% (nullmat %*% t(h))
