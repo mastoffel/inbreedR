@@ -1,4 +1,4 @@
-#' g2: Estimating identity disequilibrium for microsatellite and snp data
+#' inbreedR: Estimating identity disequilibrium for microsatellite and snp data
 #'
 #' @description
 #'
@@ -19,5 +19,5 @@
 #' Proceedings of the National Academy of Sciences of the United States of America, 111: 3775-3780. Doi: 10.1073/pnas.1318945111
 #'
 #' @docType package
-#' @name g2
+#' @name inbreedR
 NULL
