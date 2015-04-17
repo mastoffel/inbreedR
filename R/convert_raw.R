@@ -46,14 +46,14 @@ check_het <- function(x) {
 
         for(i in s1){
                 if (is.na(x[i] | x[i + 1])) {
-                        newx[count] = -1
-                        count = count + 1
+                        newx[count] <- -1
+                        count <- count + 1
                 } else if (x[i] == x[i + 1]) {
-                        newx[count] = 0
-                        count = count + 1
+                        newx[count] <- 0
+                        count <- count + 1
                 } else if (x[i] != x[i + 1]) {
-                        newx[count] = 1
-                        count = count + 1
+                        newx[count] <- 1
+                        count <- count + 1
                 }
         }
         newx

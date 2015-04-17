@@ -2,15 +2,19 @@
 % Please edit documentation in R/g2_microsats.R
 \name{g2_microsats}
 \alias{g2_microsats}
-\title{estimating second-order heterozygosity from genotype data}
+\title{Estimating g2 from microsatellite data}
 \usage{
 g2_microsats(genotypes, nperm = 0, nboot = 0, CI = 0.95)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote) and 1 (heterozygote).}
+containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 
-\item{missing}{Value of missing data. -1 if data.frame is output from \link{convert_raw}.}
+\item{nperm}{Number of permutations for testing the hypothesis that the empirical g2-value is higher than by chance}
+
+\item{nboot}{Number of bootstraps for estimating a confidence interval}
+
+\item{CI}{Confidence interval (default to 0.95)}
 }
 \value{
 \item{call}{Model call.}
@@ -24,7 +28,7 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote).}
 \item{nloc}{number of markers}
 }
 \description{
-estimating second-order heterozygosity from genotype data
+Estimating g2 from microsatellite data
 }
 \examples{
 data(seal_microsats)
@@ -37,8 +41,8 @@ Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
         Mareike Esser (messer@techfak.uni-bielefeld.de)
 }
 \references{
-DAVID, P., PUJOL, B., VIARD, F., CASTELLA, V. and GOUDET, J. (2007),
+David, P., Pujol, B., Viard, F., Castella, V. and Goudet, J. (2007),
 Reliable selfing rate estimates from imperfect population genetic data. Molecular Ecology,
-16: 2474–2487. doi: 10.1111/j.1365-294X.2007.03330.x
+16: 2474
 }
 

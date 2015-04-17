@@ -1,8 +1,10 @@
-#' estimating second-order heterozygosity from genotype data
+#' Estimating g2 from microsatellite data
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
-#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote).
-#' @param missing Value of missing data. -1 if data.frame is output from \link{convert_raw}.
+#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#' @param nperm Number of permutations for testing the hypothesis that the empirical g2-value is higher than by chance
+#' @param nboot Number of bootstraps for estimating a confidence interval
+#' @param CI Confidence interval (default to 0.95)
 #'
 #' @return
 #' \item{call}{Model call.}
@@ -16,9 +18,9 @@
 #' \item{nloc}{number of markers}
 #'
 #' @references
-#' DAVID, P., PUJOL, B., VIARD, F., CASTELLA, V. and GOUDET, J. (2007),
+#' David, P., Pujol, B., Viard, F., Castella, V. and Goudet, J. (2007),
 #' Reliable selfing rate estimates from imperfect population genetic data. Molecular Ecology,
-#' 16: 2474–2487. doi: 10.1111/j.1365-294X.2007.03330.x
+#' 16: 2474
 #'
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) &
 #'         Mareike Esser (messer@@techfak.uni-bielefeld.de)
@@ -38,17 +40,6 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
 
         # transpose
         origin <- (t(genotypes))
-
-        # check for any other missing or non 1, -1, 0 values and set them to missing (-1)
-#         all_out <- origin[!((origin == missing) | (origin == 0) | (origin == 1))]
-#         if (length(as.vector(all_out)) > 0) {
-#                 warning(paste(length(all_out), "values found that do not equal 1, 0 or the defined missing value (", missing, ").
-#                               Those were set to missing."))
-#                 origin[!((origin == missing) | (origin == 0) | (origin == 1))] <- -1
-#                 origin[is.na(origin)] <- -1
-#         }
-
-        # set all missings to -1
         origin[(origin!=0) & (origin!=1)] <- -1
 
         calc_g2 <- function(origin, perm = 1, boot = 1) {
@@ -56,18 +47,16 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                 m <- origin
                 m[m == 1] <- 0
                 m[m == -1] <- 1
-
                 # H matrix with 0 for -1
                 h <- origin
                 h[(h!=0)&(h!=1)] <- 0
-
+                
                 n <- ncol(origin) # number of individuals
                 l <- nrow(origin) # number of loci
 
                 # mij: proportion of individuals missing on i and j ?s locus
                 m_ij <- (m %*% t(m))
-                #diag(m_ij) <- 0
-                # vector with rowsums (proportion)
+                # vector with rowsums 
                 m_loc <- rowSums(m)
 
                 # numerator --------------------------------------------------------------------
@@ -77,34 +66,18 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
 
                 # predefine vec
                 vec <- c(1:nrow(h))
-
-#                 for (i in seq(1:nrow(h))){
-#                         vec_temp <- vec[-i]
-#                         missmat_num[i,  vec_temp] <- 1/ (n * (1 - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp]))
-#                 }
                 
                 for (i in seq(1:nrow(h))){
                     vec_temp <- vec[-i]
                     missmat_num[i,  vec_temp] <- 1/ (n - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp])
                 }
-                
                 numerator_mat <- p * missmat_num
 
-                # rm(p)
-                # rm(missmat_num)
-
                 numerator <- sum(numerator_mat, na.rm = TRUE)
-
-                # rm(numerator_mat)
+                
                 # denominator-------------------------------------------------------------------
                 missmat_denom <- matrix(rep(0, l*l), ncol = l)
 
-#                 for (i in seq(1:nrow(h))){
-#                         vec_temp <- vec[-i]
-#                         missmat_denom[i, vec_temp] <- 1/(n * (n - 1) * (1 - m_loc[i] - m_loc[vec_temp] + m_loc[i] * m_loc[vec_temp]) -
-#                                                                  (n * (m_ij[i, vec_temp] - m_loc[i] * m_loc[vec_temp])))
-#                 }
-                
                 for (i in seq(1:nrow(h))){
                     vec_temp <- vec[-i]
                     missmat_denom[i, vec_temp] <- 1/((n - 1) * (n - m_loc[i] - m_loc[vec_temp]) + m_loc[i] * m_loc[vec_temp] -
@@ -118,7 +91,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                 denominator_mat <-  missmat_denom * q
                 denominator <- sum(denominator_mat, na.rm = TRUE)
 
-                g2 <- (numerator / denominator) - 1
+                g2_emp <- (numerator / denominator) - 1
 
                 if (perm %% 20 == 0) {
                         cat("\n", perm, "permutations done")
@@ -132,7 +105,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                         cat("\n", "### bootstrapping finished, hells yeah!! ###")
                 }
 
-                g2
+                g2_emp
         }
 
         # g2 point estimate
@@ -150,7 +123,6 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                         g2 <- calc_g2(origin_perm, perm = perm)
 
                 }
-
                 g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin = origin))
                 p_permut <- sum(g2_permut >= g2_emp) / nperm
                 perm <- 1
@@ -178,7 +150,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                     g2_boot = g2_boot, CI_boot = CI_boot, g2_se = g2_se,
                     nobs = nrow(genotypes), nloc = ncol(genotypes))
 
-        class(res) <- "g2"
+        class(res) <- "inbreed"
         return(res)
 
 }

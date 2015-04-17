@@ -1,7 +1,10 @@
 #' Plot a g2 object
 #' Plots the distribution of g2 estimates from bootstrapping.
 #'
-#' @param x A g2 object.
+#' @param x An inbreed object.
+#' @param main Plot title
+#' @param xlab X-axis label
+#' @param ylab y-axis label
 #' @param \dots Additional arguments to the hist() function.
 #'
 #'
@@ -13,8 +16,9 @@
 #' @export
 #'
 
-plot.g2 <- function(x, main = "g2 bootstrap estimates", xlab = "g2", ylab = "counts", ...) {
-
+plot.inbreed <- function(x, main = "g2 bootstrap estimates", xlab = "g2", ylab = "counts", ...) {
+    
+    if (!is.null(x$g2)) {
         boot_hist <- function(g2, g2_boot, CI.l, CI.u, ...) {
                 # y position of confidence band
                 v.pos <- max((hist(g2_boot, plot = FALSE, ...))$counts)
@@ -29,4 +33,16 @@ plot.g2 <- function(x, main = "g2 bootstrap estimates", xlab = "g2", ylab = "cou
         }
 
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), CI.u = unname(x$CI_boot[2]))
+    }
+    
+    if (!is.null(x$sMLH_perm_mean)){
+        perm_est <- mean(x$sMLH_perm_mean)
+        perm_est_var <- var(x$sMLH_perm_mean)
+        range <- seq(min(x$sMLH_perm_mean), max(x$sMLH_perm_mean), length = 1000)
+        curve(dnorm(range, mean = mean(x$sMLH_perm_mean),
+                    sd   = sd(x$sMLH_perm_mean)), add=TRUE)
+        hist(x$emp_sMLH, probability = TRUE)
+        lines(density(range), col="blue", lwd=2)
+        
+        
 }

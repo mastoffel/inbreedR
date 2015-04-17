@@ -3,7 +3,7 @@
 #' @param genotypes data.frame with individuals in rows and loci in columns, containing genotypes coded as 0 (homozygote) or 1 (heterozygote)
 #' @param nperm number or permutations for calculating the p-value
 #' @param nboot number of bootstraps for CI
-#' @param CI confidence interval
+#' @param CI confidence interval (default to 0.95)
 #'
 #' @details Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
 #'          the required format
@@ -30,8 +30,8 @@
 #' # load SNP genotypes in 0 (homozygous), 1(heterozygous) format.
 #'
 #' data(mice_snp_genotypes)
-#' (g2_val <- g2_snps(mice_snp_genotypes, nperm = 100, nboot = 100, CI = 0.95))
-#'
+#' (g2_mice <- g2_snps(mice_snp_genotypes, nperm = 10, nboot = 10, CI = 0.95))
+#' 
 #'
 #' @export
 
@@ -100,7 +100,6 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = 
         g2_permut <- rep(NA, nperm)
         p_permut <- NA
 
-
         if (nperm > 0) {
                 #setkey(origin, eval(parse(names(origin)[1])))
                 perm_genotypes <- function(perm, origin) {
@@ -115,12 +114,12 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = 
 
         }
 
+        # bootstrap
         g2_boot <- rep(NA, nboot)
         g2_se <- NA
         CI_boot <- c(NA,NA)
-
+        
         if (nboot > 0) {
-
                 boot_genotypes <- function(boot, origin) {
                         # bootstrap over individuals in columns
                         origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
@@ -136,6 +135,6 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = 
                     g2 = g2_emp, p_val = p_permut, g2_permut = g2_permut,
                     g2_boot = g2_boot, CI_boot = CI_boot, g2_se = g2_se,
                     nobs = nrow(genotypes), nloc = ncol(genotypes))
-        class(res) <- "g2"
+        class(res) <- "inbreed"
         return(res)
 }

@@ -13,7 +13,7 @@ g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95)
 
 \item{nboot}{number of bootstraps for CI}
 
-\item{CI}{confidence interval}
+\item{CI}{confidence interval (default to 0.95)}
 }
 \value{
 \item{call}{Model call.}
@@ -37,7 +37,7 @@ Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (w
 # load SNP genotypes in 0 (homozygous), 1(heterozygous) format.
 
 data(mice_snp_genotypes)
-(g2_val <- g2_snps(mice_snp_genotypes, nperm = 100, nboot = 100, CI = 0.95))
+(g2_mice <- g2_snps(mice_snp_genotypes, nperm = 10, nboot = 10, CI = 0.95))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
