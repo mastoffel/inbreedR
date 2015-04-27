@@ -44,4 +44,5 @@ print.inbreed <- function(x, ...) {
         cat("\n\n")
         print(format(df, digits = 3, width = 6, scientific = FALSE))  
     }
+    
 }

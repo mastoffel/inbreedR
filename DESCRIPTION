@@ -8,9 +8,10 @@ Description: The methods  from this package allow  extracting  second-order
     heterozygosity disequilibrium and selfing  rates
     from  among-locus  correlations  in  multilocus
     population data.
-Depends:
+Depends: 
     R (>= 3.1.1)
 License: MIT
 LazyData: true
-Imports:
+Imports: 
     methods
+Suggests: testthat

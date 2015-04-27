@@ -9,7 +9,7 @@
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
 #' @param nperm Number of permutations in order to get the distribution of sMLH values
-#' when there is no inbreeding.       
+#'        when there is no inbreeding.       
 #'
 #' @return
 #' \item{sMLH_perm_mean}{Means of sMLH´s of permuted data.}
@@ -27,18 +27,18 @@
 #' data(seal_microsats)
 #' # tranform raw genotypes into 0/1 format
 #' genotypes <- convert_raw(seal_microsats, NAval = NA)
-#' (het <- var_in_het(genotypes, nperm = 100))
+#' (het <- hetvar_nullhyp(genotypes, nperm = 100))
 #'
 #' @export
-#'
-#'
-var_in_het <- function(genotypes, nperm = 100) {
+
+hetvar_nullhyp <- function(genotypes, nperm = 100) {
     # genotypes <- as.matrix(genotypes)
     
     permute <- function(genotypes) {
-        geno_perm <- t(apply(genotypes, 2, sample))
-        sMLH_perm_mean <- mean(sMLH(geno_perm))
-        sMLH_perm_var <- var(sMLH(geno_perm))
+        geno_perm <- (apply(genotypes, 2, sample))
+        perm_sMLH <- sMLH(geno_perm)
+        sMLH_perm_mean <- mean(perm_sMLH)
+        sMLH_perm_var <- var(perm_sMLH)
         out <- list(sMLH_perm_mean = sMLH_perm_mean, 
                     sMLH_perm_var  = sMLH_perm_var)
     }
