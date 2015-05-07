@@ -16,7 +16,7 @@
 #' @export
 #'
 
-plot.inbreed <- function(x, main = "g2 bootstrap estimates", xlab = "g2", ylab = "counts", ...) {
+plot.inbreed <- function(x, main = "g2 bootstrap values", xlab = "g2", ylab = "counts", ...) {
     
     if (!is.null(x$g2)) {
         boot_hist <- function(g2, g2_boot, CI.l, CI.u, ...) {
@@ -35,15 +35,24 @@ plot.inbreed <- function(x, main = "g2 bootstrap estimates", xlab = "g2", ylab =
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), CI.u = unname(x$CI_boot[2]))
     }
     
-# under construction
-#       if (!is.null(x$sMLH_perm_mean)){
-#           perm_est <- mean(x$sMLH_perm_mean)
-#           perm_est_var <- var(x$sMLH_perm_mean)
-#           range <- seq(min(x$sMLH_perm_mean), max(x$sMLH_perm_mean), length = 1000)
-#  
-#           hist(x$emp_sMLH, probability = TRUE, ylim = c(0,10))
-#           curve(dnorm(range, perm_est, perm_est_var), add=TRUE, col="darkblue", lwd=2)
-#           lines(density(range), col="blue", lwd=2)
-#         
-        
+
+      if (!is.null(x$sMLH_perm_mean)){
+          perm_est <- mean(x$sMLH_perm_mean)
+          perm_est_var <- var(x$sMLH_perm_var)
+          range <- seq(min(x$sMLH_perm_mean), max(x$sMLH_perm_mean), length = 1000)
+ 
+          hist(x$emp_sMLH, freq = FALSE)
+          mean_het <- mean(x$emp_sMLH)
+          sd_het <- sd(x$emp_sMLH)
+          curve(dnorm(x, mean=mean_het, sd=sd_het), 
+                col="darkblue", lwd=2, add=TRUE, yaxt="n")
+      }
+    
+    g <- x$emp_sMLH
+    h <- hist(g, breaks=14, density=100, col="lightgray", xlab="Accuracy", main="Overall") 
+    xfit<-seq(min(g),max(g),length=10000) 
+    yfit<-dnorm(xfit,mean=mean(x$sMLH_perm_mean),sd=mean(x$sMLH_perm_var)) 
+    yfit <- yfit*diff(h$mids[1:2])*length(g) 
+    lines(xfit, yfit, col="black", lwd=2)
+    
 }

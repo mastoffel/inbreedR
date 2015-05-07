@@ -5,7 +5,7 @@
 \title{Plot a g2 object
 Plots the distribution of g2 estimates from bootstrapping.}
 \usage{
-\method{plot}{inbreed}(x, main = "g2 bootstrap estimates", xlab = "g2",
+\method{plot}{inbreed}(x, main = "g2 bootstrap values", xlab = "g2",
   ylab = "counts", ...)
 }
 \arguments{

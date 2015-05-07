@@ -1,15 +1,15 @@
 
-#' Calculate standardized multilocus heterozygosity (sMLH)
+#' Calculate standardized multinlocus heterozygosity (sMLH)
 #' 
-#' sMLH is defined as total number of heterozygous loci in an individual divided 
+#' sMLH is defined as total number of heterozygous nloci in an individual divided 
 #' by the sum of average observed heterozygosities in the population over the 
-#' subset of loci successfully typed in the focal individual
+#' subset of nloci successfully typed in the focal individual
 #'
-#' @param genotypes data.frame with individuals in rows and loci in columns,
+#' @param genotypes data.frame with individuals in rows and nloci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
 #'
 #' @return
-#' Vector of individual standardized multilocus heterozygosities
+#' Vector of individual standardized multinlocus heterozygosities
 #'
 #' @references
 #' Coltman, D. W., Pilkington, J. G., Smith, J. A., & Pemberton, J. M. (1999). 
@@ -27,22 +27,21 @@
 
 sMLH <- function(genotypes) {
     
-    genotypes <- as.matrix(genotypes)
+    genes <- as.matrix(genotypes)
     # get logical matrix of non-missing values as TRUE
-    typed <- (genotypes == 1) | (genotypes == 0)
+    typed <- (genes == 1) | (genes == 0)
     # initialise
-    loc <- ncol(genotypes)
-    indiv <- nrow(genotypes)
-    het_loc <- rep(NA, loc)
+    nloc <- ncol(genes)
+    nind <- nrow(genes)
     typed_sum <- colSums(typed)
-    # at each locus, which percent of individuals is het (without missings)
-    het_loc <- colSums(genotypes == 1) / typed_sum
-    het_loc_mat <- matrix(het_loc, nrow = indiv, ncol = loc, byrow = TRUE)
-    
+    # heterozygosity per locus
+    het_loc <- colSums(genes == 1) / typed_sum
+    # replicate vector to matrix
+    het_loc_mat <- matrix(het_loc, nrow = nind, ncol = nloc, byrow = TRUE)
     het_loc_mat[!typed] <- 0
     mh <- rowSums(het_loc_mat)
     N  <- rowSums(typed)
-    H  <- rowSums(genotypes == 1)
+    H  <- rowSums(genes == 1)
     sMLH <- (H/N)/(mh/N)
     
     names(sMLH) <- row.names(genotypes)

@@ -4,7 +4,7 @@
 \alias{convert_raw}
 \title{Genotype format converter}
 \usage{
-convert_raw(genotypes, NAval = -99)
+convert_raw(genotypes, miss_val = NULL)
 }
 \arguments{
 \item{genotypes}{Raw genotype data frame or matrix. Has individuals in rows and each locus in two columns}
@@ -17,13 +17,13 @@ Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (NA on at least o
 }
 \description{
 Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus).
-A raw genotype matrix has individuals in rows and loci in columns, while each locus has two adjacent.
+A raw genotype matrix has individuals in rows and each locus in two adjacent columns.
 Type \emph{data(seal_microsats)} for an example data frame.
 }
 \examples{
 # Seal microsatellite data with missing values specified with -99
 data(seal_microsats)
-genotypes <- convert_raw(seal_microsats, NAval = NA)
+genotypes <- convert_raw(seal_microsats, miss_val = NA)
 head(genotypes)
 }
 \author{

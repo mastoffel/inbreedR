@@ -26,8 +26,11 @@
 #' @examples
 #' data(seal_microsats)
 #' # tranform raw genotypes into 0/1 format
-#' genotypes <- convert_raw(seal_microsats, NAval = NA)
-#' (het <- hetvar_nullhyp(genotypes, nperm = 100))
+#' genotypes <- convert_raw(seal_microsats, miss_val = NA)
+#' (out <- hetvar_nullhyp(genotypes, nperm = 100))
+#' 
+#' data(mice_snp_genotypes)
+#' out <- hetvar_nullhyp(mice_snp_genotypes, nperm = 100)
 #'
 #' @export
 

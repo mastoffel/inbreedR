@@ -2,21 +2,21 @@
 % Please edit documentation in R/sMLH.R
 \name{sMLH}
 \alias{sMLH}
-\title{Calculate standardized multilocus heterozygosity (sMLH)}
+\title{Calculate standardized multinlocus heterozygosity (sMLH)}
 \usage{
 sMLH(genotypes)
 }
 \arguments{
-\item{genotypes}{data.frame with individuals in rows and loci in columns,
+\item{genotypes}{data.frame with individuals in rows and nloci in columns,
        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 }
 \value{
-Vector of individual standardized multilocus heterozygosities
+Vector of individual standardized multinlocus heterozygosities
 }
 \description{
-sMLH is defined as total number of heterozygous loci in an individual divided
+sMLH is defined as total number of heterozygous nloci in an individual divided
 by the sum of average observed heterozygosities in the population over the
-subset of loci successfully typed in the focal individual
+subset of nloci successfully typed in the focal individual
 }
 \examples{
 data(mice_snp_genotypes)

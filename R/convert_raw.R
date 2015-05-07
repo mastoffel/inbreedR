@@ -1,7 +1,7 @@
 #' Genotype format converter
 #'
 #' Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus).
-#' A raw genotype matrix has individuals in rows and loci in columns, while each locus has two adjacent.
+#' A raw genotype matrix has individuals in rows and each locus in two adjacent columns.
 #' Type \emph{data(seal_microsats)} for an example data frame.
 #'
 #' @param genotypes Raw genotype data frame or matrix. Has individuals in rows and each locus in two columns
@@ -16,20 +16,27 @@
 #' @examples
 #' # Seal microsatellite data with missing values specified with -99
 #' data(seal_microsats)
-#' genotypes <- convert_raw(seal_microsats, NAval = NA)
+#' genotypes <- convert_raw(seal_microsats, miss_val = NA)
 #' head(genotypes)
 #'
 #' @export
 
 
 
-convert_raw <- function(genotypes, NAval = -99) {
-
-if (is.na(NAval)) {
-        genotypes[is.na(genotypes)] <- NA
-} else {
-        genotypes[genotypes == NAval] <- NA
+convert_raw <- function(genotypes, miss_val = NULL) {
+    
+if (is.null(miss_val)) {
+    stop("NAval argument missing")
 }
+
+if (is.na(miss_val)) {
+        genotypes[is.na(genotypes)] <- NA
+} else if (is.numeric(miss_val)) {
+        genotypes[genotypes == miss_val] <- NA
+} else {
+    stop("NAval has to be NA or numeric")
+}
+
 
 check_het <- function(x) {
 

@@ -13,5 +13,6 @@ Depends:
 License: MIT
 LazyData: true
 Imports: 
-    methods
+    methods,
+    ggvis
 Suggests: testthat
