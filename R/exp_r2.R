@@ -24,28 +24,28 @@
 #' @examples
 #' data(seal_microsats)
 #' genotypes <- convert_raw(seal_microsats, miss = NA)
-#' out <- exp_r2(genotypes, parts = 10, nboot = 100)
-#' 
+#' (out <- exp_r2(genotypes, parts = 10, nboot = 100))
+#' plot(out)
 #' @export
 #'
 #'
 
-exp_r2 <- function(genotypes, parts = 10, nboot = 1000) {
+exp_r2 <- function(genotypes, parts = 10, nboot = 100) {
     
     gtypes <- as.matrix(genotypes)
-    calc_r2 <- function(gtypes) {
-    g2 <- g2_microsats(gtypes)[["g2"]]
-    # according to the miller paper, negative g2´s are set to r2 = 0.
-    if (g2 < 0) return(r2 <- 0)
     
-    var_sh <- var(sMLH(gtypes))
-    r2 <- g2/var_sh
+    calc_r2 <- function(gtypes) {
+        g2 <- g2_microsats(gtypes)[["g2"]]
+        # according to the miller paper, negative g2´s are set to r2 = 0.
+        if (g2 < 0) return(r2 <- 0)
+        var_sh <- var(sMLH(gtypes))
+        r2 <- g2/var_sh
     }
     
     # calculate sequence of loci numbers to draw
     nloc_draw <- (floor(ncol(genotypes)/ parts))
     nloc_vec <- seq(from = nloc_draw, to = ncol(genotypes), by = nloc_draw)
-    
+    # initialise
     all_r2 <- matrix(nrow = nboot, ncol = parts)
     
     calc_r2_sub <- function(gtypes, i) {

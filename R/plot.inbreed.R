@@ -19,9 +19,9 @@
 plot.inbreed <- function(x, ...) {
     
     if (!is.null(x$g2)) {
-        if (!(exists("main"))) main <- "g2 bootstrap values"
-        if (!(exists("g2")))   xlab <- "g2"
-        if (!(exists("ylab"))) ylab <- "counts"
+        if (!(hasArg("main"))) main <- "g2 bootstrap values"
+        if (!(hasArg("xlab")))   xlab <- "g2"
+        if (!(hasArg("ylab"))) ylab <- "counts"
         
         boot_hist <- function(g2, g2_boot, CI.l, CI.u, ...) {
                 # y position of confidence band
@@ -32,7 +32,7 @@ plot.inbreed <- function(x, ...) {
                 arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
                        length=0.3, angle=90, code=3, lwd = 2.5, col = "black")
                 points(g2, v.pos*1.15, cex = 1.2, pch = 19, col = "red")
-                legend("topleft", pch = 19, cex = 1, bty = "n", col = c("red"),
+                legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("red"),
                        c("g2 with CI"), box.lty = 0)
         }
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), CI.u = unname(x$CI_boot[2]))

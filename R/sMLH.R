@@ -27,6 +27,7 @@
 
 sMLH <- function(genotypes) {
     genes <- as.matrix(genotypes)
+    genes[is.na(genes)] <- -1
     # get logical matrix of non-missing values as TRUE
     typed <- (genes == 1) | (genes == 0)
     # initialise
