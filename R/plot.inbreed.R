@@ -9,11 +9,12 @@
 #'
 #' @seealso \link{g2_snps}, \link{g2_microsats}
 #'
-#'
+#' @import ggplot2
 #' @export
 #'
 
 plot.inbreed <- function(x, ...) {
+    
     
     if (!is.null(x$g2)) {
         if (!(hasArg("main"))) main <- "g2 bootstrap values"
@@ -37,7 +38,7 @@ plot.inbreed <- function(x, ...) {
     
     
     if(!is.null(x$exp_r2_res)) {
-        ggplot2::ggplot(x$exp_r2_res, aes(nloc, r2)) +
+        ggplot(x$exp_r2_res, ggplot2::aes_string("nloc", "r2")) +
             geom_boxplot() +
             theme_bw(base_size = 16) +
             theme(plot.title=element_text(size=15, vjust=2)) +

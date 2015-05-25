@@ -5,7 +5,7 @@
 \title{Expected r2 between sMLH and inbreeding level
 Currently just working for microsat data!}
 \usage{
-exp_r2(genotypes, parts = 10, nboot = 1000)
+exp_r2(genotypes, parts = 10, nboot = 100)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
@@ -15,6 +15,13 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 
 \item{nboot}{number of bootstraps per part}
 }
+\value{
+\item{call}{function call.}
+\item{exp_r2_res}{expected r2 for each randomly subsetted dataset}
+\item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
+\item{nobs}{number of observations}
+\item{nloc}{number of markers}
+}
 \description{
 Expected r2 between sMLH and inbreeding level
 Currently just working for microsat data!
@@ -22,7 +29,8 @@ Currently just working for microsat data!
 \examples{
 data(seal_microsats)
 genotypes <- convert_raw(seal_microsats, miss = NA)
-out <- exp_r2(genotypes, parts = 10, nboot = 100)
+(out <- exp_r2(genotypes, parts = 10, nboot = 100))
+plot(out)
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

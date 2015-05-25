@@ -16,7 +16,7 @@ g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95)
 \item{CI}{confidence interval (default to 0.95)}
 }
 \value{
-\item{call}{Model call.}
+\item{call}{function call.}
 \item{g2}{g2 value}
 \item{p_val}{p value from permutation test}
 \item{g2_permut}{g2 values from permuted genotypes}

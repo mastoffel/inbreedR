@@ -2,26 +2,17 @@
 % Please edit documentation in R/plot.inbreed.R
 \name{plot.inbreed}
 \alias{plot.inbreed}
-\title{Plot an inbreed object
-Plots the distribution of g2 estimates from bootstrapping.}
+\title{Plot an inbreed object}
 \usage{
-\method{plot}{inbreed}(x, main = "g2 bootstrap values", xlab = "g2",
-  ylab = "counts", ...)
+\method{plot}{inbreed}(x, ...)
 }
 \arguments{
 \item{x}{An inbreed object.}
-
-\item{main}{Plot title}
-
-\item{xlab}{X-axis label}
-
-\item{ylab}{y-axis label}
 
 \item{\dots}{Additional arguments to the hist() function.}
 }
 \description{
 Plot an inbreed object
-Plots the distribution of g2 estimates from bootstrapping.
 }
 \author{
 Martin Stoffel (martin.adam.stoffel@gmail.com)

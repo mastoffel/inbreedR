@@ -17,7 +17,7 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 \item{CI}{Confidence interval (default to 0.95)}
 }
 \value{
-\item{call}{Model call.}
+\item{call}{function call.}
 \item{g2}{g2 value}
 \item{p_val}{p value from permutation test}
 \item{g2_permut}{g2 values from permuted genotypes}

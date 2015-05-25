@@ -10,10 +10,9 @@ Description: The methods  from this package allow  extracting  second-order
     population data.
 Depends: 
     R (>= 3.1.1)
-License: MIT
+License: GPL-2
 LazyData: true
 Imports: 
-    methods,
     ggplot2
 Suggests: 
     testthat
