@@ -1,5 +1,5 @@
 #' Plot an inbreed object
-#' Plots the distribution of g2 estimates from bootstrapping.
+#' 
 #'
 #' @param x An inbreed object.
 #' @param main Plot title
@@ -16,9 +16,13 @@
 #' @export
 #'
 
-plot.inbreed <- function(x, main = "g2 bootstrap values", xlab = "g2", ylab = "counts", ...) {
+plot.inbreed <- function(x, ...) {
     
     if (!is.null(x$g2)) {
+        if (!(exists("main"))) main <- "g2 bootstrap values"
+        if (!(exists("g2")))   xlab <- "g2"
+        if (!(exists("ylab"))) ylab <- "counts"
+        
         boot_hist <- function(g2, g2_boot, CI.l, CI.u, ...) {
                 # y position of confidence band
                 v.pos <- max((hist(g2_boot, plot = FALSE, ...))$counts)
@@ -31,28 +35,36 @@ plot.inbreed <- function(x, main = "g2 bootstrap values", xlab = "g2", ylab = "c
                 legend("topleft", pch = 19, cex = 1, bty = "n", col = c("red"),
                        c("g2 with CI"), box.lty = 0)
         }
-
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), CI.u = unname(x$CI_boot[2]))
     }
     
-
-      if (!is.null(x$sMLH_perm_mean)){
-          perm_est <- mean(x$sMLH_perm_mean)
-          perm_est_var <- var(x$sMLH_perm_var)
-          range <- seq(min(x$sMLH_perm_mean), max(x$sMLH_perm_mean), length = 1000)
- 
-          hist(x$emp_sMLH, freq = FALSE)
-          mean_het <- mean(x$emp_sMLH)
-          sd_het <- sd(x$emp_sMLH)
-          curve(dnorm(x, mean=mean_het, sd=sd_het), 
-                col="darkblue", lwd=2, add=TRUE, yaxt="n")
-      }
     
-    g <- x$emp_sMLH
-    h <- hist(g, breaks=14, density=100, col="lightgray", xlab="Accuracy", main="Overall") 
-    xfit<-seq(min(g),max(g),length=10000) 
-    yfit<-dnorm(xfit,mean=mean(x$sMLH_perm_mean),sd=mean(x$sMLH_perm_var)) 
-    yfit <- yfit*diff(h$mids[1:2])*length(g) 
-    lines(xfit, yfit, col="black", lwd=2)
+    if(!is.null(x$exp_r2_res)) {
+        ggplot2::ggplot(x$exp_r2_res, aes(nloc, r2)) +
+            geom_boxplot() +
+            theme_bw(base_size = 16) +
+            theme(plot.title=element_text(size=15, vjust=2)) +
+            labs(title = "Expected r2 between f and sMLH")+
+            xlab("number of loci") 
+    }
     
+    
+    #       if (!is.null(x$sMLH_perm_mean)){
+    #           perm_est <- mean(x$sMLH_perm_mean)
+    #           perm_est_var <- var(x$sMLH_perm_var)
+    #           range <- seq(min(x$sMLH_perm_mean), max(x$sMLH_perm_mean), length = 1000)
+    #  
+    #           hist(x$emp_sMLH, freq = FALSE)
+    #           mean_het <- mean(x$emp_sMLH)
+    #           sd_het <- sd(x$emp_sMLH)
+    #           curve(dnorm(x, mean=mean_het, sd=sd_het), 
+    #                 col="darkblue", lwd=2, add=TRUE, yaxt="n")
+    #       }
+    
+    #     g <- x$emp_sMLH
+    #     h <- hist(g, breaks=14, density=100, col="lightgray", xlab="Accuracy", main="Overall") 
+    #     xfit<-seq(min(g),max(g),length=10000) 
+    #     yfit<-dnorm(xfit,mean=mean(x$sMLH_perm_mean),sd=mean(x$sMLH_perm_var)) 
+    #     yfit <- yfit*diff(h$mids[1:2])*length(g) 
+    #     lines(xfit, yfit, col="black", lwd=2)
 }

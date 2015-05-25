@@ -5,8 +5,16 @@
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
 #' @param parts specifies number of subsets to iterate over
 #' @param nboot number of bootstraps per part
+#' 
+#' @return 
+#' \item{call}{function call.}
+#' \item{exp_r2_res}{expected r2 for each randomly subsetted dataset}
+#' \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
+#' \item{nobs}{number of observations}
+#' \item{nloc}{number of markers}
+#' 
 #'
-#'
+#' 
 #' @references
 #' Szulkin, M., Bierne, N., & David, P. (2010). HETEROZYGOSITY-FITNESS CORRELATIONS: A TIME FOR REAPPRAISAL. 
 #' Evolution, 64(5), 1202-1217.
@@ -25,9 +33,11 @@
 exp_r2 <- function(genotypes, parts = 10, nboot = 1000) {
     
     gtypes <- as.matrix(genotypes)
-    
     calc_r2 <- function(gtypes) {
     g2 <- g2_microsats(gtypes)[["g2"]]
+    # according to the miller paper, negative g2´s are set to r2 = 0.
+    if (g2 < 0) return(r2 <- 0)
+    
     var_sh <- var(sMLH(gtypes))
     r2 <- g2/var_sh
     }
@@ -47,6 +57,20 @@ exp_r2 <- function(genotypes, parts = 10, nboot = 1000) {
         all_r2[, i] <- replicate(nboot, calc_r2_sub(gtypes, nloc_vec[i]))
     }
     
-    res <- data.frame(r2 = c(all_r2), npart = factor(rep(1:parts, each = nboot)))
+    # expected r2 per subset
+    exp_r2_res <- data.frame(r2 = c(all_r2), nloc = factor(rep(nloc_vec, each = nboot)))
+    
+    # mean and sd per number of loci
+    summary_exp_r2 <- aggregate(r2 ~ nloc, data = exp_r2_res, 
+                             FUN = function(x) c(mean = mean(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE)))
+    
+    res <- list(call = match.call(),
+                exp_r2_res = exp_r2_res,
+                summary_exp_r2 = summary_exp_r2,
+                nobs = nrow(genotypes), 
+                nloc = ncol(genotypes))
+    
+    class(res) <- "inbreed"
+    return(res)
     
 }

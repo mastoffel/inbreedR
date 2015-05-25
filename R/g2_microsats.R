@@ -7,7 +7,7 @@
 #' @param CI Confidence interval (default to 0.95)
 #'
 #' @return
-#' \item{call}{Model call.}
+#' \item{call}{function call.}
 #' \item{g2}{g2 value}
 #' \item{p_val}{p value from permutation test}
 #' \item{g2_permut}{g2 values from permuted genotypes}
@@ -41,6 +41,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         # transpose
         origin <- (t(genotypes))
         origin[(origin!=0) & (origin!=1)] <- -1
+        origin[is.na(origin)] <- -1
 
         calc_g2 <- function(origin, perm = 1, boot = 1) {
                 # define matrix with 1 for missing and 0 for all others
