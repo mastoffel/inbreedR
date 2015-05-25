@@ -9,7 +9,9 @@ HHC(genotypes, iter = 100)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
-       containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+
+\item{iter}{number of iterations, i.e. splittings of the dataset}
 }
 \value{
 Vector of het-het correlations
@@ -19,8 +21,9 @@ Calculates heterzygosity-heterozygosity correlations with
 standardized multilocus heterozygosities (sMLH)
 }
 \examples{
-data(mice_snp_genotypes)
-result <- HHC(mice_snp_genotypes, iter = 10)
+data(seal_microsats)
+genotypes <- convert_raw(seal_microsats, miss = NA)
+out <- HHC(genotypes, iter = 100)
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

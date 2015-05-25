@@ -4,6 +4,7 @@
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#' @param iter number of iterations, i.e. splittings of the dataset 
 #'
 #' @return
 #' Vector of het-het correlations
@@ -15,8 +16,9 @@
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
 #'        
 #' @examples
-#' data(mice_snp_genotypes)
-#' result <- HHC(mice_snp_genotypes, iter = 10)
+#' data(seal_microsats)
+#' genotypes <- convert_raw(seal_microsats, miss = NA)
+#' out <- HHC(genotypes, iter = 100)
 #'
 #' @export
 #'
@@ -29,8 +31,8 @@ HHC <- function(genotypes, iter = 100) {
     
     calc_cor <- function(num_iter, genotypes) {
         new_ord <- sample(loci)
-        sMLH1 <- sMLH(genotypes[new_ord[1:floor(loc_num/2)]])
-        sMLH2 <- sMLH(genotypes[new_ord[(floor(loc_num/2) + 1):loc_num]])
+        sMLH1 <- inbreedR::sMLH(genotypes[new_ord[1:floor(loc_num/2)]])
+        sMLH2 <- inbreedR::sMLH(genotypes[new_ord[(floor(loc_num/2) + 1):loc_num]])
         het_het_cor <- cor(sMLH1, sMLH2)
         
         if (num_iter == 1) {

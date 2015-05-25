@@ -1,8 +1,10 @@
 #' Expected r2 between sMLH and inbreeding level
-#' 
+#' Currently just working for microsat data!
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#' @param parts specifies number of subsets to iterate over
+#' @param nboot number of bootstraps per part
 #'
 #'
 #' @references
@@ -12,12 +14,10 @@
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
 #'        
 #' @examples
-#' data(mice_snp_genotypes)
-#' result <- exp_r2(mice_snp_genotypes)
-#' 
 #' data(seal_microsats)
-#' genotypes <- convert_raw(seal_microsats, miss_val = NA)
-#'
+#' genotypes <- convert_raw(seal_microsats, miss = NA)
+#' out <- exp_r2(genotypes, parts = 10, nboot = 100)
+#' 
 #' @export
 #'
 #'

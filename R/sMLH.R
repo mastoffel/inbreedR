@@ -1,15 +1,14 @@
-
-#' Calculate standardized multinlocus heterozygosity (sMLH)
+#' Calculate standardized multilocus heterozygosity (sMLH)
 #' 
-#' sMLH is defined as total number of heterozygous nloci in an individual divided 
+#' sMLH is defined as the total number of heterozygous loci in an individual divided 
 #' by the sum of average observed heterozygosities in the population over the 
-#' subset of nloci successfully typed in the focal individual
+#' subset of loci successfully typed in the focal individual
 #'
 #' @param genotypes data.frame with individuals in rows and nloci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
 #'
 #' @return
-#' Vector of individual standardized multinlocus heterozygosities
+#' Vector of individual standardized multilocus heterozygosities
 #'
 #' @references
 #' Coltman, D. W., Pilkington, J. G., Smith, J. A., & Pemberton, J. M. (1999). 
@@ -19,14 +18,14 @@
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
 #'        
 #' @examples
-#' data(mice_snp_genotypes)
-#' het <- sMLH(mice_snp_genotypes)
+#' data(seal_microsats)
+#' genotypes <- convert_raw(seal_microsats, miss = NA)
+#' het <- sMLH(genotypes)
 #'
 #' @export
 #'
 
 sMLH <- function(genotypes) {
-    
     genes <- as.matrix(genotypes)
     # get logical matrix of non-missing values as TRUE
     typed <- (genes == 1) | (genes == 0)
@@ -43,7 +42,6 @@ sMLH <- function(genotypes) {
     N  <- rowSums(typed)
     H  <- rowSums(genes == 1)
     sMLH <- (H/N)/(mh/N)
-    
     names(sMLH) <- row.names(genotypes)
     sMLH
 }

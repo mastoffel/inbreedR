@@ -5,7 +5,7 @@
 #' Type \emph{data(seal_microsats)} for an example data frame.
 #'
 #' @param genotypes Raw genotype data frame or matrix. Has individuals in rows and each locus in two columns
-#' @param NAval The prespecified value for missing elements in the data frame. Will be converted to -1 in the output.
+#' @param miss The prespecified value for missing elements in the data frame. Will be converted to -1 in the output.
 #'
 #'
 #' @return Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus).
@@ -16,25 +16,25 @@
 #' @examples
 #' # Seal microsatellite data with missing values specified with -99
 #' data(seal_microsats)
-#' genotypes <- convert_raw(seal_microsats, miss_val = NA)
+#' genotypes <- convert_raw(seal_microsats, miss = NA)
 #' head(genotypes)
 #'
 #' @export
 
 
 
-convert_raw <- function(genotypes, miss_val = NULL) {
+convert_raw <- function(genotypes, miss = NULL) {
     
-if (is.null(miss_val)) {
-    stop("NAval argument missing")
+if (is.null(miss)) {
+    stop("miss argument missing")
 }
 
-if (is.na(miss_val)) {
+if (is.na(miss)) {
         genotypes[is.na(genotypes)] <- NA
-} else if (is.numeric(miss_val)) {
-        genotypes[genotypes == miss_val] <- NA
+} else if (is.numeric(miss)) {
+        genotypes[genotypes == miss] <- NA
 } else {
-    stop("NAval has to be NA or numeric")
+    stop("miss has to be NA or numeric")
 }
 
 

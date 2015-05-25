@@ -1,4 +1,4 @@
-#' Plot a g2 object
+#' Plot an inbreed object
 #' Plots the distribution of g2 estimates from bootstrapping.
 #'
 #' @param x An inbreed object.

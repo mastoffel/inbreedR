@@ -4,12 +4,12 @@
 \alias{convert_raw}
 \title{Genotype format converter}
 \usage{
-convert_raw(genotypes, miss_val = NULL)
+convert_raw(genotypes, miss = NULL)
 }
 \arguments{
 \item{genotypes}{Raw genotype data frame or matrix. Has individuals in rows and each locus in two columns}
 
-\item{NAval}{The prespecified value for missing elements in the data frame. Will be converted to -1 in the output.}
+\item{miss}{The prespecified value for missing elements in the data frame. Will be converted to -1 in the output.}
 }
 \value{
 Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus).
@@ -23,7 +23,7 @@ Type \emph{data(seal_microsats)} for an example data frame.
 \examples{
 # Seal microsatellite data with missing values specified with -99
 data(seal_microsats)
-genotypes <- convert_raw(seal_microsats, miss_val = NA)
+genotypes <- convert_raw(seal_microsats, miss = NA)
 head(genotypes)
 }
 \author{

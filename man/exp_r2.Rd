@@ -2,20 +2,27 @@
 % Please edit documentation in R/exp_r2.R
 \name{exp_r2}
 \alias{exp_r2}
-\title{Expected r2 between sMLH and inbreeding level}
+\title{Expected r2 between sMLH and inbreeding level
+Currently just working for microsat data!}
 \usage{
-exp_r2(genotypes)
+exp_r2(genotypes, parts = 10, nboot = 1000)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
-       containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+
+\item{parts}{specifies number of subsets to iterate over}
+
+\item{nboot}{number of bootstraps per part}
 }
 \description{
 Expected r2 between sMLH and inbreeding level
+Currently just working for microsat data!
 }
 \examples{
-data(mice_snp_genotypes)
-result <- exp_r2(mice_snp_genotypes)
+data(seal_microsats)
+genotypes <- convert_raw(seal_microsats, miss = NA)
+out <- exp_r2(genotypes, parts = 10, nboot = 100)
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

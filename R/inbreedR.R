@@ -5,13 +5,16 @@
 #' \link{g2_microsats}
 #' \link{g2_snps}
 #' \link{convert_raw}
-#' \link{plot.g2}
+#' \link{exp_r2}
+#' \link{HHC}
+#' \link{sMLH}
+#' \link{plot.inbreed}
 #'
 #'
 #' @author  Martin Stoffel (martin.adam.stoffel@@gmail.com), Mareike Esser (messer@@uni-bielefeld.de)
 #'
 #' @references
-#' DAVID, P., PUJOL, B., VIARD, F., CASTELLA, V. and GOUDET, J. (2007),
+#' David, P., Pujol, B., Viard, F., Castella, V. and Goudet, J. (2007),
 #' Reliable selfing rate estimates from imperfect population genetic data. Molecular Ecology,
 #' 16: 2474
 #'

@@ -29,7 +29,7 @@
 #' @examples
 #' data(seal_microsats)
 #' # tranform raw genotypes into 0/1 format
-#' genotypes <- convert_raw(seal_microsats, NAval = NA)
+#' genotypes <- convert_raw(seal_microsats, miss = NA)
 #' (g2_seals <- g2_microsats(genotypes, nperm = 100, nboot = 100, CI = 0.95))
 #'
 #' @export

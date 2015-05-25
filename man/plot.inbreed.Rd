@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.inbreed.R
 \name{plot.inbreed}
 \alias{plot.inbreed}
-\title{Plot a g2 object
+\title{Plot an inbreed object
 Plots the distribution of g2 estimates from bootstrapping.}
 \usage{
 \method{plot}{inbreed}(x, main = "g2 bootstrap values", xlab = "g2",
@@ -20,7 +20,7 @@ Plots the distribution of g2 estimates from bootstrapping.}
 \item{\dots}{Additional arguments to the hist() function.}
 }
 \description{
-Plot a g2 object
+Plot an inbreed object
 Plots the distribution of g2 estimates from bootstrapping.
 }
 \author{
