@@ -2,9 +2,6 @@
 #' 
 #'
 #' @param x An inbreed object.
-#' @param main Plot title
-#' @param xlab X-axis label
-#' @param ylab y-axis label
 #' @param \dots Additional arguments to the hist() function.
 #'
 #'
