@@ -56,5 +56,16 @@ print.inbreed <- function(x, ...) {
         print(format(x$summary_exp_r2, digits = 2))
     }
 
+    # check if HHC
     
+    if(!is.null(x$HHC_vals)) {
+        cat("\n\n", "heterozygosity-heterozygosity correlations", "\n",
+                    "------------------------------------------", "\n", sep = "")
+        cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
+            "Function call = ", deparse(x$call), "\n",
+            sep = "")
+        cat("\n", "HHC mean : " ,round(mean(x$HHC_vals, na.rm = TRUE), 3),
+            "\n", "HHC sd: " , round(sd(x$HHC_vals, na.rm = TRUE), 3), 
+            "\n", "HHC CI: [", round(x$CI_HHC[1],3), ", ", round(x$CI_HHC[2],3), "]", sep = "")
+    }
 }

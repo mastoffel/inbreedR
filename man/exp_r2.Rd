@@ -2,8 +2,7 @@
 % Please edit documentation in R/exp_r2.R
 \name{exp_r2}
 \alias{exp_r2}
-\title{Expected r2 between sMLH and inbreeding level
-Currently just working for microsat data!}
+\title{Expected r2 between sMLH and inbreeding level}
 \usage{
 exp_r2(genotypes, parts = 10, nboot = 100)
 }
@@ -23,7 +22,6 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 \item{nloc}{number of markers}
 }
 \description{
-Expected r2 between sMLH and inbreeding level
 Currently just working for microsat data!
 }
 \examples{

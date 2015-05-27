@@ -1,13 +1,12 @@
 Package: inbreedR
-Title: Estimation of second-order heterozygosity disequilibrium
+Title: Workflows for analysing inbreeding based on SNP or microsatellite markers. 
 Version: 0.1
 Authors@R: as.person(c(
         "Martin A. Stoffel <martin.adam.stoffel@gmail.com> [aut, cre]",
         "Mareike Esser <messer@uni-bielefeld.de> [aut]"))
-Description: The methods  from this package allow  extracting  second-order
-    heterozygosity disequilibrium and selfing  rates
-    from  among-locus  correlations  in  multilocus
-    population data.
+Description: Methods  from this package allow calculating second-order
+    heterozygosity disequilibrium from  among-locus  correlations  in  multilocus
+    population data. 
 Depends: 
     R (>= 3.1.1)
 License: GPL-2

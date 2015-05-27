@@ -5,20 +5,28 @@
 \title{Calculates heterzygosity-heterozygosity correlations with
 standardized multilocus heterozygosities (sMLH)}
 \usage{
-HHC(genotypes, iter = 100)
+HHC(genotypes, iter = 100, CI = 0.95)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
 containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 
 \item{iter}{number of iterations, i.e. splittings of the dataset}
+
+\item{CI}{calculates a CI around the mean het-het correlation}
 }
 \value{
-Vector of het-het correlations
+Vector of heterozygosity-heterozygosity correlations
+
+\item{call}{function call.}
+\item{HHC_vals}{vector of HHC´s obtained by randomly splitting the dataset}
+\item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
+\item{nobs}{number of observations}
+\item{nloc}{number of markers}
 }
 \description{
-Calculates heterzygosity-heterozygosity correlations with
-standardized multilocus heterozygosities (sMLH)
+Loci are randomly devided into two equal groups and the correlation coefficient
+between the resulting sMLH values is calculated.
 }
 \examples{
 data(seal_microsats)

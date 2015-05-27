@@ -15,7 +15,6 @@
 
 plot.inbreed <- function(x, ...) {
     
-    
     if (!is.null(x$g2)) {
         if (!(hasArg("main"))) main <- "g2 bootstrap values"
         if (!(hasArg("xlab")))   xlab <- "g2"
@@ -36,7 +35,6 @@ plot.inbreed <- function(x, ...) {
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), CI.u = unname(x$CI_boot[2]))
     }
     
-    
     if(!is.null(x$exp_r2_res)) {
         ggplot(x$exp_r2_res, ggplot2::aes_string("nloc", "r2")) +
             geom_boxplot() +
@@ -47,6 +45,30 @@ plot.inbreed <- function(x, ...) {
     }
     
     
+    if(!is.null(x$HHC_vals)) {
+        if (!(hasArg("main"))) main <- "heterozygosity-heterozygosity correlations"
+        if (!(hasArg("xlab")))   xlab <- "correlation coefficient r"
+        if (!(hasArg("ylab"))) ylab <- "counts"
+        
+        boot_hist <- function(g2, g2_boot, CI.l, CI.u, ...) {
+            # y position of confidence band
+            v.pos <- max((hist(g2_boot, plot = FALSE, ...))$counts)
+            # plot
+            hist(g2_boot, ylim = c(0, v.pos*1.5), main = main, xlab = xlab, ylab = ylab, ...)
+            lines(x = c(g2, g2), y = c(0, v.pos * 1.15), lwd = 2.5, col = "grey", lty = 5)
+            arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
+                   length=0.3, angle=90, code=3, lwd = 2.5, col = "black")
+            points(g2, v.pos*1.15, cex = 1.2, pch = 19, col = "red")
+            legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("red"),
+                   c("mean HHC with CI"), box.lty = 0)
+        }
+        boot_hist(g2 = mean(x$HHC_vals, na.rm = TRUE), g2_boot = x$HHC_vals, CI.l = x$CI_HHC[1], CI.u = x$CI_HHC[2])
+    }
+        
+        
+        
+        
+        
     #       if (!is.null(x$sMLH_perm_mean)){
     #           perm_est <- mean(x$sMLH_perm_mean)
     #           perm_est_var <- var(x$sMLH_perm_var)

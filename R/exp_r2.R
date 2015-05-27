@@ -1,4 +1,5 @@
 #' Expected r2 between sMLH and inbreeding level
+#' 
 #' Currently just working for microsat data!
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
@@ -12,8 +13,6 @@
 #' \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
 #' \item{nloc}{number of markers}
-#' 
-#'
 #' 
 #' @references
 #' Szulkin, M., Bierne, N., & David, P. (2010). HETEROZYGOSITY-FITNESS CORRELATIONS: A TIME FOR REAPPRAISAL. 

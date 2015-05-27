@@ -1,14 +1,24 @@
 #' Calculates heterzygosity-heterozygosity correlations with 
 #' standardized multilocus heterozygosities (sMLH)
 #' 
+#' Loci are randomly devided into two equal groups and the correlation coefficient
+#' between the resulting sMLH values is calculated.
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
 #' @param iter number of iterations, i.e. splittings of the dataset 
+#' @param CI calculates a CI around the mean het-het correlation
 #'
 #' @return
-#' Vector of het-het correlations
+#' Vector of heterozygosity-heterozygosity correlations
 #'
+#' @return 
+#' \item{call}{function call.}
+#' \item{HHC_vals}{vector of HHC´s obtained by randomly splitting the dataset}
+#' \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
+#' \item{nobs}{number of observations}
+#' \item{nloc}{number of markers}
+#' 
 #' @references
 #' Balloux, F., Amos, W., & Coulson, T. (2004). Does heterozygosity estimate inbreeding
 #' in real populations?. Molecular Ecology, 13(10), 3021-3031.
@@ -18,13 +28,13 @@
 #' @examples
 #' data(seal_microsats)
 #' genotypes <- convert_raw(seal_microsats, miss = NA)
-#' out <- HHC(genotypes, iter = 100)
+#' out <- HHC(genotypes, iter = 100, CI = 0.95)
 #'
 #' @export
 #'
 #'
 
-HHC <- function(genotypes, iter = 100) {
+HHC <- function(genotypes, iter = 100, CI = 0.95) {
     # initialise
     loci <- 1:ncol(genotypes)
     loc_num <- ncol(genotypes)
@@ -44,8 +54,20 @@ HHC <- function(genotypes, iter = 100) {
         }
         return(het_het_cor)
     }
-    het_het <- vapply(1:iter, calc_cor, numeric(1), genotypes)
-#     out <- list(het_het = het_het, mean_het_het = mean(het_het))
-#     class(het_het) <- "inbreedR"
-    return(het_het)
+    HHC_vals <- vapply(1:iter, calc_cor, numeric(1), genotypes)
+    
+    CI_HHC <- quantile(HHC_vals, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+
+    res <- list(call = match.call(),
+                HHC_vals = HHC_vals,
+                CI_HHC = CI_HHC,
+                nobs = nrow(genotypes), 
+                nloc = ncol(genotypes))
+    
+    class(res) <- "inbreed"
+    return(res)
 }
+
+
+
+
