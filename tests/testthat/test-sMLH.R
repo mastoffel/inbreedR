@@ -1,0 +1,2 @@
+library(inbreedR)
+context("sMLH")

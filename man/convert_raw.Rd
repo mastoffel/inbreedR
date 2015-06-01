@@ -19,8 +19,8 @@ Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (missing data).
 }
 \description{
 Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus), which is the working format for
-the inbreedR function..
-A raw genotype matrix has individuals in rows and each locus in two adjacent columns.
+the inbreedR functions.
+A raw genotype matrix has individuals in rows and each locus in two adjacent columns. Names of individuals should be rownames.
 Type \emph{data(seal_microsats)} for an example raw genotype data frame.
 }
 \examples{

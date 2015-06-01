@@ -47,7 +47,7 @@
 g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
 
         # transpose
-        origin <- (t(genotypes))
+        origin <- (t(genotypes)) 
         origin[(origin!=0) & (origin!=1)] <- -1
         origin[is.na(origin)] <- -1
 
