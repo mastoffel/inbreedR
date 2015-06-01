@@ -14,6 +14,7 @@
 
 
 print.inbreed <- function(x, ...) {
+    
     # check if its a g2 calculater
     if (!is.null(x$g2)) {
         if (as.character(x$call)[1] == "g2_microsats") {
@@ -34,17 +35,6 @@ print.inbreed <- function(x, ...) {
         cat("p (g2 > 0) = ",  x$p_val, " (based on ", length(x$g2_permut), " permutations)",  sep = "")
     }
     
-#     # check if its the variance comparer
-#     if (!is.null(x$sMLH_perm_mean)){
-#         df <- data.frame("mean" = c(mean(x$emp_sMLH), mean(x$sMLH_perm_mean), mean(x$sMLH_perm_var)),
-#                "variance" = c(var(x$emp_sMLH), var(x$sMLH_perm_mean), var(x$sMLH_perm_var)))
-#         row.names(df) <- c("sample", "perm_means", "perm_vars")
-#         
-#         cat("\n\n", "Comparison of empirical sMLH to a theoretical distribution in the absence of inbreeding:", sep = "")
-#         cat("\n\n")
-#         print(format(df, digits = 3, width = 6, scientific = FALSE))  
-#     }
-    
     
     # check if its exp_r2
     if(!is.null(x$exp_r2_res)) {
@@ -57,15 +47,14 @@ print.inbreed <- function(x, ...) {
     }
 
     # check if HHC
-    
     if(!is.null(x$HHC_vals)) {
         cat("\n\n", "heterozygosity-heterozygosity correlations", "\n",
                     "------------------------------------------", "\n", sep = "")
         cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
             "Function call = ", deparse(x$call), "\n",
             sep = "")
-        cat("\n", "HHC mean : " ,round(mean(x$HHC_vals, na.rm = TRUE), 3),
-            "\n", "HHC sd: " , round(sd(x$HHC_vals, na.rm = TRUE), 3), 
+        cat("\n", "HHC Mean : " ,round(mean(x$HHC_vals, na.rm = TRUE), 3),
+            "\n", "HHC SD: " , round(sd(x$HHC_vals, na.rm = TRUE), 3), 
             "\n", "HHC CI: [", round(x$CI_HHC[1],3), ", ", round(x$CI_HHC[2],3), "]", sep = "")
     }
 }

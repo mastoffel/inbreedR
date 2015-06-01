@@ -7,7 +7,8 @@
 g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95)
 }
 \arguments{
-\item{genotypes}{data.frame with individuals in rows and loci in columns, containing genotypes coded as 0 (homozygote) or 1 (heterozygote)}
+\item{genotypes}{data frame with individuals in rows and one locus per column,
+containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 
 \item{nperm}{number or permutations for calculating the p-value}
 
@@ -16,6 +17,10 @@ g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95)
 \item{CI}{confidence interval (default to 0.95)}
 }
 \value{
+g2_snps returns an object of class "inbreed".
+The functions `print` and `plot` are used to print a summary and to plot the distribution of bootstrapped g2 values and CI.
+
+An `inbreed` object is a list containing the following components:
 \item{call}{function call.}
 \item{g2}{g2 value}
 \item{p_val}{p value from permutation test}

@@ -16,10 +16,8 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 \item{CI}{calculates a CI around the mean het-het correlation}
 }
 \value{
-Vector of heterozygosity-heterozygosity correlations
-
 \item{call}{function call.}
-\item{HHC_vals}{vector of HHC´s obtained by randomly splitting the dataset}
+\item{HHC_vals}{vector of HHC`s obtained by randomly splitting the dataset}
 \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
 \item{nobs}{number of observations}
 \item{nloc}{number of markers}
@@ -31,7 +29,7 @@ between the resulting sMLH values is calculated.
 \examples{
 data(seal_microsats)
 genotypes <- convert_raw(seal_microsats, miss = NA)
-out <- HHC(genotypes, iter = 100)
+(out <- HHC(genotypes, iter = 100, CI = 0.95))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

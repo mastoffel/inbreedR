@@ -1,5 +1,5 @@
 Package: inbreedR
-Title: Workflows for analysing inbreeding based on SNP or microsatellite markers. 
+Title: Workflows for analysing inbreeding based on SNP or microsatellite markers
 Version: 0.1
 Authors@R: as.person(c(
         "Martin A. Stoffel <martin.adam.stoffel@gmail.com> [aut, cre]",

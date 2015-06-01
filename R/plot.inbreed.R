@@ -14,8 +14,9 @@
 #'
 
 plot.inbreed <- function(x, ...) {
-    
+    # check if its a g2 calculater
     if (!is.null(x$g2)) {
+        if (is.na(x$g2_se)) stop("Number of bootstraps specified in g2 function was 0, so there is nothing to plot")
         if (!(hasArg("main"))) main <- "g2 bootstrap values"
         if (!(hasArg("xlab")))   xlab <- "g2"
         if (!(hasArg("ylab"))) ylab <- "counts"
@@ -34,7 +35,7 @@ plot.inbreed <- function(x, ...) {
         }
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), CI.u = unname(x$CI_boot[2]))
     }
-    
+    # check if its exp_r2
     if(!is.null(x$exp_r2_res)) {
         ggplot(x$exp_r2_res, ggplot2::aes_string("nloc", "r2")) +
             geom_boxplot() +
@@ -44,7 +45,7 @@ plot.inbreed <- function(x, ...) {
             xlab("number of loci") 
     }
     
-    
+    # check if HHC
     if(!is.null(x$HHC_vals)) {
         if (!(hasArg("main"))) main <- "heterozygosity-heterozygosity correlations"
         if (!(hasArg("xlab")))   xlab <- "correlation coefficient r"
@@ -65,26 +66,4 @@ plot.inbreed <- function(x, ...) {
         boot_hist(g2 = mean(x$HHC_vals, na.rm = TRUE), g2_boot = x$HHC_vals, CI.l = x$CI_HHC[1], CI.u = x$CI_HHC[2])
     }
         
-        
-        
-        
-        
-    #       if (!is.null(x$sMLH_perm_mean)){
-    #           perm_est <- mean(x$sMLH_perm_mean)
-    #           perm_est_var <- var(x$sMLH_perm_var)
-    #           range <- seq(min(x$sMLH_perm_mean), max(x$sMLH_perm_mean), length = 1000)
-    #  
-    #           hist(x$emp_sMLH, freq = FALSE)
-    #           mean_het <- mean(x$emp_sMLH)
-    #           sd_het <- sd(x$emp_sMLH)
-    #           curve(dnorm(x, mean=mean_het, sd=sd_het), 
-    #                 col="darkblue", lwd=2, add=TRUE, yaxt="n")
-    #       }
-    
-    #     g <- x$emp_sMLH
-    #     h <- hist(g, breaks=14, density=100, col="lightgray", xlab="Accuracy", main="Overall") 
-    #     xfit<-seq(min(g),max(g),length=10000) 
-    #     yfit<-dnorm(xfit,mean=mean(x$sMLH_perm_mean),sd=mean(x$sMLH_perm_var)) 
-    #     yfit <- yfit*diff(h$mids[1:2])*length(g) 
-    #     lines(xfit, yfit, col="black", lwd=2)
 }

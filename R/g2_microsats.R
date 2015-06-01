@@ -1,12 +1,20 @@
 #' Estimating g2 from microsatellite data
 #'
-#' @param genotypes data.frame with individuals in rows and loci in columns,
+#' @param genotypes data frame with individuals in rows and one locus per column,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
 #' @param nperm Number of permutations for testing the hypothesis that the empirical g2-value is higher than by chance
 #' @param nboot Number of bootstraps for estimating a confidence interval
 #' @param CI Confidence interval (default to 0.95)
 #'
+#' @details Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
+#'          the required format
+#'          
 #' @return
+#' g2_microsats returns an object of class "inbreed".
+#' The functions `print` and `plot` are used to print a summary and to plot the distribution of bootstrapped g2 values and CI.
+#' 
+#' An `inbreed` object is a list containing the following components:
+#' 
 #' \item{call}{function call.}
 #' \item{g2}{g2 value}
 #' \item{p_val}{p value from permutation test}

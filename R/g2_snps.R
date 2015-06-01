@@ -1,6 +1,7 @@
 #' Estimating g2 from SNP data
 #'
-#' @param genotypes data.frame with individuals in rows and loci in columns, containing genotypes coded as 0 (homozygote) or 1 (heterozygote)
+#' @param genotypes data frame with individuals in rows and one locus per column,
+#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
 #' @param nperm number or permutations for calculating the p-value
 #' @param nboot number of bootstraps for CI
 #' @param CI confidence interval (default to 0.95)
@@ -9,6 +10,10 @@
 #'          the required format
 #'
 #' @return
+#' g2_snps returns an object of class "inbreed".
+#' The functions `print` and `plot` are used to print a summary and to plot the distribution of bootstrapped g2 values and CI.
+#' 
+#' An `inbreed` object is a list containing the following components:
 #' \item{call}{function call.}
 #' \item{g2}{g2 value}
 #' \item{p_val}{p value from permutation test}
@@ -106,7 +111,7 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = 
                 perm_genotypes <- function(perm, origin) {
                         # origin_perm <- origin[, lapply(.SD, sample)]
                         origin_perm <- t(apply(origin, 1, sample)) # to optimize
-                        g2 <- calc_g2(origin_perm, perm)
+                        g2 <- calc_g2(origin_perm, perm = perm)
                 }
 
                 g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin))
@@ -124,7 +129,7 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { # , missing = 
                 boot_genotypes <- function(boot, origin) {
                         # bootstrap over individuals in columns
                         origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
-                        g2 <- calc_g2(origin_boot, perm, boot)
+                        g2 <- calc_g2(origin_boot, boot = boot)
                 }
 
                 g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin))

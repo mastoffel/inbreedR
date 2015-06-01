@@ -1,14 +1,16 @@
 #' Genotype format converter
 #'
-#' Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus).
-#' A raw genotype matrix has individuals in rows and each locus in two adjacent columns.
-#' Type \emph{data(seal_microsats)} for an example data frame.
+#' Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus), which is the working format for 
+#' the inbreedR function..
+#' A raw genotype matrix has individuals in rows and each locus in two adjacent columns. Names of individuals should be rownames.
+#' Type \emph{data(seal_microsats)} for an example raw genotype data frame.
 #'
-#' @param genotypes Raw genotype data frame or matrix. Has individuals in rows and each locus in two columns
-#' @param miss The prespecified value for missing elements in the data frame. Will be converted to -1 in the output.
+#' @param genotypes Raw genotype data frame or matrix. Rows represent individuals and each locus has two adjacent columns. 
+#'        Alleles within loci can be coded as numbers (e.g. microsatellite length) or characters (e.g. "A", "T")
+#'        See data(seal_microsats) for an example. Missing values should be coded as a negative number or NA.
+#' @param miss The value for missing data in the raw genotype data. Will be converted to -1.
 #'
-#'
-#' @return Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus).
+#' @return Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (missing data).
 #'         Each locus is thus represented by one column.
 #'
 #' @author Martin Stoffel (martin.adam.stoffel@@gmail.com)
@@ -20,7 +22,6 @@
 #' head(genotypes)
 #'
 #' @export
-
 
 
 convert_raw <- function(genotypes, miss = NULL) {
@@ -50,9 +51,8 @@ check_het <- function(x) {
                 }
 
         count <- 1
-
         for(i in s1){
-                if (is.na(x[i] | x[i + 1])) {
+                if ((is.na(x[i]) | is.na(x[i + 1]))) {
                         newx[count] <- -1
                         count <- count + 1
                 } else if (x[i] == x[i + 1]) {

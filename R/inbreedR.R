@@ -1,6 +1,8 @@
 #' inbreedR: Workflows for analysing variance in inbreeding based on SNP or microsatellite markers.
 #'
-#' @description
+#' @description 
+#' 
+#' inbreedR contains the following functions:
 #'
 #' \link{g2_microsats}
 #' \link{g2_snps}
@@ -10,6 +12,17 @@
 #' \link{sMLH}
 #' \link{plot.inbreed}
 #'
+#' @details 
+#' 
+#' It has three main goals:
+#' 
+#' \itemize{
+#' \item Assessing identity disequilibria and the potential to detect heterozygosity-fitness correlations based on global effects
+#' \item Providing insights on the sensitivity of these measures based on the number of molecular markers
+#' \item Implementing computationally efficient functions in a flexible environment for analysing 
+#' inbreeding and HFC`s with both small and large
+#' datasets.
+#' }
 #'
 #' @author  Martin Stoffel (martin.adam.stoffel@@gmail.com), Mareike Esser (messer@@uni-bielefeld.de)
 #'
