@@ -19,7 +19,7 @@
 #' \item{p_val}{p value from permutation test}
 #' \item{g2_permut}{g2 values from permuted genotypes}
 #' \item{g2_boot}{g2 values from bootstrap samples}
-#' \item{CI_boot}{confidence interval from bootstraps}
+#' \item{CI_boot}{confidence interval from bootstrap distribution}
 #' \item{se_boot}{standard error of g2 from bootstraps}
 #' \item{nobs}{number of observations}
 #' \item{nloc}{number of markers}

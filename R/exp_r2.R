@@ -4,8 +4,9 @@
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
-#' @param parts specifies number of subsets to iterate over
-#' @param nboot number of bootstraps per part
+#' @param steps specifies number of subsets for increasing marker number
+#' @param nboot number of bootstraps per step
+#' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
 #' 
 #' @return 
 #' \item{call}{function call.}
@@ -23,37 +24,65 @@
 #' @examples
 #' data(seal_microsats)
 #' genotypes <- convert_raw(seal_microsats, miss = NA)
-#' (out <- exp_r2(genotypes, parts = 10, nboot = 100))
+#' (out <- exp_r2(genotypes, steps = 10, nboot = 100, type = "msats"))
 #' plot(out)
 #' @export
 #'
 #'
 
-exp_r2 <- function(genotypes, parts = 10, nboot = 100) {
+exp_r2 <- function(genotypes, steps = 10, nboot = 100, type = c("msats", "snps")) {
     
     gtypes <- as.matrix(genotypes)
     
-    calc_r2 <- function(gtypes) {
-        g2 <- g2_microsats(gtypes)[["g2"]]
-        # according to the miller paper, negative g2´s are set to r2 = 0.
-        if (g2 < 0) return(r2 <- 0)
-        var_sh <- var(sMLH(gtypes))
-        r2 <- g2/var_sh
+    if (length(type) == 2){
+        type <- "msats"
+    } else if (!((type == "msats")|(type == "snps"))){
+        stop("type argument needs to be msats or snps")
+    } 
+    
+    if (type == "msats") {
+        calc_r2 <- function(gtypes) {
+            g2 <- g2_microsats(gtypes)[["g2"]]
+            # according to the miller paper, negative g2´s are set to r2 = 0.
+            if (g2 < 0) return(r2 <- 0)
+            var_sh <- var(sMLH(gtypes))
+            r2 <- g2/var_sh
+        }
+    }
+    
+    if (type == "snps") {
+        calc_r2 <- function(gtypes) {
+            g2 <- g2_snps(gtypes)[["g2"]]
+            # according to the miller paper, negative g2´s are set to r2 = 0.
+            if (g2 < 0) return(r2 <- 0)
+            var_sh <- var(sMLH(gtypes))
+            r2 <- g2/var_sh
+        }
     }
     
     # calculate sequence of loci numbers to draw
-    nloc_draw <- (floor(ncol(genotypes)/ parts))
+    nloc_draw <- (floor(ncol(genotypes)/ steps))
     nloc_vec <- seq(from = nloc_draw, to = ncol(genotypes), by = nloc_draw)
     # initialise
-    all_r2 <- matrix(nrow = nboot, ncol = parts)
+    all_r2 <- matrix(nrow = nboot, ncol = steps)
     
     calc_r2_sub <- function(gtypes, i) {
         loci <- sample((1:ncol(gtypes)), i)
         out <- calc_r2(gtypes[, loci])
     }
     
-    for (i in seq(1:parts)) {
+    # counter
+    step_num <- 1
+    for (i in seq(1:steps)) {
+        
+        cat("\n", "Iterating subset number ", step_num, " from ", steps, sep = "")
+        if (step_num == steps) {
+        cat("\n", "Last subset!", sep = "")
+        }
+        
         all_r2[, i] <- replicate(nboot, calc_r2_sub(gtypes, nloc_vec[i]))
+        
+        step_num <- step_num + 1
     }
     
     # expected r2 per subset

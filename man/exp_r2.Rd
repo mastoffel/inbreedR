@@ -4,15 +4,17 @@
 \alias{exp_r2}
 \title{Expected r2 between sMLH and inbreeding level}
 \usage{
-exp_r2(genotypes, parts = 10, nboot = 100)
+exp_r2(genotypes, steps = 10, nboot = 100, type = c("msats", "snps"))
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
 containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 
-\item{parts}{specifies number of subsets to iterate over}
+\item{steps}{specifies number of subsets for increasing marker number}
 
-\item{nboot}{number of bootstraps per part}
+\item{nboot}{number of bootstraps per step}
+
+\item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
 }
 \value{
 \item{call}{function call.}
@@ -27,7 +29,7 @@ Currently just working for microsat data!
 \examples{
 data(seal_microsats)
 genotypes <- convert_raw(seal_microsats, miss = NA)
-(out <- exp_r2(genotypes, parts = 10, nboot = 100))
+(out <- exp_r2(genotypes, steps = 10, nboot = 100, type = "msats"))
 plot(out)
 }
 \author{
