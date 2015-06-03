@@ -27,9 +27,8 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 Currently just working for microsat data!
 }
 \examples{
-data(seal_microsats)
-genotypes <- convert_raw(seal_microsats, miss = NA)
-(out <- exp_r2(genotypes, steps = 10, nboot = 100, type = "msats"))
+data(seal_snps)
+(out <- exp_r2(seal_snps, steps = 5, nboot = 5, type = "snps"))
 plot(out)
 }
 \author{

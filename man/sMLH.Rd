@@ -19,8 +19,8 @@ by the sum of average observed heterozygosities in the population over the
 subset of loci successfully typed in the focal individual
 }
 \examples{
-data(seal_microsats)
-genotypes <- convert_raw(seal_microsats, miss = NA)
+data(seal_msats)
+genotypes <- convert_raw(seal_msats, miss = NA)
 het <- sMLH(genotypes)
 }
 \author{

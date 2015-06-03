@@ -18,8 +18,8 @@
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
 #'        
 #' @examples
-#' data(seal_microsats)
-#' genotypes <- convert_raw(seal_microsats, miss = NA)
+#' data(seal_msats)
+#' genotypes <- convert_raw(seal_msats, miss = NA)
 #' het <- sMLH(genotypes)
 #'
 #' @export

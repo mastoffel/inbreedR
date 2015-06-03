@@ -22,9 +22,8 @@
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
 #'        
 #' @examples
-#' data(seal_microsats)
-#' genotypes <- convert_raw(seal_microsats, miss = NA)
-#' (out <- exp_r2(genotypes, steps = 10, nboot = 100, type = "msats"))
+#' data(seal_snps)
+#' (out <- exp_r2(seal_snps, steps = 5, nboot = 5, type = "snps"))
 #' plot(out)
 #' @export
 #'
@@ -65,10 +64,10 @@ exp_r2 <- function(genotypes, steps = 10, nboot = 100, type = c("msats", "snps")
     }
     
     # calculate sequence of loci numbers to draw
-    nloc_draw <- (floor(ncol(genotypes)/ steps))
+    nloc_draw <- (round(ncol(genotypes)/ steps))
     nloc_vec <- seq(from = nloc_draw, to = ncol(genotypes), by = nloc_draw)
     # initialise
-    all_r2 <- matrix(nrow = nboot, ncol = steps)
+    all_r2 <- matrix(nrow = nboot, ncol = length(nloc_vec))
     
     calc_r2_sub <- function(gtypes, i) {
         loci <- sample((1:ncol(gtypes)), i)
@@ -77,7 +76,7 @@ exp_r2 <- function(genotypes, steps = 10, nboot = 100, type = c("msats", "snps")
     
     # counter
     step_num <- 1
-    for (i in seq(1:steps)) {
+    for (i in seq(1:length(nloc_vec))) {
         
         cat("\n", "Iterating subset number ", step_num, " from ", steps, sep = "")
         if (step_num == steps) {

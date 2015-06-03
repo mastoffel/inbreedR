@@ -25,8 +25,8 @@ Type `data(seal_microsats)` for an example raw genotype data frame.
 }
 \examples{
 # Seal microsatellite data with missing values coded as NA
-data(seal_microsats)
-genotypes <- convert_raw(seal_microsats, miss = NA)
+data(seal_msats)
+genotypes <- convert_raw(seal_msats, miss = NA)
 head(genotypes)
 }
 \author{

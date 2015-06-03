@@ -7,7 +7,7 @@ Authors@R: as.person(c(
 Description: Methods  from this package allow (1) calculating second-order
     heterozygosity disequilibrium (g2) from  among-locus  correlations in multilocus
     population data, (2) het-het correlations and sMLH (3) sensitivity of number of markers to 
-    the estimation of HFC´s.
+    the estimation of HFC`s.
 Depends: 
     R (>= 3.2.0)
 License: GPL-2
