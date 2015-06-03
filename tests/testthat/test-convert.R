@@ -2,8 +2,8 @@ library(inbreedR)
 context("convert_raw")
 
 # load data with NA as missing
-data(seal_microsats)
-data <- seal_microsats
+data(seal_msats)
+data <- seal_msats
 
 ## constructing different data sets
 

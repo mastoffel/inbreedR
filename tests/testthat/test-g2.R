@@ -2,19 +2,19 @@ library(inbreedR)
 context("g2 functions")
 
 # loading microsat data
-data(seal_microsats)
-msats <- convert_raw(seal_microsats, miss = NA)
+data(seal_msats)
+msats <- convert_raw(seal_msats, miss = NA)
 
 # loading snp data
-data(mice_snp_genotypes)
-snps <- mice_snp_genotypes[1:500]
+data(seal_snps)
+snps <- seal_snps[1:500]
 
 # different missing values
 
 
 test_that("g2 point estimates are correct", {
-    expect_equal(round(g2_microsats(msats, nperm = 0, nboot = 0, CI = 0.95)$g2, 8), 0.00241214)
-    expect_equal(round(g2_snps(snps, nperm = 0, nboot = 0, CI = 0.95)$g2, 8), 0.02270884)
+    expect_equal(round(g2_microsats(msats, nperm = 0, nboot = 0, CI = 0.95)$g2, 8), 0.0020633)
+    expect_equal(round(g2_snps(snps, nperm = 0, nboot = 0, CI = 0.95)$g2, 8), 0.03126662)
     })
 
 test_that("bootstrapping worked", {
