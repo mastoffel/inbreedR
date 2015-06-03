@@ -1,0 +1,177 @@
+---
+title: "inbreedR step by step"
+author: "Martin A. Stoffel"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", cache = FALSE) # warning = FALSE
+library(inbreedR)
+library(knitr)
+```
+
+This vignette provides a short introductions to the functions of the `inbreedR` package. The package in its current form is a minimal version that contains the commonly used and essential functions for the analysis of inbreeding based on microsatellite or snp markers, but potential extensions will follow and suggestions as well as criticism are always welcome. To download the development version from GitHub just type:
+
+```{r, eval = FALSE}
+install.packages("devtools")
+library("devtools")
+install_github("mastoffel/inbreedR")
+library("inbreedR")
+```
+
+To get an overview over all the functions just use the help files.
+
+```{r, eval = FALSE}
+?inbreedR
+```
+
+## Data format
+
+The data format that all functions use is fairly simple. The input always is a `data.frame` or `matrix`, whereby individuals are rows, and each locus is represented by one column. Heterzygote loci are coded as `1` and homozygote loci as `0`. Missing data should be encoded as NA or a negative number. `mice_snp_genotypes` is a sample dataset accompanying the package. V1-V10 are loci while 1-10 are individuals.
+
+```{r}
+data("mice_snp_genotypes")
+mice_snp_genotypes[1:10, 1:10]
+
+```
+
+`convert_raw` is a function to convert a more common format, where each locus is represented by two coloumns (alleles) into the inbreedR working format. Microsatellite data often commes like this:
+
+```{r}
+data("seal_microsats")
+seal_microsats[50:60, 20:30]
+```
+
+Individuals can be rownames and loci can be columnnames. The matrix or data.frame itself should just contain the 
+marker data. To convert it into the working format just use the `convert_raw` function, specify the missing
+value and assign it to a new variable.
+
+```{r}
+genotypes <- convert_raw(seal_microsats, miss = NA) 
+```
+
+It is now converted to the working format, while missings are coded as -1. The same procedure works when
+you have letters (e.g. basepairs "A", "T") in two adjacent columns instead of microsatellite length numbers.
+
+## Identity disequilibrium with g2 and HHC
+
+Two different methods have been used to assess the correlation of heterozygosity across loci, called **identity disequilibrium (ID)**, which is meant to represent variation in inbreeding. It thus builds the foundation for so called global or general effects of heterozygosity on fitness.
+
+### g2
+
+**g2** is nowadays the most commonly used measure and assesses the potential excess of double heterozygote loci in a population. The original formula by David et. al (2007) is implemented in the `g2_microsats` function, which also allows to calculate a confidence interval based on bootstrapping (nboot) and a p-value based on permutation tests (nperm).
+
+```{r, results = "hide"}
+g2_seals <- g2_microsats(genotypes, nperm = 100, nboot = 100, CI = 0.95)
+```
+
+Just printing the object gives a summary on the results.
+
+```{r}
+g2_seals
+```
+
+Plotting the object gives a distribution of the bootstrapped values and a confidence interval.
+
+```{r, fig.width = 6, fig.height = 5}
+plot(g2_seals)
+```
+
+Calculating g2 based on the original formula is computationally expensive and unpractival for large (SNP) datasets (at least if also bootstraps/permutations are required) as it requires double summation over all pairs of loci. Hoffman et. al (2014) present a computationally more tractable form, that starts from the assumption that the number of missing values does not vary a lot between individuals.
+
+```{r, results = "hide"}
+g2_mice_snps <- g2_snps(mice_snp_genotypes, nperm = 100, nboot = 100, CI = 0.95)
+```
+
+Showing results and plotting as before.
+
+```{r, fig.width = 6, fig.height = 5}
+g2_mice_snps
+plot(g2_mice_snps)
+```
+
+You might want to increase permutations and bootstraps for calculating p-values and CIs. For future versions of the package, we are planning to allow parallel computations for further speeding up the process.
+
+### Heterozygosity-heterozygosity correlations (HHC)
+
+HHC is another way to quantify inbreeding. The marker data is randomly split into two equal parts and the correlation between the resulting standardized multilocus heterozygosity (sMLH) values is calculated. This is repeated over n iterations. Values closer to one thus indicate correlation among loci and inbreeding, while correlation near 0 indicate that there is no variation in inbreeding. We try it out for the microsatellite dataset:
+
+```{r, results = "hide"}
+hhc_microsats <- HHC(genotypes, iter = 100, CI = 0.95)
+```
+
+As before, we print the summary... 
+
+```{r}
+hhc_microsats
+```
+
+...and plot the distribution.
+
+```{r, fig.width = 6, fig.height = 5}
+plot(hhc_microsats)
+```
+
+## Sensitivity to the number of markers 
+When looking at heterozygosity-fitness correlations (HFCs), one of the central questions is how well heterozygosity (sMLH) represents the level of inbreeding. According to Szulkin et al.(2010), the expected correlation between sMLH and inbreeding level (f) is $$r^2(sMLH, f) = \frac{g2}{\sigma^2(sMLH)}$$
+
+To explore the sensitivity of the number of markers towards the estimation of heterozygosity and inbreeding we use the function `exp_r2`. You have to specify the number of steps (how many subsets you want to have), how often the current subset is drawn from the overall marker set to calculate the expected r2, and the type of markers, which determines the g2 function to be used.
+
+```{r, results = "hide"}
+result <- exp_r2(genotypes, steps = 10, nboot = 100, type = "msats")
+```
+
+Then again you can look at the summarized results.
+```{r}
+result
+```
+
+And plot the distribution of expected r2s for each subset.
+```{r, fig.width = 6, fig.height = 5}
+plot(result)
+```
+
+## HFCs
+
+Last but not least, the package provides a computationally optimized function for the calculation of standardized multilocus heterozygosity (sMLH), which can be used within bootstrapping and permutation tests also for large datasets.
+
+```{r}
+dim(mice_snp_genotypes) # 13199 loci
+system.time(sMLH(mice_snp_genotypes))
+```
+
+`sMLH` gives a simple vector output with each individuals sMLH.
+```{r, fig.width = 4, fig.height = 3}
+het <- sMLH(mice_snp_genotypes)
+hist(het)
+```
+
+## Extracting raw data from inbreedR objects 
+
+Often, you might want to extract and plot the data yourself. Most function outputs are `inbreed` objects and lists. In the `Value` section of each functions documentation (`?fun` ), you can see the data which you can extract. Alternatively, use `str()` to look at the objects structure. Just index the function output with `[["."]]` or `$` as in the following example:
+
+Running the function.
+
+```{r, results = "hide"}
+g2_seals <- g2_microsats(genotypes, nperm = 100, nboot = 100, CI = 0.95)
+``` 
+
+Looking at the structure.
+
+```{r}
+str(g2_seals)
+```
+
+Now extract whatever you want from the object, such as the g2 bootstrap results.
+
+```{r}
+g2_bootstrap_results <- g2_seals$g2_boot
+str(g2_bootstrap_results)
+```
+
+

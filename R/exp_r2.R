@@ -32,6 +32,10 @@
 
 exp_r2 <- function(genotypes, steps = 10, nboot = 100, type = c("msats", "snps")) {
     
+    if (!(steps > 1) | (steps > ncol(genotypes))) {
+        stop("steps have to be at least two and smaller or equal than the number of markers used")
+    }
+    
     gtypes <- as.matrix(genotypes)
     
     if (length(type) == 2){
