@@ -2,8 +2,8 @@
 #'
 #' Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and NA (missing), which is the working format for 
 #' the inbreedR functions.
-#' A raw genotype matrix has individuals in rows and each locus in two adjacent columns. Individual ID´s can be rownames.
-#' Type `data(mouse_msats)` for an example raw genotype data frame.
+#' A raw genotype matrix has individuals in rows and each locus in two adjacent columns. Individual ID's can be rownames.
+#' Type data(mouse_msats)` for an example raw genotype data frame.
 #'
 #' @param genotypes Raw genotype data frame or matrix. Rows represent individuals and each locus has two adjacent columns. 
 #'        Alleles within loci can be coded as numbers (e.g. microsatellite length) or characters (e.g. "A", "T")
