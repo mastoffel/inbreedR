@@ -9,19 +9,19 @@ convert_raw(genotypes, miss = NULL)
 \arguments{
 \item{genotypes}{Raw genotype data frame or matrix. Rows represent individuals and each locus has two adjacent columns.
 Alleles within loci can be coded as numbers (e.g. microsatellite length) or characters (e.g. "A", "T")
-See data(seal_microsats) for an example. Missing values should be coded as a negative number or NA.}
+See data(mouse_msat) for an example. Missing values should be coded as NA or any negative number.}
 
-\item{miss}{The value for missing data in the raw genotype data. Will be converted to -1.}
+\item{miss}{The value for missing data in the raw genotype data. Will be converted to NA.}
 }
 \value{
-Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (missing data).
+Data.frame object with 0 (homozygote), 1 (heterozygote) and NA (missing data).
         Each locus is thus represented by one column.
 }
 \description{
-Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (missing), which is the working format for
+Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and NA (missing), which is the working format for
 the inbreedR functions.
-A raw genotype matrix has individuals in rows and each locus in two adjacent columns. Names of individuals should be rownames.
-Type `data(seal_microsats)` for an example raw genotype data frame.
+A raw genotype matrix has individuals in rows and each locus in two adjacent columns. Individual ID´s can be rownames.
+Type `data(mouse_msats)` for an example raw genotype data frame.
 }
 \examples{
 # Mouse microsatellite data with missing values coded as NA
