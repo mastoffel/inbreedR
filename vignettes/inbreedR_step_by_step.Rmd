@@ -15,7 +15,7 @@ library(inbreedR)
 library(knitr)
 ```
 
-This vignette provides a short introductions to the functions of the `inbreedR` package. The package in its current form is a minimal version that contains the commonly used and essential functions for the analysis of inbreeding based on microsatellite or snp markers, but potential extensions will follow and suggestions as well as criticism are always welcome. To download the development version from GitHub just type:
+This vignette provides a short introduction to the functions of the `inbreedR` package. The package in its current form is a minimal version that contains the commonly used and essential functions for the analysis of inbreeding based on microsatellite or snp markers, but potential extensions will follow and any improvement suggestions (from bugs to potential new functions) are always welcome. To download the development version from GitHub just type:
 
 ```{r, eval = FALSE}
 install.packages("devtools")
@@ -32,24 +32,21 @@ To get an overview over all the functions just use the help files.
 
 ## Data format
 
-The data format that all functions use is fairly simple. The input always is a `data.frame` or `matrix`, whereby individuals are rows, and each locus is represented by one column. Heterzygote loci are coded as `1` and homozygote loci as `0`. Missing data should be encoded as NA or a negative number. `mouse_snps` is a sample dataset accompanying the package. V1-V10 are loci while 1-10 are individuals.
+The data format that all functions use is fairly simple. The input always is a `data.frame` or `matrix`, whereby rows represent individuals, and each locus is one column. Heterozygote loci are coded as `1` and homozygote loci as `0`. Missing data should be encoded as NA (negative numbers are also ok). `mouse_snps` is a sample dataset accompanying the package. 
 
 ```{r}
 data("mouse_snps")
 mouse_snps[1:10, 1:10]
-
 ```
 
-`convert_raw` is a function to convert a more common format, where each locus is represented by two coloumns (alleles) into the inbreedR working format. Microsatellite data often commes like this:
+`convert_raw` is a function to convert a more common format, where each locus is represented by two coloumns (alleles), into the inbreedR working format. Microsatellite data are often formatted like this:
 
 ```{r}
 data("mouse_msats")
 mouse_msats[1:10, 1:10]
 ```
 
-Individuals can be rownames and loci can be columnnames. The matrix or data.frame itself should just contain the 
-marker data. To convert it into the working format just use the `convert_raw` function, specify the missing
-value and assign it to a new variable.
+The data.frame itself should just contain the marker data, while rownames for individuals or columnnames for loci are possible. To convert it into the `inbreedR` working format, just use the `convert_raw` function, specify the missing value and assign it to a new variable.
 
 ```{r}
 genotypes <- convert_raw(mouse_msats, miss = NA) 
@@ -60,11 +57,11 @@ you have letters (e.g. basepairs "A", "T") in two adjacent columns instead of mi
 
 ## Identity disequilibrium with g2 and HHC
 
-Two different methods have been used to assess the correlation of heterozygosity across loci, called **identity disequilibrium (ID)**, which is meant to represent variation in inbreeding. It thus builds the foundation for so called global or general effects of heterozygosity on fitness.
+Two different methods have been used to assess the correlation of heterozygosity across loci, known as **identity disequilibrium (ID)**, which represents variation in inbreeding. **ID** thus builds the foundation for so called global or general effects of heterozygosity on fitness.
 
 ### g2
 
-**g2** is nowadays the most commonly used measure and assesses the potential excess of double heterozygote loci in a population. The original formula by David et. al (2007) is implemented in the `g2_microsats` function, which also allows to calculate a confidence interval based on bootstrapping (nboot) and a p-value based on permutation tests (nperm).
+**g2** measures the excess of double heterozygote loci in a population. The original formula by David et. al (2007) is implemented in the `g2_microsats` function, which also allows calculation of a confidence interval based on bootstrapping (nboot) and a p-value based on permutation tests (nperm).
 
 ```{r, results = "hide"}
 g2_seals <- g2_microsats(genotypes, nperm = 100, nboot = 100, CI = 0.95)
@@ -82,10 +79,10 @@ Plotting the object gives a distribution of the bootstrapped values and a confid
 plot(g2_seals)
 ```
 
-Calculating g2 based on the original formula is computationally expensive and unpractival for large (SNP) datasets (at least if also bootstraps/permutations are required) as it requires double summation over all pairs of loci. Hoffman et. al (2014) present a computationally more tractable form, that starts from the assumption that the number of missing values does not vary a lot between individuals.
+Calculating g2 based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. Hoffman et. al (2014) present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals.
 
 ```{r, results = "hide"}
-g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95)
+g2_mouse_snps <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95)
 ```
 
 Showing results and plotting as before.
@@ -99,13 +96,13 @@ You might want to increase permutations and bootstraps for calculating p-values 
 
 ### Heterozygosity-heterozygosity correlations (HHC)
 
-HHC is another way to quantify inbreeding. The marker data is randomly split into two equal parts and the correlation between the resulting standardized multilocus heterozygosity (sMLH) values is calculated. This is repeated over n iterations. Values closer to one thus indicate correlation among loci and inbreeding, while correlation near 0 indicate that there is no variation in inbreeding. We try it out for the microsatellite dataset:
+HHC is another way to quantify inbreeding. The marker data is randomly split into two equal parts and the correlation between the resulting standardized multilocus heterozygosity (sMLH) values is calculated. This is repeated over n iterations. A distribution of values that differ significantly from zero provides evidence for a correlation in heterozygosity across loci that can be attributed to variation in the inbreeding coefficients of individuals present in the sample. Running this for the microsatellite dataset:
 
 ```{r, results = "hide"}
 hhc_microsats <- HHC(genotypes, iter = 100, CI = 0.95)
 ```
 
-As before, we print the summary... 
+As before, we can print the summary... 
 
 ```{r}
 hhc_microsats
@@ -120,13 +117,14 @@ plot(hhc_microsats)
 ## Sensitivity to the number of markers 
 When looking at heterozygosity-fitness correlations (HFCs), one of the central questions is how well heterozygosity (sMLH) represents the level of inbreeding. According to Szulkin et al.(2010), the expected correlation between sMLH and inbreeding level (f) is $$r^2(sMLH, f) = \frac{g2}{\sigma^2(sMLH)}$$
 
-To explore the sensitivity of the number of markers towards the estimation of heterozygosity and inbreeding we use the function `exp_r2`. You have to specify the number of steps (how many subsets you want to have), how often the current subset is drawn from the overall marker set to calculate the expected r2, and the type of markers, which determines the g2 function to be used.
+To explore sensitivity to the number of markers towards, we use the function `exp_r2`. This calculates the expected r2 between f and sMLH for different sized, randomly selected, subsets of loci.  The user needs to specify the subset sizes for the analysis.  For example, for a dataset of 10,000 SNPs, one could specify 1, 10, 100, 1000, 2000, 3000, 4000, 5000 and 10000.  In addition the user should specify how often the current subset is drawn from the overall marker set to calculate the expected r2, and the type of marker, which determines the g2 function to be used.
 
 ```{r, results = "hide"}
 result <- exp_r2(genotypes, steps = 6, nboot = 100, type = "msats")
 ```
 
-Then again you can look at the summarized results.
+Then again you can look at the summarized results...
+
 ```{r}
 result
 ```
@@ -153,7 +151,7 @@ hist(het)
 
 ## Extracting raw data from inbreedR objects 
 
-Often, you might want to extract and plot the data yourself. Most function outputs are `inbreed` objects and lists. In the `Value` section of each functions documentation (`?fun` ), you can see the data which you can extract. Alternatively, use `str()` to look at the objects structure. Just index the function output with `[["."]]` or `$` as in the following example:
+You may wish to extract and plot the data yourself. Most function outputs are `inbreed` objects and lists. In the `Value` section of each functions documentation (`?fun` ), you can see the data which you can extract. Alternatively, use `str()` to look at the object's structure. Just index the function output with `[["."]]` or `$` as in the following example:
 
 Running the function.
 

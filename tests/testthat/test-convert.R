@@ -2,8 +2,8 @@ library(inbreedR)
 context("convert_raw")
 
 # load data with NA as missing
-data(seal_msats)
-data <- seal_msats
+data(mouse_msats)
+data <- mouse_msats
 
 ## constructing different data sets
 
@@ -35,9 +35,9 @@ test_that("Converted data contains half the number columns", {
 })
 
 test_that("Converted data contains just 1, 0 and -1", {
-    expect_equal(sum(!((data_conv_NA == 1) | (data_conv_NA == 0) | (data_conv_NA == -1))), 0)
-    expect_equal(sum(!((data_conv_NUM == 1) | (data_conv_NUM == 0) | (data_conv_NUM == -1))), 0)
-    expect_equal(sum(!((data_conv_CHAR == 1) | (data_conv_CHAR == 0) | (data_conv_CHAR == -1))), 0)
+    expect_equal(sum(!((data_conv_NA == 1) | (data_conv_NA == 0) | (is.na(data_conv_NA)))), 0)
+    expect_equal(sum(!((data_conv_NUM == 1) | (data_conv_NUM == 0) | (is.na(data_conv_NUM)))), 0)
+    expect_equal(sum(!((data_conv_CHAR == 1) | (data_conv_CHAR == 0) | (is.na(data_conv_CHAR)))), 0)
 })
 
 
