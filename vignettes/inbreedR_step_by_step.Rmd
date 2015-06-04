@@ -117,10 +117,10 @@ plot(hhc_microsats)
 ## Sensitivity to the number of markers 
 When looking at heterozygosity-fitness correlations (HFCs), one of the central questions is how well heterozygosity (sMLH) represents the level of inbreeding. According to Szulkin et al.(2010), the expected correlation between sMLH and inbreeding level (f) is $$r^2(sMLH, f) = \frac{g2}{\sigma^2(sMLH)}$$
 
-To explore sensitivity to the number of markers towards, we use the function `exp_r2`. This calculates the expected r2 between f and sMLH for different sized, randomly selected, subsets of loci.  The user needs to specify the subset sizes for the analysis.  For example, for a dataset of 10,000 SNPs, one could specify 1, 10, 100, 1000, 2000, 3000, 4000, 5000 and 10000.  In addition the user should specify how often the current subset is drawn from the overall marker set to calculate the expected r2, and the type of marker, which determines the g2 function to be used.
+To explore sensitivity to the number of markers towards, we use the function `exp_r2`. This calculates the expected $r^2$ between f and sMLH for different sized, randomly selected, subsets of loci.  The user needs to specify the subset sizes for the analysis.  For example, for a dataset of 10,000 SNPs, one could specify `subsets = c(1, 10, 100, 1000, 2000, 3000, 4000, 5000, 10000)`.  In addition the user should specify how often the current subset is drawn from the overall marker set to calculate the expected r2, and the type of marker, which determines the g2 function to be used.
 
 ```{r, results = "hide"}
-result <- exp_r2(genotypes, steps = 6, nboot = 100, type = "msats")
+result <- exp_r2(genotypes, subsets = c(2,4,6,8,10,12), nboot = 100, type = "msats")
 ```
 
 Then again you can look at the summarized results...

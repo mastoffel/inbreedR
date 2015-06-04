@@ -1,12 +1,11 @@
-#' Expected r2 between sMLH and inbreeding level (f)
+#' Expected r2 between sMLH and inbreeding level
 #' 
-#' 
+#' Currently just working for microsat data!
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
-#' @param subsets a vector specifying the sizes of subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.
-#' @param nboot number re-draws per subset size.
+#' @param steps specifies number of subsets for increasing marker number
+#' @param nboot number of bootstraps per step
 #' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
 #' 
 #' @return 
@@ -31,7 +30,7 @@
 #'
 #'
 
-exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps")) {
+exp_r2_new <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps")) {
     
 #     if (!(steps > 1) | (steps > ncol(genotypes))) {
 #         stop("steps have to be at least two and smaller or equal than the number of markers used")
