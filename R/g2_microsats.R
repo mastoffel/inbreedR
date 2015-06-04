@@ -35,10 +35,10 @@
 #'
 #'
 #' @examples
-#' data(seal_msats)
+#' data(mouse_msats)
 #' # tranform raw genotypes into 0/1 format
-#' genotypes <- convert_raw(seal_msats, miss = NA)
-#' (g2_seals <- g2_microsats(genotypes, nperm = 100, nboot = 100, CI = 0.95))
+#' genotypes <- convert_raw(mouse_msats, miss = NA)
+#' (g2_mouse <- g2_microsats(genotypes, nperm = 1000, nboot = 100, CI = 0.95))
 #'
 #' @export
 #'

@@ -18,15 +18,15 @@ Data.frame object with 0 (homozygote), 1 (heterozygote) and -1 (missing data).
         Each locus is thus represented by one column.
 }
 \description{
-Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (NA on at least one locus), which is the working format for
+Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and -1 (missing), which is the working format for
 the inbreedR functions.
 A raw genotype matrix has individuals in rows and each locus in two adjacent columns. Names of individuals should be rownames.
 Type `data(seal_microsats)` for an example raw genotype data frame.
 }
 \examples{
-# Seal microsatellite data with missing values coded as NA
-data(seal_msats)
-genotypes <- convert_raw(seal_msats, miss = NA)
+# Mouse microsatellite data with missing values coded as NA
+data(mouse_msats)
+genotypes <- convert_raw(mouse_msats, miss = NA)
 head(genotypes)
 }
 \author{

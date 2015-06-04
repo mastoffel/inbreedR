@@ -27,8 +27,8 @@ Loci are randomly devided into two equal groups and the correlation coefficient
 between the resulting sMLH values is calculated.
 }
 \examples{
-data(seal_msats)
-genotypes <- convert_raw(seal_msats, miss = NA)
+data(mouse_msats)
+genotypes <- convert_raw(mouse_msats, miss = NA)
 (out <- HHC(genotypes, iter = 100, CI = 0.95))
 }
 \author{
