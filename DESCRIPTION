@@ -9,7 +9,7 @@ Description: Methods  from this package allow (1) calculating second-order
     population data, (2) het-het correlations and sMLH (3) sensitivity of number of markers to 
     the estimation of HFC`s.
 Depends: 
-    R (>= 3.2.0)
+    R (>= 3.1.2)
 License: GPL-2
 LazyData: true
 Suggests: 
