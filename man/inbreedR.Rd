@@ -21,12 +21,13 @@ It has three main goals:
 
 \itemize{
 \item Assessing identity disequilibria and the potential to detect heterozygosity-fitness correlations based on global effects
-\item Providing insights on the sensitivity of these measures based on the number of molecular markers
+\item Providing insights on the sensitivity of these measures based on the number of molecular markers used
 \item Implementing computationally efficient functions in a flexible environment for analysing
 inbreeding and HFC`s with both small and large datasets.
 }
 
-For a short introduction to inbreedR type `browseVignettes(package = "inbreedR")`
+For a short introduction to inbreedR start with the vignette:
+\code{browseVignettes(package = "inbreedR")}
 }
 \author{
 Martin Stoffel (martin.adam.stoffel@gmail.com), Mareike Esser (messer@uni-bielefeld.de)
