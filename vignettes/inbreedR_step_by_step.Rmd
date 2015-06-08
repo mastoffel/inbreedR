@@ -79,6 +79,13 @@ Plotting the object gives a distribution of the bootstrapped values and a confid
 plot(g2_seals)
 ```
 
+The plots are also customisable to a certain degree. Often you may like to have a more fine or wide scaled
+bar pattern or different labels. Just pass any argument that you can also pass to the `hist()` function. See `?hist`.
+
+```{r, fig.width = 6, fig.height = 5}
+plot(g2_seals, main = "just another title", xlab = "identity disequilibrium (g2)", breaks = 5, col = "red")
+```
+
 Calculating g2 based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. Hoffman et. al (2014) present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals.
 
 ```{r, results = "hide"}
@@ -132,6 +139,12 @@ result
 And plot the distribution of expected r2s for each subset.
 ```{r, fig.width = 6, fig.height = 5}
 plot(result)
+```
+
+You can also customise this boxplot. Just add any arguments that you would usually pass to `boxplot()`. See `?boxplot()` for infos. Next to changing labels and the title, you may find notched boxplots quite appealing.
+
+```{r, fig.width = 6, fig.height = 5}
+plot(result, notch = TRUE, col = "purple")
 ```
 
 ## HFCs

@@ -42,7 +42,7 @@ Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (w
 # load SNP genotypes in 0 (homozygous), 1 (heterozygous), NA (missing) format.
 # low number of bootstraps and permutations for computational reasons.
 data(mouse_snps)
-(g2_mouse <- g2_snps(seal_snps, nperm = 10, nboot = 10, CI = 0.95))
+(g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com) &

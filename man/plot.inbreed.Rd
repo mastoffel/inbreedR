@@ -9,7 +9,8 @@
 \arguments{
 \item{x}{An inbreed object.}
 
-\item{\dots}{Additional arguments to the hist() function.}
+\item{\dots}{Additional arguments to the hist() function for the g2 and the HHC functions.
+             Additional arguments to the boxplot() function for plotting the result of the exp_r2() function.}
 }
 \description{
 Plot an inbreed object
