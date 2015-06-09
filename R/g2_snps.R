@@ -42,7 +42,8 @@
 
 g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { 
     
-        # transform to matrix here?
+        # transform to matrix
+        genotypes <- as.matrix(genotypes)
         # transpose for congruency with formulae in paper
         origin <- t(genotypes)
         # set all missings to -1

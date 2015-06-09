@@ -32,6 +32,8 @@
 #'
 
 HHC <- function(genotypes, iter = 100, CI = 0.95) {
+    # transform to matrix
+    genotypes <- as.matrix(genotypes)
     # initialise
     loci <- 1:ncol(genotypes)
     loc_num <- ncol(genotypes)

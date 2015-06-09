@@ -45,7 +45,8 @@
 
 
 g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
-
+        
+        genotypes <- as.matrix(genotypes)
         # transpose
         origin <- (t(genotypes)) 
         origin[(origin!=0) & (origin!=1)] <- -1

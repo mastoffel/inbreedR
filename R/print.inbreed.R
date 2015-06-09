@@ -45,6 +45,16 @@ print.inbreed <- function(x, ...) {
             sep = "")
         print(format(x$summary_exp_r2, digits = 2))
     }
+    
+    # check its resample_g2
+    if(!is.null(x$all_g2_res)) {
+        cat("\n\n", "Calculation of identity disequilibrium (g2) for an increasing number of markers", "\n",
+            "---------------------------------------------------------------------------------", "\n\n", sep = "")
+        cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
+            "Function call = ", deparse(x$call), "\n\n",
+            sep = "")
+        print(format(x$summary_all_g2, digits = 2))
+    }
 
     # check if HHC
     if(!is.null(x$HHC_vals)) {
