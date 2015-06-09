@@ -30,6 +30,7 @@ sMLH <- function(genotypes) {
     # genes[is.na(genes)] <- -1
     # get logical matrix of non-missing values as TRUE
     typed <- (genes == 1) | (genes == 0)
+    typed[is.na(typed)] <- FALSE
     # initialise
     nloc <- ncol(genes)
     nind <- nrow(genes)
