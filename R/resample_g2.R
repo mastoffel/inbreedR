@@ -89,8 +89,9 @@ resample_g2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats"
     all_g2_res <- data.frame(g2 = c(all_g2), nloc = factor(rep(subsets, each = nboot)))
     
     # mean and sd per number of loci
-    summary_all_g2 <- aggregate(g2 ~ nloc, data = all_g2_res, 
-                                FUN = function(x) c(mean = mean(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE)))
+    summary_all_g2 <- as.data.frame(as.list(aggregate(g2 ~ nloc, data = all_g2_res, 
+                                FUN = function(x) c(mean = mean(x, na.rm = TRUE),
+                                                    sd = sd(x, na.rm = TRUE)))))
     
     res <- list(call = match.call(),
                 all_g2_res = all_g2_res,

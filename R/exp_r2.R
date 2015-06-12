@@ -106,8 +106,9 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
     exp_r2_res <- data.frame(r2 = c(all_r2), nloc = factor(rep(subsets, each = nboot)))
     
     # mean and sd per number of loci
-    summary_exp_r2 <- aggregate(r2 ~ nloc, data = exp_r2_res, 
-                                FUN = function(x) c(mean = mean(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE)))
+    summary_exp_r2 <- as.data.frame(as.list(aggregate(r2 ~ nloc, data = exp_r2_res, 
+                                FUN = function(x) c(mean = mean(x, na.rm = TRUE), 
+                                                    sd = sd(x, na.rm = TRUE)))))
     
     res <- list(call = match.call(),
                 exp_r2_res = exp_r2_res,
