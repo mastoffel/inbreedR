@@ -3,6 +3,7 @@ title: "inbreedR step by step"
 author: "Martin A. Stoffel"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: bibliography.bib
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -43,7 +44,7 @@ mouse_snps[1:10, 1:10]
 
 ```{r}
 data("mouse_msats")
-mouse_msats[1:10, 1:10]
+mouse_msats[1:8, 1:8]
 ```
 
 The data.frame itself should just contain the marker data, while rownames for individuals or columnnames for loci are possible. To convert it into the `inbreedR` working format, just use the `convert_raw` function, specify the missing value and assign it to a new variable.
@@ -61,7 +62,7 @@ Two different methods have been used to assess the correlation of heterozygosity
 
 ### g2
 
-**g2** measures the excess of double heterozygote loci in a population. The original formula by David et. al (2007) is implemented in the `g2_microsats` function, which also allows calculation of a confidence interval based on bootstrapping (nboot) and a p-value based on permutation tests (nperm).
+**g2** measures the excess of double heterozygote loci in a population. The original formula by [@david2007reliable] is implemented in the `g2_microsats` function, which also allows calculation of a confidence interval based on bootstrapping (nboot) and a p-value based on permutation tests (nperm).
 
 ```{r, results = "hide"}
 g2_seals <- g2_microsats(genotypes, nperm = 100, nboot = 100, CI = 0.95)
@@ -75,18 +76,18 @@ g2_seals
 
 Plotting the object gives a distribution of the bootstrapped values and a confidence interval.
 
-```{r, fig.width = 6, fig.height = 5}
+```{r,fig.width = 6, fig.height = 5}
 plot(g2_seals)
 ```
 
 The plots are also customisable to a certain degree. Often you may like to have a more fine or wide scaled
 bar pattern or different labels. Just pass any argument that you can also pass to the `hist()` function. See `?hist`.
 
-```{r, fig.width = 6, fig.height = 5}
+```{r,fig.width = 6, fig.height = 5}
 plot(g2_seals, main = "just another title", xlab = "identity disequilibrium (g2)", breaks = 5, col = "red")
 ```
 
-Calculating g2 based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. Hoffman et. al (2014) present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals.
+Calculating g2 based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. [@hoffman2014high] present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals.
 
 ```{r, results = "hide"}
 g2_mouse_snps <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95)
@@ -94,7 +95,7 @@ g2_mouse_snps <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95)
 
 Showing results and plotting as before.
 
-```{r, fig.width = 6, fig.height = 5}
+```{r,fig.width = 6, fig.height = 5}
 g2_mouse_snps
 plot(g2_mouse_snps)
 ```
@@ -117,12 +118,40 @@ hhc_microsats
 
 ...and plot the distribution.
 
-```{r, fig.width = 6, fig.height = 5}
+```{r,fig.width = 6, fig.height = 5}
 plot(hhc_microsats)
 ```
 
 ## Sensitivity to the number of markers 
-When looking at heterozygosity-fitness correlations (HFCs), one of the central questions is how well heterozygosity (sMLH) represents the level of inbreeding. According to Szulkin et al.(2010), the expected correlation between sMLH and inbreeding level (f) is $$r^2(sMLH, f) = \frac{g2}{\sigma^2(sMLH)}$$
+
+### g2
+One question adressed by recent papers [@miller2014assessment, @hoffman2014high] is the sensitivity of g2 towards the number of markers used.
+The function `resample_g2()` calculates g2 for different marker subsets specified by the user.
+
+```{r, results = "hide"}
+g2_devel <- resample_g2(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats")
+```
+
+```{r, results = "hide"}
+g2_devel
+```
+
+A typical way to show the g2 distributions for different subsets of markers are boxplots. `inbreedR` provides a simple means of plotting the results.
+
+```{r,fig.width = 5, fig.height = 4}
+plot(g2_devel)
+```
+
+You can also customise most elements of these boxplots. Just add any arguments that you would usually pass to `boxplot()`. See `?boxplot()` for infos. 
+
+```{r,fig.width = 6, fig.height = 5}
+plot(g2_devel, main = "identity disequilibrium for different marker subsets", col = "green")
+```
+
+
+### Expected $r^2$ between heterozygosity and inbreeding
+
+When looking at heterozygosity-fitness correlations (HFCs), one of the central questions is how well heterozygosity (sMLH) represents the level of inbreeding. According to [@szulkin2010heterozygosity], the expected correlation between sMLH and inbreeding level (f) is $$r^2(sMLH, f) = \frac{g2}{\sigma^2(sMLH)}$$
 
 To explore sensitivity to the number of markers towards, we use the function `exp_r2`. This calculates the expected $r^2$ between f and sMLH for different sized, randomly selected, subsets of loci.  The user needs to specify the subset sizes for the analysis.  For example, for a dataset of 10,000 SNPs, one could specify `subsets = c(1, 10, 100, 1000, 2000, 3000, 4000, 5000, 10000)`.  In addition the user should specify how often the current subset is drawn from the overall marker set to calculate the expected r2, and the type of marker, which determines the g2 function to be used.
 
@@ -137,13 +166,13 @@ result
 ```
 
 And plot the distribution of expected r2s for each subset.
-```{r, fig.width = 6, fig.height = 5}
+```{r,fig.width = 6, fig.height = 5}
 plot(result)
 ```
 
-You can also customise this boxplot. Just add any arguments that you would usually pass to `boxplot()`. See `?boxplot()` for infos. Next to changing labels and the title, you may find notched boxplots quite appealing.
+Again, you can customise certain aspects of the plot by adding `boxplot()` arguments. Next to changing labels and the title, you may find notched boxplots quite appealing.
 
-```{r, fig.width = 6, fig.height = 5}
+```{r,fig.width = 6, fig.height = 5}
 plot(result, notch = TRUE, col = "purple")
 ```
 
@@ -157,7 +186,7 @@ system.time(sMLH(mouse_snps))
 ```
 
 `sMLH` gives a simple vector output with each individuals sMLH.
-```{r, fig.width = 4, fig.height = 3}
+```{r,fig.width = 6, fig.height = 5}
 het <- sMLH(mouse_snps)
 hist(het)
 ```
@@ -186,3 +215,4 @@ str(g2_bootstrap_results)
 ```
 
 
+## Literature

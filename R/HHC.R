@@ -40,8 +40,8 @@ HHC <- function(genotypes, iter = 100, CI = 0.95) {
     
     calc_cor <- function(num_iter, genotypes) {
         new_ord <- sample(loci)
-        sMLH1 <- inbreedR::sMLH(genotypes[new_ord[1:floor(loc_num/2)]])
-        sMLH2 <- inbreedR::sMLH(genotypes[new_ord[(floor(loc_num/2) + 1):loc_num]])
+        sMLH1 <- sMLH(genotypes[, new_ord[1:floor(loc_num/2)]])
+        sMLH2 <- sMLH(genotypes[, new_ord[(floor(loc_num/2) + 1):loc_num]])
         het_het_cor <- cor(sMLH1, sMLH2)
         
         if (num_iter == 1) {
