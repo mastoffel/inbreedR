@@ -6,7 +6,7 @@
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
-#' @param iter number of iterations, i.e. splittings of the dataset 
+#' @param niter number of iterations, i.e. splittings of the dataset 
 #' @param CI calculates a CI around the mean het-het correlation
 #'
 #' @return 
@@ -25,13 +25,13 @@
 #' @examples
 #' data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats, miss = NA)
-#' (out <- HHC(genotypes, iter = 100, CI = 0.95))
+#' (out <- HHC(genotypes, niter = 100, CI = 0.95))
 #'
 #' @export
 #'
 #'
 
-HHC <- function(genotypes, iter = 100, CI = 0.95) {
+HHC <- function(genotypes, niter = 100, CI = 0.95) {
     # transform to matrix
     genotypes <- as.matrix(genotypes)
     # initialise
@@ -46,14 +46,14 @@ HHC <- function(genotypes, iter = 100, CI = 0.95) {
         
         if (num_iter == 1) {
             cat("\n", "starting het-het correlations")
-        } else if (num_iter == iter) {
+        } else if (num_iter == niter) {
             cat("\n", "done")
         } else if (num_iter %% 5 == 0) {
             cat("\n", num_iter, "iterations done")
         }
         return(het_het_cor)
     }
-    HHC_vals <- vapply(1:iter, calc_cor, numeric(1), genotypes)
+    HHC_vals <- vapply(1:niter, calc_cor, numeric(1), genotypes)
     
     CI_HHC <- quantile(HHC_vals, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
 
