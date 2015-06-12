@@ -107,7 +107,7 @@ You might want to increase permutations and bootstraps for calculating p-values 
 HHC is another way to quantify inbreeding. The marker data is randomly split into two equal parts and the correlation between the resulting standardized multilocus heterozygosity (sMLH) values is calculated. This is repeated over n iterations. A distribution of values that differ significantly from zero provides evidence for a correlation in heterozygosity across loci that can be attributed to variation in the inbreeding coefficients of individuals present in the sample. Running this for the microsatellite dataset:
 
 ```{r, results = "hide"}
-hhc_microsats <- HHC(genotypes, iter = 100, CI = 0.95)
+hhc_microsats <- HHC(genotypes, niter = 100, CI = 0.95)
 ```
 
 As before, we can print the summary... 
