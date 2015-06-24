@@ -19,6 +19,7 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 }
 \value{
 \item{call}{function call.}
+\item{exp_r2_full}{expected r2 between inbreeding and sMLH for the full dataset}
 \item{exp_r2_res}{expected r2 for each randomly subsetted dataset}
 \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
 \item{nobs}{number of observations}

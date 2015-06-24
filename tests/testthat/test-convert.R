@@ -41,6 +41,10 @@ test_that("Converted data contains just 1, 0 and -1", {
 })
 
 
+
+
+
+
 # # construct datasets
 # library(dplyr)
 # raw_data <- sample(c(1,0), 10000, replace = TRUE, prob = c(0.4,0.7))

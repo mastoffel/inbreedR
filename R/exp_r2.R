@@ -11,6 +11,7 @@
 #' 
 #' @return 
 #' \item{call}{function call.}
+#' \item{exp_r2_full}{expected r2 between inbreeding and sMLH for the full dataset}
 #' \item{exp_r2_res}{expected r2 for each randomly subsetted dataset}
 #' \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
@@ -75,6 +76,9 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
         }
     }
     
+    # full data
+    exp_r2_full <- calc_r2(gtypes)
+    
 #     # calculate sequence of loci numbers to draw
 #     nloc_draw <- (round(ncol(genotypes)/ steps))
 #     nloc_vec <- seq(from = nloc_draw, to = ncol(genotypes), by = nloc_draw)
@@ -109,8 +113,10 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
     summary_exp_r2 <- as.data.frame(as.list(aggregate(r2 ~ nloc, data = exp_r2_res, 
                                 FUN = function(x) c(mean = mean(x, na.rm = TRUE), 
                                                     sd = sd(x, na.rm = TRUE)))))
+    names(summary_exp_r2) <- c("nloc", "Mean", "SD")
     
     res <- list(call = match.call(),
+                exp_r2_full = exp_r2_full,
                 exp_r2_res = exp_r2_res,
                 summary_exp_r2 = summary_exp_r2,
                 nobs = nrow(genotypes), 

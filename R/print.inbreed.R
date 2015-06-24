@@ -43,6 +43,8 @@ print.inbreed <- function(x, ...) {
         cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
             "Function call = ", deparse(x$call), "\n\n",
             sep = "")
+        cat("Expected r2 based on all markers: ", x$exp_r2_full, "\n\n")
+        cat("Expected r2 of each marker subset: ", "\n\n")
         print(format(x$summary_exp_r2, digits = 2))
     }
     
