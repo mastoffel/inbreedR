@@ -12,6 +12,7 @@ inbreedR contains the following functions:
 \link{g2_snps}
 \link{convert_raw}
 \link{exp_r2}
+\link{resample_g2}
 \link{HHC}
 \link{sMLH}
 \link{plot.inbreed}

@@ -44,8 +44,10 @@ print.inbreed <- function(x, ...) {
             "Function call = ", deparse(x$call), "\n\n",
             sep = "")
         cat("Expected r2 based on all markers: ", x$exp_r2_full, "\n\n")
-        cat("Expected r2 of each marker subset: ", "\n\n")
-        print(format(x$summary_exp_r2, digits = 2))
+        if(!is.na(x$summary_exp_r2)){
+            cat("Average expected r2 of each marker subset: ", "\n\n")
+            print(format(x$summary_exp_r2, digits = 2))
+        }
     }
     
     # check its resample_g2
@@ -55,7 +57,11 @@ print.inbreed <- function(x, ...) {
         cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
             "Function call = ", deparse(x$call), "\n\n",
             sep = "")
-        print(format(x$summary_all_g2, digits = 2))
+        cat("g2 estimate based on all markers: ", x$g2_full, "\n\n")
+        if(!is.na(x$summary_all_g2)){
+            cat("Average g2 of each marker subset: ", "\n\n")
+            print(format(x$summary_all_g2, digits = 2))
+        }
     }
 
     # check if HHC

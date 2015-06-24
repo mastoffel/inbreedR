@@ -10,6 +10,7 @@
 #' 
 #' @return 
 #' \item{call}{function call.}
+#' \item{g2_full}{g2 estimate for the full marker set}
 #' \item{all_g2_res}{vector of g2 values for each randomly subsetted dataset}
 #' \item{summary_exp_r2}{g2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
@@ -40,9 +41,6 @@ resample_g2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats"
     if ((sum(subsets > ncol(genotypes)))!= 0) stop("The number of subsetted markers cannot exceed the overall number of markers")
     if (any(subsets%%1 != 0)) stop("All subsets have to be specified by integers")
     
-    # sorting
-    subsets <- sort(subsets)
-    
     # check g2 function argument
     if (length(type) == 2){
         type <- "msats"
@@ -56,6 +54,25 @@ resample_g2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats"
     } else {
         g2_fun <- g2_snps
     }
+    
+    # full data set
+    g2_full <- g2_fun(genotypes)[["g2"]]
+    
+    # case nboot = 0
+    if ((nboot <= 0) | (is.null(subsets))){
+        res <- list(call = match.call(),
+                    g2_full = g2_full,
+                    all_g2_res = NA,
+                    summary_all_g2 = NA,
+                    nobs = nrow(genotypes), 
+                    nloc = ncol(genotypes))
+        
+        class(res) <- "inbreed"
+        return(res)
+    }
+    
+    # sorting
+    subsets <- sort(subsets)
     
     # initialise
     nloc <- ncol(genotypes)
@@ -95,6 +112,7 @@ resample_g2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats"
     names(summary_all_g2) <- c("nloc", "Mean", "SD")
     
     res <- list(call = match.call(),
+                g2_full = g2_full,
                 all_g2_res = all_g2_res,
                 summary_all_g2 = summary_all_g2,
                 nobs = nrow(genotypes), 

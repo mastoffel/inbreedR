@@ -44,9 +44,6 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
     if ((sum(subsets > ncol(genotypes)))!= 0) stop("The number of subsetted markers cannot exceed the overall number of markers")
     if (any(subsets%%1 != 0)) stop("All subsets have to be specified by integers")
     
-    # sorting
-    subsets <- sort(subsets)
-    
     # check g2 function argument
     if (length(type) == 2){
         type <- "msats"
@@ -76,8 +73,25 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
         }
     }
     
-    # full data
+    # calculate r2 for full data
     exp_r2_full <- calc_r2(gtypes)
+    
+    # check if nboot = 0
+    if ((nboot <= 0) | (is.null(subsets))) {
+        res <- list(call = match.call(),
+                    exp_r2_full = exp_r2_full,
+                    exp_r2_res = NA,
+                    summary_exp_r2 = NA,
+                    nobs = nrow(genotypes), 
+                    nloc = ncol(genotypes))
+        
+        class(res) <- "inbreed"
+        return(res)
+    }
+    
+    # sorting
+    subsets <- sort(subsets)
+    
     
 #     # calculate sequence of loci numbers to draw
 #     nloc_draw <- (round(ncol(genotypes)/ steps))

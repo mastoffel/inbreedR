@@ -15,7 +15,7 @@
 
 plot.inbreed <- function(x, ...) {
     # check if its a g2 calculater
-    if (!is.null(x$g2)) {
+    if (!is.null(x[["g2"]])) {
         if (is.na(x$g2_se)) stop("Number of bootstraps specified in g2 function was 0, so there is nothing to plot")
         # save ellipsis args
         dots <- list(...)
@@ -45,6 +45,7 @@ plot.inbreed <- function(x, ...) {
     }
     # check if its exp_r2
     if(!is.null(x$exp_r2_res)) {
+        if(is.na(x$exp_r2_res)) stop("No bootstraps done, so nothing to plot")
         # save ellipsis args
         dots <- list(...)
         # make empty arguments list
