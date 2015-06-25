@@ -20,7 +20,7 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 }
 \value{
 \item{call}{function call.}
-\item{g2}{g2 estimate for the full marker set}
+\item{g2_full}{g2 estimate for the full marker set}
 \item{all_g2_res}{vector of g2 values for each randomly subsetted dataset}
 \item{summary_exp_r2}{g2 mean and sd for each number of subsetted loci}
 \item{nobs}{number of observations}
