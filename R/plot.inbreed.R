@@ -45,7 +45,7 @@ plot.inbreed <- function(x, ...) {
     }
     # check if its exp_r2
     if(!is.null(x$exp_r2_res)) {
-        if(is.na(x$exp_r2_res)) stop("No bootstraps done, so nothing to plot")
+        if(!is.data.frame(x$summary_exp_r2)) stop("No bootstraps done, so nothing to plot")
         # save ellipsis args
         dots <- list(...)
         # make empty arguments list

@@ -7,6 +7,7 @@
 #' \link{g2_microsats}
 #' \link{g2_snps}
 #' \link{convert_raw}
+#' \link{check_data}
 #' \link{exp_r2}
 #' \link{resample_g2}
 #' \link{HHC}
