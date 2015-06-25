@@ -33,12 +33,21 @@ To get an overview over all the functions just use the help files.
 
 ## Data format
 
-The data format that all functions use is fairly simple. The input always is a `data.frame` or `matrix`, whereby rows represent individuals, and each locus is one column. Heterozygote loci are coded as `1` and homozygote loci as `0`. Missing data should be encoded as NA (negative numbers are also ok). `mouse_snps` is a sample dataset accompanying the package. 
+The data format that all functions use is fairly simple. The input always is a `data.frame` or `matrix`, whereby rows represent individuals, and each locus is one column. Heterozygote loci are coded as `1` and homozygote loci as `0`. Missing data should be encoded as NA (numbers other than 0 or 1 are also ok). `mouse_snps` is a sample dataset accompanying the package. 
 
 ```{r}
 data("mouse_snps")
 mouse_snps[1:10, 1:10]
 ```
+
+You can check whether your data is in the right format with the `check_data` function, which gives an error with a message when something
+went wrong and `TRUE` otherwise. Look at `?check_data` to see what exactly is checked for.
+
+```{r}
+check_data(mouse_snps, num_ind = 36, num_loci = 13198)
+```
+
+### Conversion from a more common format
 
 `convert_raw` is a function to convert a more common format, where each locus is represented by two coloumns (alleles), into the inbreedR working format. Microsatellite data are often formatted like this:
 

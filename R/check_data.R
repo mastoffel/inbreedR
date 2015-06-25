@@ -60,13 +60,13 @@ if (!is.null(num_loci)) {
     }
 }
 
-# check for data types 
-classes <- apply(genotypes, 2, class)
-
-if(any(classes != "numeric", na.rm = TRUE)) {
-    stop("At least some elements in the data are not numeric, 
-         check that you coded missing values with either NA or a number(except 0 and 1)")
-}
+### check here for data types (todo) #### 
+# classes <- apply(genotypes, 2, class)
+# 
+# if(any(classes != "numeric") & any(classes != "integer")) {
+#     stop("At least some elements in the data are not numeric, 
+#          check that you coded missing values with either NA or a number(except 0 and 1)")
+# }
 
 return(TRUE)
 
