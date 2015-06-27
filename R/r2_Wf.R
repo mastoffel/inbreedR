@@ -2,11 +2,11 @@
 #'
 #' @param genotypes data.frame or matrix with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
-#' @param trait vector of any type which can be specified in R´s `glm()` function
+#' @param trait vector of any type which can be specified in R's glm() function
 #' @param family distribution of the trait. Default is gaussian. For other distributions, just naming the distribution
-#'        (e.g. binomial) will use the default link function (see `?family`). Specifying another
-#'        link function can be done in the same way as in the `glm()` function. A binomial distribution with 
-#'        probit instead of logit link would be specified with `family = binomial(link = "probit")` 
+#'        (e.g. binomial) will use the default link function (see ?family). Specifying another
+#'        link function can be done in the same way as in the glm() function. A binomial distribution with 
+#'        probit instead of logit link would be specified with family = binomial(link = "probit") 
 #' @param subsets a vector specifying the sizes of subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
 #'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.
 #' @param nboot number re-draws per subset size.
@@ -27,10 +27,11 @@
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
 #'        
 #' @examples
-#' data(mouse_msats)
+#' \dontrun{data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats, miss = NA)
 #' (out <- r2_Wf(genotypes, trait, family = gaussian, subsets = c(2,4,6,8,10,12), nboot = 100, type = "msats"))
 #' plot(out)
+#' }
 #' @export
 #'
 #'
