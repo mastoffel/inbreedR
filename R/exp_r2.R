@@ -1,4 +1,4 @@
-#' Expected r2 between heterozygosity (sMLH) and inbreeding level (f)
+#' Expected r2 between standardized multilocus heterozygosity (sMLH) and inbreeding level (f)
 #' 
 #' 
 #'

@@ -51,18 +51,30 @@ print.inbreed <- function(x, ...) {
     }
     
     # check if its r2_Wf
-    if(!is.null(x$r2_Wf_res)) {
-        cat("\n\n", "Calculation of expected r2 between inbreeding level (f) and fitness (W)", "\n",
-            "---------------------------------------------------------------------------------", "\n\n", sep = "")
-        cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
-            "Function call = ", deparse(x$call), "\n\n",
-            sep = "")
-        cat("Expected r2 based on all markers: ", x$r2_Wf_full, "\n\n")
-        if(is.data.frame(x$summary_r2_Wf)){
-            cat("Average expected r2 of each marker subset: ", "\n\n")
-            print(format(x$summary_r2_Wf, digits = 2))
+        if(!is.null(x$r2_Wf_full)) {
+            cat("\n\n", "Calculation of expected r2 between inbreeding level (f) and fitness (W)", "\n",
+                "---------------------------------------------------------------------------------", "\n\n", sep = "")
+            cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
+                "Function call = ", deparse(x$call), "\n\n",
+                sep = "")
+            cat("Expected r2 based on all markers: ", x$r2_Wf_full, "\n\n")
         }
-    }
+    
+    
+    
+    # no subsetting yet
+#     if(!is.null(x$r2_Wf_res)) {
+#         cat("\n\n", "Calculation of expected r2 between inbreeding level (f) and fitness (W)", "\n",
+#             "---------------------------------------------------------------------------------", "\n\n", sep = "")
+#         cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
+#             "Function call = ", deparse(x$call), "\n\n",
+#             sep = "")
+#         cat("Expected r2 based on all markers: ", x$r2_Wf_full, "\n\n")
+#         if(is.data.frame(x$summary_r2_Wf)){
+#             cat("Average expected r2 of each marker subset: ", "\n\n")
+#             print(format(x$summary_r2_Wf, digits = 2))
+#         }
+#     }
     
     # check its resample_g2
     if(!is.null(x$all_g2_res)) {

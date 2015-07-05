@@ -4,8 +4,7 @@
 \alias{r2_Wf}
 \title{Expected r2 between inbreeding level (f) and fitness (W)}
 \usage{
-r2_Wf(genotypes, trait, family = gaussian, subsets = NULL, nboot = 100,
-  type = c("msats", "snps"))
+r2_Wf(genotypes, trait, family = gaussian, type = c("msats", "snps"))
 }
 \arguments{
 \item{genotypes}{data.frame or matrix with individuals in rows and loci in columns,
@@ -18,18 +17,11 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 link function can be done in the same way as in the glm() function. A binomial distribution with
 probit instead of logit link would be specified with family = binomial(link = "probit")}
 
-\item{subsets}{a vector specifying the sizes of subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.}
-
-\item{nboot}{number re-draws per subset size.}
-
 \item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
 }
 \value{
 \item{call}{function call.}
 \item{exp_r2_full}{expected r2 between inbreeding and sMLH for the full dataset}
-\item{exp_r2_res}{expected r2 for each randomly subsetted dataset}
-\item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
 \item{nobs}{number of observations}
 \item{nloc}{number of markers}
 }
@@ -37,16 +29,19 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 Expected r2 between inbreeding level (f) and fitness (W)
 }
 \examples{
-\dontrun{data(mouse_msats)
+data(mouse_msats)
 genotypes <- convert_raw(mouse_msats, miss = NA)
-(out <- r2_Wf(genotypes, trait, family = gaussian, subsets = c(2,4,6,8,10,12), nboot = 100, type = "msats"))
-plot(out)
-}
+trait <- rnorm(36)
+(out <- r2_Wf(genotypes, trait, family = gaussian, type = "msats"))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)
 }
 \references{
+Slate, J., David, P., Dodds, K. G., Veenvliet, B. A., Glass, B. C., Broad, T. E., & McEwan, J. C. (2004).
+Understanding the relationship between the inbreeding coefficient
+and multilocus heterozygosity: theoretical expectations and empirical data. Heredity, 93(3), 255-265.
+
 Szulkin, M., Bierne, N., & David, P. (2010). HETEROZYGOSITY-FITNESS CORRELATIONS: A TIME FOR REAPPRAISAL.
 Evolution, 64(5), 1202-1217.
 }
