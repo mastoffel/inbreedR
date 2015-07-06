@@ -1,4 +1,4 @@
-#' Expected r2 between standardized multilocus heterozygosity (sMLH) and inbreeding level (f)
+#' Expected r2 between standardized multilocus heterozygosity (h) and inbreeding level (f)
 #' 
 #' 
 #'
@@ -11,13 +11,17 @@
 #' 
 #' @return 
 #' \item{call}{function call.}
-#' \item{exp_r2_full}{expected r2 between inbreeding and sMLH for the full dataset}
-#' \item{exp_r2_res}{expected r2 for each randomly subsetted dataset}
-#' \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
+#' \item{r2_hf_full}{expected r2 between inbreeding and sMLH for the full dataset}
+#' \item{r2_hf_res}{expected r2 for each randomly subsetted dataset}
+#' \item{summary_r2_hf}{r2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
 #' \item{nloc}{number of markers}
 #' 
 #' @references
+#' Slate, J., David, P., Dodds, K. G., Veenvliet, B. A., Glass, B. C., Broad, T. E., & McEwan, J. C. (2004). 
+#' Understanding the relationship between the inbreeding coefficient 
+#' and multilocus heterozygosity: theoretical expectations and empirical data. Heredity, 93(3), 255-265.
+#' 
 #' Szulkin, M., Bierne, N., & David, P. (2010). HETEROZYGOSITY-FITNESS CORRELATIONS: A TIME FOR REAPPRAISAL. 
 #' Evolution, 64(5), 1202-1217.
 #' 
@@ -26,13 +30,13 @@
 #' @examples
 #' data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats, miss = NA)
-#' (out <- exp_r2(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats"))
+#' (out <- r2_hf(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats"))
 #' plot(out)
 #' @export
 #'
 #'
 
-exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps")) {
+r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps")) {
     
 #     if (!(steps > 1) | (steps > ncol(genotypes))) {
 #         stop("steps have to be at least two and smaller or equal than the number of markers used")
@@ -74,14 +78,14 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
     }
     
     # calculate r2 for full data
-    exp_r2_full <- calc_r2(gtypes)
+    r2_hf_full <- calc_r2(gtypes)
     
     # check if nboot = 0
     if ((nboot <= 0) | (is.null(subsets))) {
         res <- list(call = match.call(),
-                    exp_r2_full = exp_r2_full,
-                    exp_r2_res = NA,
-                    summary_exp_r2 = NA,
+                    r2_hf_full = r2_hf_full,
+                    r2_hf_res = NA,
+                    summary_r2_hf = NA,
                     nobs = nrow(genotypes), 
                     nloc = ncol(genotypes))
         
@@ -91,11 +95,6 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
     
     # sorting
     subsets <- sort(subsets)
-    
-    
-#     # calculate sequence of loci numbers to draw
-#     nloc_draw <- (round(ncol(genotypes)/ steps))
-#     nloc_vec <- seq(from = nloc_draw, to = ncol(genotypes), by = nloc_draw)
     
     # initialise
     all_r2 <- matrix(nrow = nboot, ncol = length(subsets))
@@ -121,18 +120,18 @@ exp_r2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "sn
     }
     
     # expected r2 per subset
-    exp_r2_res <- data.frame(r2 = c(all_r2), nloc = factor(rep(subsets, each = nboot)))
+    r2_hf_res <- data.frame(r2 = c(all_r2), nloc = factor(rep(subsets, each = nboot)))
     
     # mean and sd per number of loci
-    summary_exp_r2 <- as.data.frame(as.list(aggregate(r2 ~ nloc, data = exp_r2_res, 
+    summary_r2_hf <- as.data.frame(as.list(aggregate(r2 ~ nloc, data = r2_hf_res, 
                                 FUN = function(x) c(mean = mean(x, na.rm = TRUE), 
                                                     sd = sd(x, na.rm = TRUE)))))
-    names(summary_exp_r2) <- c("nloc", "Mean", "SD")
+    names(summary_r2_hf) <- c("nloc", "Mean", "SD")
     
     res <- list(call = match.call(),
-                exp_r2_full = exp_r2_full,
-                exp_r2_res = exp_r2_res,
-                summary_exp_r2 = summary_exp_r2,
+                r2_hf_full = r2_hf_full,
+                r2_hf_res = r2_hf_res,
+                summary_r2_hf = summary_r2_hf,
                 nobs = nrow(genotypes), 
                 nloc = ncol(genotypes))
     

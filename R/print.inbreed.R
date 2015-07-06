@@ -36,17 +36,17 @@ print.inbreed <- function(x, ...) {
     }
     
     
-    # check if its exp_r2
-    if(!is.null(x$exp_r2_res)) {
+    # check if its r2_hf
+    if(!is.null(x$r2_hf_res)) {
         cat("\n\n", "Calculation of expected r2 between f and sMLH for an increasing number of markers", "\n",
                     "---------------------------------------------------------------------------------", "\n\n", sep = "")
         cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
             "Function call = ", deparse(x$call), "\n\n",
             sep = "")
-        cat("Expected r2 based on all markers: ", x$exp_r2_full, "\n\n")
-        if(is.data.frame(x$summary_exp_r2)){
+        cat("Expected r2 based on all markers: ", x$r2_hf_full, "\n\n")
+        if(is.data.frame(x$summary_r2_hf)){
             cat("Average expected r2 of each marker subset: ", "\n\n")
-            print(format(x$summary_exp_r2, digits = 2))
+            print(format(x$summary_r2_hf, digits = 2))
         }
     }
     

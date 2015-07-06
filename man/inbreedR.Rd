@@ -12,7 +12,8 @@ inbreedR contains the following functions:
 \link{g2_snps}
 \link{convert_raw}
 \link{check_data}
-\link{exp_r2}
+\link{r2_hf}
+\link{r2_Wf}
 \link{resample_g2}
 \link{HHC}
 \link{sMLH}
@@ -35,6 +36,13 @@ For a short introduction to inbreedR start with the vignette:
 Martin Stoffel (martin.adam.stoffel@gmail.com), Mareike Esser (messer@uni-bielefeld.de)
 }
 \references{
+Slate, J., David, P., Dodds, K. G., Veenvliet, B. A., Glass, B. C., Broad, T. E., & McEwan, J. C. (2004).
+Understanding the relationship between the inbreeding coefficient
+and multilocus heterozygosity: theoretical expectations and empirical data. Heredity, 93(3), 255-265.
+
+Szulkin, M., Bierne, N., & David, P. (2010). HETEROZYGOSITY-FITNESS CORRELATIONS: A TIME FOR REAPPRAISAL.
+Evolution, 64(5), 1202-1217.
+
 David, P., Pujol, B., Viard, F., Castella, V. and Goudet, J. (2007),
 Reliable selfing rate estimates from imperfect population genetic data. Molecular Ecology,
 16: 2474

@@ -3,7 +3,7 @@
 #'
 #' @param x An inbreed object.
 #' @param \dots Additional arguments to the hist() function for the g2 and the HHC functions. 
-#'              Additional arguments to the boxplot() function for plotting the result of the exp_r2() function.
+#'              Additional arguments to the boxplot() function for plotting the result of the r2_hf() function.
 #'
 #'
 #' @author Martin Stoffel (martin.adam.stoffel@@gmail.com)
@@ -43,9 +43,9 @@ plot.inbreed <- function(x, ...) {
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), 
                   CI.u = unname(x$CI_boot[2]), args1 = args1)
     }
-    # check if its exp_r2
-    if(!is.null(x$exp_r2_res)) {
-        if(!is.data.frame(x$summary_exp_r2)) stop("No bootstraps done, so nothing to plot")
+    # check if its r2_hf
+    if(!is.null(x$r2_hf_res)) {
+        if(!is.data.frame(x$summary_r2_hf)) stop("No bootstraps done, so nothing to plot")
         # save ellipsis args
         dots <- list(...)
         # make empty arguments list
@@ -58,7 +58,7 @@ plot.inbreed <- function(x, ...) {
         # add names (will be argument names) to args1 values
         args1[names(dots)] <- dots
         
-        do.call(boxplot, c(list(formula = r2 ~ nloc, data = x$exp_r2_res,
+        do.call(boxplot, c(list(formula = r2 ~ nloc, data = x$r2_hf_res,
                 pch = 16, outcol ="black"), args1))
     }
     
