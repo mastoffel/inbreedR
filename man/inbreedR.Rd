@@ -4,7 +4,7 @@
 \name{inbreedR}
 \alias{inbreedR}
 \alias{inbreedR-package}
-\title{inbreedR: Workflows for analysing variance in inbreeding based on SNP or microsatellite markers.}
+\title{inbreedR: Workflows for analysing variance in inbreeding and HFCs based on SNP or microsatellite markers.}
 \description{
 inbreedR contains the following functions:
 
@@ -20,11 +20,21 @@ inbreedR contains the following functions:
 \link{plot.inbreed}
 }
 \details{
-It has three main goals:
+A correlation between heterozygosity (h) and fitness (W) requires a simultaneous effect of inbreeding level (f) on both of them.
+A heterozygosity-fitness correlation (HFC) thus is the product of two correlations,
+which can be summarized in the following equation:
+
+\deqn{r(W, h) = r(W, f)r(h, f)}
+
+Estimating these parameters and their sensitivity towards the number and type of genetic markers used is the central framework
+of the inbreedR package. At the heart of measuring inbreeding based on genetic markers is the g2 statistic, which estimates
+the correlation of heterozygosity across markers, called identity disequilibrium (ID). ID is a proxy for inbreeding.
+
+The package has three main goals:
 
 \itemize{
 \item Assessing identity disequilibria and the potential to detect heterozygosity-fitness correlations based on global effects
-\item Providing insights on the sensitivity of these measures based on the number of molecular markers used
+\item Providing insights on the sensitivity of these measures based on the number/type of molecular markers used
 \item Implementing computationally efficient functions in a flexible environment for analysing
 inbreeding and HFC`s with both small and large datasets.
 }

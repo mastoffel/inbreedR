@@ -48,3 +48,4 @@ sMLH <- function(genotypes) {
     names(sMLH) <- row.names(genotypes)
     sMLH
 }
+
