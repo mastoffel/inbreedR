@@ -16,7 +16,7 @@ library(inbreedR)
 library(knitr)
 ```
 
-This vignette provides a short introduction to the functions of the `inbreedR` package. The package in its current form is a minimal version that contains the commonly used and essential functions for the analysis of inbreeding based on microsatellite or snp markers, but potential extensions will follow and any improvement suggestions (from bugs to potential new functions) are always welcome. To download the development version from GitHub just type:
+The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. Without a pedigree, the inbreeding level (f) is approximated by a so called identity disequilibrium (ID), the correlation of heterozygosity (or homozygosity) across loci. Two statistics have been used to estimate ID, the heterozygosity-heterozygosity correlation (HHC) and the g2 statistic [@szulkin2010heterozygosity]. While both measures seem intuitively appropriate to measure whether heterozygosity is correlated across markers, g2 is thought to both (1) avoid the problem of pseudoreplication and (2) to be appropriatly linked to HFC theory [@szulkin2010heterozygosity]. 
 
 ```{r}
 # decomment the following for installing packages

@@ -30,9 +30,10 @@ Expected r2 between inbreeding level (f) and fitness (W)
 }
 \examples{
 data(mouse_msats)
+data(bodyweight)
 genotypes <- convert_raw(mouse_msats, miss = NA)
-trait <- rnorm(36)
-(out <- r2_Wf(genotypes, trait, family = gaussian, type = "msats"))
+
+(out <- r2_Wf(genotypes, bodyweight, family = gaussian, type = "msats"))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

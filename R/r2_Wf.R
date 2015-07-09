@@ -27,9 +27,10 @@
 #'        
 #' @examples
 #' data(mouse_msats)
+#' data(bodyweight)
 #' genotypes <- convert_raw(mouse_msats, miss = NA)
-#' trait <- rnorm(36)
-#' (out <- r2_Wf(genotypes, trait, family = gaussian, type = "msats"))
+#' 
+#' (out <- r2_Wf(genotypes, bodyweight, family = gaussian, type = "msats"))
 #' 
 #' 
 #' @export
@@ -81,7 +82,7 @@ r2_Wf <- function(genotypes, trait, family = gaussian,type = c("msats", "snps"))
         # g2
         g2 <- g2_fun(genotypes)[["g2"]]
         # according to the miller paper, negative g2´s are set to r2 = 0.
-        if (g2 < 0) return( r2_Wf_res <- 0)
+        # if (g2 < 0) return( r2_Wf_res <- 0)
         # squared correlation between inbreeding and the fitness trait
         r2_Wf_res <- (R2 * var(het, na.rm = TRUE)) / (g2 * mean(het, na.rm = TRUE)^2)
         # r2_Hf_res <- R2 / r2_Wf_res
