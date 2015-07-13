@@ -144,7 +144,7 @@ plot(g2_seals, main = "just another title", xlab = "identity disequilibrium (g2)
 Calculating $g_2$ based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. With 15,000 loci, the double summations take of the order of $0.2 * 10^9$ computation steps. [Hoffman:2014bxba] present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals. This formula is has been implemented in the `g2_snps` function, which again allows for permutation and bootstrapping in a reasonable amount of time.
 
 ```{r, results = "hide"}
-g2_mouse_snps <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95)
+g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95)
 ```
 
 Showing results and plotting as before.
@@ -211,7 +211,7 @@ $$\hat{r}^2(W, f) = \frac{\hat{r}^2(W, h)}{\hat{r}^2(h, f)}$$
 
 Other potentially informative parameters are the variance in heterozygosity $\sigma^2(sMLH)$ as well as the regression slope $\beta_{W,h}$ of fitness on heterozygosity.
 
-`inbreedR` makes it easy to calculate all of the above correlations for both SNP and microsatellite data. `inbreedR::` is used to illustrate which functions are coming from the package, but is not necessary as long as it has been loaded.
+`inbreedR` makes it easy to calculate all of the above correlations for both SNP and microsatellite data. `inbreedR::` is used to illustrate which functions are coming from the package, but is not necessary as long as the package itself is loaded.
 
 **Microsatellites**
 
