@@ -35,7 +35,7 @@ plot.inbreed <- function(x, ...) {
                 do.call(hist, (c(list(x = g2_boot, ylim = c(0, v.pos*1.5)), args1))) 
                 lines(x = c(g2, g2), y = c(0, v.pos * 1.15), lwd = 2.5, col = "black", lty = 5)
                 arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
-                       length=0.3, angle=90, code=3, lwd = 2.5, col = "black")
+                       length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
                 points(g2, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
                 legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("black"),
                        c("g2 with CI"), box.lty = 0)
@@ -121,7 +121,7 @@ plot.inbreed <- function(x, ...) {
             do.call(hist, (c(list(x = g2_boot, ylim = c(0, v.pos*1.5)), args1))) 
             lines(x = c(g2, g2), y = c(0, v.pos * 1.15), lwd = 2.5, col = "black", lty = 5)
             arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
-                   length=0.3, angle=90, code=3, lwd = 2.5, col = "black")
+                   length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
             points(g2, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
             legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("black"),
                    c("mean HHC with CI"), box.lty = 0)

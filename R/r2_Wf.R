@@ -76,12 +76,12 @@ r2_Wf <- function(genotypes, trait, family = gaussian,type = c("msats", "snps"))
         # Regression of trait on heterozygosity
         mod <- glm(trait ~ het, family = family)
         # beta coefficient
-        beta_Wf <- coef(mod)[2]
-        # R2 Wf
+        beta_Wh <- coef(mod)[2]
+        # R2 Wh
         R2 <- cor(trait,predict(mod))^2
         # g2
         g2 <- g2_fun(genotypes)[["g2"]]
-        # according to the miller paper, negative g2´s are set to r2 = 0.
+        # according to the miller paper, negative g2s are set to r2 = 0.
         # if (g2 < 0) return( r2_Wf_res <- 0)
         # squared correlation between inbreeding and the fitness trait
         r2_Wf_res <- (R2 * var(het, na.rm = TRUE)) / (g2 * mean(het, na.rm = TRUE)^2)
