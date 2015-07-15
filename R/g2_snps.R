@@ -6,7 +6,7 @@
 #' @param nboot number of bootstraps for CI
 #' @param CI confidence interval (default to 0.95)
 #'
-#' @details Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
+#' @details Calculates g2 from medium sized SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
 #'          the required format
 #'
 #' @return
