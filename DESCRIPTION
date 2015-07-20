@@ -8,14 +8,11 @@ Authors@R: c(
 Description: inbreedR provides functions around the framework of heterozygosity-fitness correlations and inbreeding from both 
              microsatellite and SNP datsets.
 Depends: 
-    R (>= 3.1.2)
+    R (>= 3.1.2),
+    stats (>= 3.2.1)
 License: GPL-2
 LazyData: true
 Imports:
-    stats (>= 3.2.1),
-    data.table (>= 1.9.4)
-Imports:
-    stats,
     data.table (>= 1.9.4)
 Suggests: 
     testthat,
