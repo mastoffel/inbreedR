@@ -11,9 +11,16 @@ Depends:
     R (>= 3.1.2)
 License: GPL-2
 LazyData: true
+<<<<<<< HEAD
 Imports:
     stats (>= 3.2.1),
     data.table (>= 1.9.4)
+||||||| merged common ancestors
+=======
+Imports:
+    stats,
+    data.table (>= 1.9.4)
+>>>>>>> 3dd6ce153ea17582f9b44441e076c8c9f4997bb8
 Suggests: 
     testthat,
     knitr
