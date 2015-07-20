@@ -35,7 +35,7 @@ An `inbreed` object is a list containing the following components:
 Estimating g2 from SNP data
 }
 \details{
-Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
+Calculates g2 from medium sized SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
          the required format
 }
 \examples{

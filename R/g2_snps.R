@@ -37,70 +37,102 @@
 #' data(mouse_snps)
 #' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
 #' 
-#'
+#' @import data.table
 #' @export
 
 g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { 
     
-        # transform to matrix
-        genotypes <- as.matrix(genotypes)
         # transpose for congruency with formulae in paper
-        origin <- t(genotypes)
-        # set all missings to -1
-        origin[(origin!=0) & (origin!=1)] <- -1
-        origin[is.na(origin)] <- -1
-
+        origin <- data.table::as.data.table(t(genotypes))
+        
+        rm(genotypes)
+        
+        # replace with -1
+        for (cols in names(origin)) {
+            data.table::set(origin, i=which((origin[[cols]] != 1L & origin[[cols]] != 0L) | 
+                                 is.na(origin[[cols]] != 0L)), j=cols, value= -1L)
+        }
+   
+        n <- ncol(origin) # number of individuals
+        l <- nrow(origin) # number of loci
+        
+        
         calc_g2 <- function(origin, perm = 1, boot = 1) {
-        # define matrix with 1 for missing and 0 for all others
-                m <- origin
-                m[m == 1] <- 0
-                m[m == -1] <- 1
-
-                # H matrix with 0 for -1
-                h <- origin
-                h[(h!=0)&(h!=1)] <- 0
-
-                n <- ncol(origin) # number of individuals
-                l <- nrow(origin) # number of loci
-
-                # vector with rowsums for missing data matrix
-                m_loc_temp <- rowSums(m, na.rm = TRUE)
-                m_loc <- m_loc_temp / n
-
-                # precalculating sums
-                rowsum_h <- rowSums(h, na.rm = TRUE)
-                colsum_h <- colSums(h, na.rm = TRUE)
-                sum_rowsum_squared <- sum(rowsum_h^2)
-                sum_colsum_squared <- sum(colsum_h^2)
-                h_sum <- sum(colsum_h, na.rm = TRUE)
-
-                # numerator
-                numer <- (n-1) * (sum_colsum_squared - h_sum) /
-                        (h_sum^2 - sum_rowsum_squared - sum_colsum_squared + h_sum)
-
-                M_temp <- rowsum_h * m / (1 - m_loc)
-                M_ind <- colSums(M_temp, na.rm = TRUE)^2 - colSums(M_temp^2, na.rm = TRUE)
-
-                M_hat <- (1/(n)) * sum(M_ind, na.rm = TRUE)
-                X_temp <- rowsum_h * m_loc / (1-m_loc)
-
-                a_hat_temp <- (sum(X_temp^2, na.rm = TRUE) - (sum(X_temp, na.rm = TRUE))^2)
-                a_hat <- (M_hat + a_hat_temp) / (h_sum^2 - sum_rowsum_squared)
-                g2_emp <- numer / (1 + a_hat) - 1
-
-                if (perm %% 5 == 0) {
-                        cat("\n", perm, "permutations done")
-                } else if (perm == nperm-1) {
-                        cat("\n", "### permutations finished ###")
-                }
-
-                if (boot %% 5 == 0) {
-                        cat("\n", boot, "bootstraps done")
-                } else if (boot == nboot-1) {
-                        cat("\n", "### bootstrapping finished ###")
-                }
-
-                g2_emp
+            
+            # H matrix with 0 for -1
+            h <- data.table::copy(origin)
+            
+            for (cols in seq_along(names(h))) {
+                data.table::set(h, i=which((h[[cols]] != 1L)  & (h[[cols]] != 0L)), 
+                                j=cols, value= 0L)
+            }
+            
+            # precalculating sums
+            rowsum_h <- rowSums(h, na.rm = TRUE)
+            colsum_h <- colSums(h, na.rm = TRUE)
+            sum_rowsum_squared <- sum(rowsum_h^2)
+            sum_colsum_squared <- sum(colsum_h^2)
+            h_sum <- sum(colsum_h, na.rm = TRUE)
+            
+            rm(h)
+            
+            # define matrix with 1 for missing and 0 for all others
+            m <- data.table::copy(origin)
+            
+            for (cols in seq_along(names(m))) {
+                data.table::set(m, i=which((m[[cols]] == 1L)), j=cols, value= 0L)
+                data.table::set(m, i=which((m[[cols]] == -1L)), j=cols, value= 1L)
+            }
+            
+            # vector with rowsums for missing data matrix
+            m_loc_temp <- rowSums(m, na.rm = TRUE)
+            m_loc <- m_loc_temp / n
+            
+            
+            # numerator
+            numer <- (n-1) * (sum_colsum_squared - h_sum) /
+                (h_sum^2 - sum_rowsum_squared - sum_colsum_squared + h_sum)
+            
+            # overwrite m
+            for (cols in seq_along(names(m))) {
+                data.table::set(m,
+                                j= cols, 
+                                value= (rowsum_h * m[[cols]]) / (1 - m_loc))
+            }
+            
+            # delete infinity
+            for (j in seq_along(names(m))) {
+                data.table::set(m, 
+                                i = which(is.infinite(m[[j]])), 
+                                j = j,
+                                value = NA)
+            }
+            
+            M_ind <- colSums(m, na.rm = TRUE)^2 - colSums(m^2, na.rm = TRUE)
+            
+            # delete missmat
+            rm(m)
+            
+            M_hat <- (1/(n)) * sum(M_ind, na.rm = TRUE)
+            X_temp <- rowsum_h * m_loc / (1-m_loc)
+            
+            a_hat_temp <- (sum(X_temp^2, na.rm = TRUE) - (sum(X_temp, na.rm = TRUE))^2)
+            a_hat <- (M_hat + a_hat_temp) / (h_sum^2 - sum_rowsum_squared)
+            g2_emp <- numer / (1 + a_hat) - 1
+            
+            if (perm %% 5 == 0) {
+                cat("\n", perm, "permutations done")
+            } else if (perm == nperm-1) {
+                cat("\n", "### permutations finished ###")
+            }
+            
+            if (boot %% 5 == 0) {
+                cat("\n", boot, "bootstraps done")
+            } else if (boot == nboot-1) {
+                cat("\n", "### bootstrapping finished ###")
+            }
+            
+            g2_emp
         }
         # g2 point estimate
         g2_emp <- calc_g2(origin)
@@ -112,8 +144,8 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         if (nperm > 0) {
                 #setkey(origin, eval(parse(names(origin)[1])))
                 perm_genotypes <- function(perm, origin) {
-                        # origin_perm <- origin[, lapply(.SD, sample)]
-                        origin_perm <- t(apply(origin, 1, sample)) # to optimize
+                        # columnwise permutation
+                        origin_perm <- origin[, lapply(.SD, sample)]
                         g2 <- calc_g2(origin_perm, perm = perm)
                 }
 
@@ -131,7 +163,10 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         if (nboot > 0) {
                 boot_genotypes <- function(boot, origin) {
                         # bootstrap over individuals in columns
-                        origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
+                       # origin_boot <- origin[, lapply(.SD, function(x) x <- sample(x, replace = TRUE))]
+                        # origin_boot <- data.table::copy(origin)
+                        # setcolorder(origin_boot, sample(1:ncol(origin), replace = TRUE))
+                        origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE), with = FALSE]
                         g2 <- calc_g2(origin_boot, boot = boot)
                 }
 
@@ -143,7 +178,7 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         res <- list(call=match.call(),
                     g2 = g2_emp, p_val = p_permut, g2_permut = g2_permut,
                     g2_boot = g2_boot, CI_boot = CI_boot, g2_se = g2_se,
-                    nobs = nrow(genotypes), nloc = ncol(genotypes))
+                    nobs = ncol(origin), nloc = nrow(origin))
         class(res) <- "inbreed"
         return(res)
 }
