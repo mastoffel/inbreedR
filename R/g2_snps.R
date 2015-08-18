@@ -156,7 +156,11 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
             g2 <- calc_g2(origin_perm, perm = perm)
         }
         
+        # 1 gets substracted due to the adding of the empirical value
+        if (nperm == 1) nperm <- 2 
+        
         if (nperm > 0 & parallel == FALSE) {
+                
                 g2_permut <- sapply(1:(nperm-1), perm_genotypes, origin)
                 p_permut <- sum(c(g2_emp, g2_permut) >= g2_emp) / nperm
                 perm <- 1
@@ -181,11 +185,14 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
         g2_se <- NA
         CI_boot <- c(NA,NA)
         
+        
         # bootstap function
         boot_genotypes <- function(boot, origin) {
             origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE), with = FALSE]
             g2 <- calc_g2(origin_boot, boot = boot)
         }
+        
+        if (nboot == 1) nboot <- 2
         
         if (nboot > 0 & parallel == FALSE) {
                 g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin))

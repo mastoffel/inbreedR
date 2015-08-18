@@ -133,6 +133,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                         g2 <- calc_g2(origin_perm, perm = perm)
 
                 }
+                if (nperm == 1) nperm <- 2
                 g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin = origin))
                 p_permut <- sum(g2_permut >= g2_emp) / nperm
                 perm <- 1
@@ -149,7 +150,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
                         origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
                         g2 <- calc_g2(origin_boot, boot = boot)
                 }
-
+                if (nboot == 1) nboot <- 2
                 g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin = origin))
                 g2_se <- sd(g2_boot)
                 CI_boot <- quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
