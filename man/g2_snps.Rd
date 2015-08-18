@@ -4,7 +4,8 @@
 \alias{g2_snps}
 \title{Estimating g2 from SNP data}
 \usage{
-g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95)
+g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE,
+  ncores = NULL)
 }
 \arguments{
 \item{genotypes}{data frame with individuals in rows and one locus per column,
@@ -15,6 +16,11 @@ containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
 \item{nboot}{number of bootstraps for CI}
 
 \item{CI}{confidence interval (default to 0.95)}
+
+\item{parallel}{Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized}
+
+\item{ncores}{Specify number of cores to use for parallelization. By default,
+       all available cores are used.}
 }
 \value{
 g2_snps returns an object of class "inbreed".
@@ -43,6 +49,9 @@ Calculates g2 from SNP datasets. Use convert_raw to convert raw genotypes (with 
 # low number of bootstraps and permutations for computational reasons.
 data(mouse_snps)
 (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
+
+# parallelized version
+(g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95, parallel = TRUE, ncores = 2))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com) &

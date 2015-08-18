@@ -5,6 +5,10 @@
 #' @param nperm number or permutations for calculating the p-value
 #' @param nboot number of bootstraps for CI
 #' @param CI confidence interval (default to 0.95)
+#' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
+#' @param ncores Specify number of cores to use for parallelization. By default,
+#'        all available cores are used.
+#' 
 #'
 #' @details Calculates g2 from SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
 #'          the required format
@@ -37,10 +41,13 @@
 #' data(mouse_snps)
 #' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
 #' 
+#' # parallelized version
+#' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95, parallel = TRUE, ncores = 2))
+#' 
 #' @import data.table
 #' @export
 
-g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) { 
+g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE, ncores = NULL) { 
     
         # transpose for congruency with formulae in paper
         origin <- data.table::as.data.table(t(genotypes))
@@ -140,39 +147,71 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         # permutation of genotypes
         g2_permut <- rep(NA, nperm)
         p_permut <- NA
-
-        if (nperm > 0) {
-                #setkey(origin, eval(parse(names(origin)[1])))
-                perm_genotypes <- function(perm, origin) {
-                        # columnwise permutation
-                        origin_perm <- origin[, lapply(.SD, sample)]
-                        g2 <- calc_g2(origin_perm, perm = perm)
-                }
-
+        
+        # permutation function
+        perm_genotypes <- function(perm, origin) {
+            # columnwise permutation
+            origin_perm <- origin[, lapply(.SD, sample)]
+            g2 <- calc_g2(origin_perm, perm = perm)
+        }
+        
+        if (nperm > 0 & parallel == FALSE) {
                 g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin))
                 p_permut <- sum(c(g2_emp, g2_permut) >= g2_emp) / nperm
                 perm <- 1
 
         }
-
+        
+        if (nperm > 0 & parallel == TRUE) {
+            if (is.null(ncores)) {
+                ncores <- parallel::detectCores()
+                warning("No core number specified: detectCores() is used to detect the number of \n cores on the local machine")
+            }
+            
+            cl <- parallel::makeCluster(ncores)
+            g2_permut <- c(g2_emp, parallel::parSapply(1:(nperm-1), perm_genotypes, origin))
+            parallel::stopCluster(cl)
+            p_permut <- sum(c(g2_emp, g2_permut) >= g2_emp) / nperm
+            perm <- 1
+        }
+        
         # bootstrap
         g2_boot <- rep(NA, nboot)
         g2_se <- NA
         CI_boot <- c(NA,NA)
         
-        if (nboot > 0) {
-                boot_genotypes <- function(boot, origin) {
-                        # bootstrap over individuals in columns
-                       # origin_boot <- origin[, lapply(.SD, function(x) x <- sample(x, replace = TRUE))]
-                        # origin_boot <- data.table::copy(origin)
-                        # setcolorder(origin_boot, sample(1:ncol(origin), replace = TRUE))
-                        origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE), with = FALSE]
-                        g2 <- calc_g2(origin_boot, boot = boot)
-                }
-
+        # bootstap function
+        boot_genotypes <- function(boot, origin) {
+            # bootstrap over individuals in columns
+            # origin_boot <- origin[, lapply(.SD, function(x) x <- sample(x, replace = TRUE))]
+            # origin_boot <- data.table::copy(origin)
+            # setcolorder(origin_boot, sample(1:ncol(origin), replace = TRUE))
+            origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE), with = FALSE]
+            g2 <- calc_g2(origin_boot, boot = boot)
+        }
+        
+        if (nboot > 0 & parallel == FALSE) {
                 g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin))
                 g2_se <- sd(g2_boot)
                 CI_boot <- quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+        }
+        
+        if (nboot > 0 & parallel == TRUE) {
+            if (is.null(ncores)) {
+                ncores <- parallel::detectCores()
+                warning("No core number specified: detectCores() is used to detect the number of \n cores on the local machine")
+            }
+            
+            # start cluster
+            cl <- parallel::makeCluster(ncores)
+            g2_boot <- c(g2_emp, parallel::parSapply(cl, 1:(nboot-1), boot_genotypes, origin))
+            parallel::stopCluster(cl)
+            g2_se <- sd(g2_boot)
+            CI_boot <- quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+            
+#             R.boot <- unname(parallel::parApply(cl, Ysim, 2, R.pe, groups = groups))
+#             parallel::stopCluster(cl)
+            
         }
 
         res <- list(call=match.call(),
