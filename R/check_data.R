@@ -34,17 +34,18 @@
 
 check_data <- function(genotypes, num_ind = NULL, num_loci = NULL) {
 
-genotypes <- as.data.frame(genotypes, stringsAsFactors = FALSE)
+genotypes <- data.table::as.data.table(genotypes)
+vals <- genotypes[, lapply(.SD, unique), ]
 
-if (length(unique(unlist(genotypes))) > 3) {
+if (length(unique(unlist(vals))) > 3) {
     stop("The data contains more than 3 elements (1, 0, missing)")
 }
 
-if (!(1 %in% (unique(unlist(genotypes))))) {
+if (!(1 %in% (unique(unlist(vals))))) {
     stop("Heterozygosity at a locus is not coded as 1")
 }
 
-if (!(0 %in% (unique(unlist(genotypes))))) {
+if (!(0 %in% (unique(unlist(vals))))) {
     stop("Homozygosity at a locus is not coded as 0")
 }
 

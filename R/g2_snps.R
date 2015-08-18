@@ -42,7 +42,7 @@
 #' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
 #' 
 #' # parallelized version
-#' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95, parallel = TRUE, ncores = 2))
+#' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95, parallel = TRUE, ncores = 4))
 #' 
 #' @import data.table
 #' @export
@@ -152,11 +152,12 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
         perm_genotypes <- function(perm, origin) {
             # columnwise permutation
             origin_perm <- origin[, lapply(.SD, sample)]
+            # origin_perm <- lapply(origin, sample)
             g2 <- calc_g2(origin_perm, perm = perm)
         }
         
         if (nperm > 0 & parallel == FALSE) {
-                g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin))
+                g2_permut <- sapply(1:(nperm-1), perm_genotypes, origin)
                 p_permut <- sum(c(g2_emp, g2_permut) >= g2_emp) / nperm
                 perm <- 1
 
@@ -169,7 +170,7 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
             }
             
             cl <- parallel::makeCluster(ncores)
-            g2_permut <- c(g2_emp, parallel::parSapply(1:(nperm-1), perm_genotypes, origin))
+            g2_permut <- parallel::parSapply(cl, 1:(nperm-1), perm_genotypes, origin)
             parallel::stopCluster(cl)
             p_permut <- sum(c(g2_emp, g2_permut) >= g2_emp) / nperm
             perm <- 1
@@ -182,10 +183,6 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
         
         # bootstap function
         boot_genotypes <- function(boot, origin) {
-            # bootstrap over individuals in columns
-            # origin_boot <- origin[, lapply(.SD, function(x) x <- sample(x, replace = TRUE))]
-            # origin_boot <- data.table::copy(origin)
-            # setcolorder(origin_boot, sample(1:ncol(origin), replace = TRUE))
             origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE), with = FALSE]
             g2 <- calc_g2(origin_boot, boot = boot)
         }

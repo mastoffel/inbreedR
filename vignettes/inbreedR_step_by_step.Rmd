@@ -21,7 +21,7 @@ The idea behind `inbreedR` is to provide a consistent framework for the analysis
 
 ## Installation
 
-The `inbreedR` package is not yet available on [CRAN](http://cran.r-project.org/). Therefore have to download the newest version from the developer platform [GitHub](https://github.com/mastoffel/inbreedR). At the moment, you should frequently download and reinstall it, as it is under heavy developement, although we are trying to keep the backwards compatibility. To download and install the package plus this vignette, run the following code (you need R version 3.1.2 or newer to run it).
+The `inbreedR` package is not yet available on [CRAN](http://cran.r-project.org/). Therefore have to download the newest version from the developer platform [GitHub](https://github.com/mastoffel/inbreedR). At the moment, you should frequently download and reinstall it, as it is under heavy developement, although we are trying to keep the backwards compatibility. To download and install the package plus this vignette, run the following code (you need R version 3.2.2 or newer to run it).
 
 ```{r, eval = FALSE}
 install.packages("devtools")
