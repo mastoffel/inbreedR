@@ -73,7 +73,7 @@ The dataframe itself should just contain the marker data, while rownames for ind
 mouse_msats_convert <- convert_raw(mouse_msats, miss = NA) 
 ```
 
-It is now converted to the working format, while missings are coded as -1. The same procedure works when
+It is now converted to the working format, while missings are coded internally as -1. The same procedure works when
 you have letters (e.g. basepairs "A", "T") in two adjacent columns instead of microsatellite length numbers.
 
 ## A short theory of heterozygosity-fitness correlations
@@ -86,9 +86,9 @@ There has been an ongoing debate of whether HFCs are caused by genome-wide or lo
 
 $$r(W,h) = r(h,f)r(W,f)$$
 
-A correlation between fitness (W) and heterozygosity (h) is the result of a simultaneous effect of inbreeding level (f) on h and W [@Slate:2004iibacadaeafagahaia, @Szulkin:2010dxbaca]. While typically just the HFC itself has been reported,  knowledge of the relationship between heterozygosity, fitness and inbreeding is necessary for the understanding of the underlying mechanism and has suggested to be standard practice in HFC studies [@kardos2014evaluating, @Szulkin:2010dxbaca].
+A correlation between fitness (**W**) and heterozygosity (**h**) is the result of a simultaneous effect of inbreeding level (**f**) on **h** and **W** [@Slate:2004iibacadaeafagahaia, @Szulkin:2010dxbaca]. While typically just the HFC itself has been reported,  knowledge of the relationship between heterozygosity, fitness and inbreeding is necessary for the understanding of the underlying mechanism and has suggested to be standard practice in HFC studies [@kardos2014evaluating, @Szulkin:2010dxbaca].
 
-@Szulkin:2010dxbaca derived the coefficient of determination between h and f as follows:
+@Szulkin:2010dxbaca derived the coefficient of determination between **h** and **f** as follows:
 
 $$\hat{r}^2(h, f) = \frac{\hat{g}_{2}}{\hat{\sigma}^2(h)}$$
 
@@ -98,7 +98,7 @@ $$\hat{r}^2(W, f) = \frac{\hat{r}^2(W, h)}{\hat{r}^2(h, f)}$$
 
 ### Estimating inbreeding level from genetic markers: identity disequilibrium 
 
-Without a pedigree, the inbreeding level (*f*) can be approximated by calculating the identity disequilibrium (ID), which is the correlation of heterozygosity (or homozygosity) across loci. Two statistics have been used to estimate ID, the heterozygosity-heterozygosity correlation (HHC) and the $g_2$ statistic [@Szulkin:2010dxbaca]. While both measures seem intuitively appropriate to measure whether heterozygosity is correlated across markers, $g_2$ is thought to both (1) avoid the problem of pseudoreplication and (2) to be appropriatly linked to HFC theory [@Szulkin:2010dxbaca]. 
+Without a pedigree, the inbreeding level (*f*) can be approximated by calculating the identity disequilibrium (ID), which is the correlation of heterozygosity (or homozygosity) across loci. Two statistics have been used to estimate ID: the heterozygosity-heterozygosity correlation (HHC) and the $g_2$ statistic [@Szulkin:2010dxbaca]. While both measures seem intuitively appropriate to measure whether heterozygosity is correlated across markers, $g_2$ is thought to both (1) avoid the problem of pseudoreplication and (2) to be appropriatly linked to HFC theory [@Szulkin:2010dxbaca]. 
 
 Measuring ID with $g_2$ thus provides the basis for estimating the strength of correlation between both heterozygosity and fitness with inbreeding [@kardos2014evaluating, @Szulkin:2010dxbaca, @Slate:2004iibacadaeafagahaia]. Other informative parameters are the variance in heterozygosity as well as the regression slope of fitness on heterozygosity. `inbreedR` makes it easy to calculate all of them for both SNP and microsatellite data.  
 
@@ -109,7 +109,7 @@ Several highly intercorrelated measures of heterozygosity have historically been
 
 ## Identity disequilibrium with $g_2$ and HHC
 
-The first task is usually to quantify the magnitude and significance of ID for the full sample. ID is os often used as a proxy for inbreeding, whereby two measures are frequently used. Both of them, i.e. the heterozygosity-heterozygosity correlation (HHC) as well as the $g_2$ statistic are part of the `inbreedR` package and are briefly explained in the following section.
+The first task is usually to quantify the magnitude and significance of ID for the full sample. ID is often used as a proxy for inbreeding, whereby two measures are frequently used. Both of them, i.e. the heterozygosity-heterozygosity correlation (HHC) as well as the $g_2$ statistic are part of the `inbreedR` package and are briefly explained in the following section.
 
 ### g2_microsats() for smaller datasets (microsatellites)
 
@@ -141,10 +141,32 @@ plot(g2_seals, main = "just another title", xlab = "identity disequilibrium (g2)
 
 ### g2_snps() function for larger datasets (SNPs)
 
-Calculating $g_2$ based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. With 15,000 loci, the double summations take of the order of $0.2 * 10^9$ computation steps. [Hoffman:2014bxba] present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals. This formula is has been implemented in the `g2_snps` function, which again allows for permutation and bootstrapping in a reasonable amount of time.
+Calculating $g_2$ based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. With 15,000 loci, the double summations take the order of $0.2 * 10^9$ computation steps. [Hoffman:2014bxba] present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals. This formula is has been implemented in the `g2_snps` function, which again allows for permutation and bootstrapping within a reasonable amount of time. This function uses uses data.table to optimize the computation speed.
 
 ```{r, results = "hide"}
 g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95)
+```
+
+#### parallelization of the g2_snps function
+
+For rather large datasets, each single permutation or bootstrap can take a couple of minutes. While parallelization can be useful already on a standard computer with 4 cores, thousands of permutations and bootstraps are better performed on a multicore server. `g2_snps` provides an argument for the usage of parallel computation.
+
+```{r, eval = FALSE}
+g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95, parallel = TRUE, ncores = 4)
+```
+
+The ncores argument is optional and makes it possible to specify the number of cores to be used.  
+
+The computation time difference becomes clear already on a standard computer:
+
+```{r, results = "hide"}
+time1 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95))
+time2 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95, parallel = TRUE, ncores = 4))
+```
+
+```{r}
+time1
+time2
 ```
 
 Showing results and plotting as before.
@@ -154,7 +176,6 @@ g2_mouse_snps
 plot(g2_mouse_snps)
 ```
 
-You might want to increase permutations and bootstraps for calculating p-values and CIs. For future versions of the package, we are planning to allow parallel computations for further speeding up the process.
 
 ### Heterozygosity-heterozygosity correlations (HHC)
 

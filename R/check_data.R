@@ -35,7 +35,7 @@
 check_data <- function(genotypes, num_ind = NULL, num_loci = NULL) {
 
 genotypes <- data.table::as.data.table(genotypes)
-vals <- genotypes[, lapply(.SD, unique), ]
+vals <- unique(unlist(lapply(genotypes, unique)))
 
 if (length(unique(unlist(vals))) > 3) {
     stop("The data contains more than 3 elements (1, 0, missing)")
