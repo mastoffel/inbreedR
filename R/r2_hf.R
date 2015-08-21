@@ -8,6 +8,10 @@
 #'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.
 #' @param nboot number re-draws per subset size.
 #' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
+#' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
+#' @param ncores Specify number of cores to use for parallelization. By default,
+#'        all available cores are used.
+#'        
 #' 
 #' @return 
 #' \item{call}{function call.}
@@ -16,6 +20,7 @@
 #' \item{summary_r2_hf}{r2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
 #' \item{nloc}{number of markers}
+#' 
 #' 
 #' @references
 #' Slate, J., David, P., Dodds, K. G., Veenvliet, B. A., Glass, B. C., Broad, T. E., & McEwan, J. C. (2004). 
@@ -30,13 +35,15 @@
 #' @examples
 #' data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats, miss = NA)
-#' (out <- r2_hf(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats"))
+#' (out <- r2_hf(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats", 
+#'               parallel = FALSE))
 #' plot(out)
 #' @export
 #'
 #'
 
-r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps")) {
+r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps"), 
+                  parallel = FALSE, ncores = NULL) {
     
 #     if (!(steps > 1) | (steps > ncol(genotypes))) {
 #         stop("steps have to be at least two and smaller or equal than the number of markers used")
@@ -107,16 +114,46 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
     
     # counter
     step_num <- 1
-    for (i in subsets) {
+    
+    if (parallel == FALSE) {
         
-        cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
-        if (step_num == length(subsets)) {
-            cat("\n", "Last subset!", sep = "")
+        for (i in subsets) {
+            
+            cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
+            if (step_num == length(subsets)) {
+                cat("\n", "Last subset!", sep = "")
+            }
+            all_r2[, step_num] <- replicate(nboot, calc_r2_sub(gtypes, i))
+            step_num <- step_num + 1
         }
         
-        all_r2[, step_num] <- replicate(nboot, calc_r2_sub(gtypes, i))
+    } else if (parallel == TRUE) {
         
-        step_num <- step_num + 1
+        # define with counter for parallelized bootstraps
+        calc_r2_sub_parallel <- function(boot_num, gtypes, i) {
+            loci <- sample((1:ncol(gtypes)), i)
+            out <- calc_r2(gtypes[, loci])
+            out
+        }
+        
+        for (i in subsets) {
+            
+            cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
+            if (step_num == length(subsets)) {
+                cat("\n", "Last subset!", sep = "")
+            }
+            
+            if (is.null(ncores)) {
+                ncores <- parallel::detectCores()-1
+                warning("No core number specified: detectCores() is used to detect the number of \n cores on the local machine")
+            }
+            
+            cl <- parallel::makeCluster(ncores)
+            all_r2[, step_num] <- parallel::parSapply(cl, 1:nboot, calc_r2_sub_parallel, gtypes, i)
+            parallel::stopCluster(cl)
+
+            step_num <- step_num + 1
+        }
     }
     
     # expected r2 per subset

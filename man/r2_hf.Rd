@@ -4,7 +4,8 @@
 \alias{r2_hf}
 \title{Expected r2 between standardized multilocus heterozygosity (h) and inbreeding level (f)}
 \usage{
-r2_hf(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps"))
+r2_hf(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps"),
+  parallel = FALSE, ncores = NULL)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
@@ -16,6 +17,11 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 \item{nboot}{number re-draws per subset size.}
 
 \item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
+
+\item{parallel}{Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized}
+
+\item{ncores}{Specify number of cores to use for parallelization. By default,
+       all available cores are used.}
 }
 \value{
 \item{call}{function call.}
@@ -31,7 +37,8 @@ Expected r2 between standardized multilocus heterozygosity (h) and inbreeding le
 \examples{
 data(mouse_msats)
 genotypes <- convert_raw(mouse_msats, miss = NA)
-(out <- r2_hf(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats"))
+(out <- r2_hf(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats",
+              parallel = FALSE))
 plot(out)
 }
 \author{

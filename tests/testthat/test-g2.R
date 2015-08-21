@@ -27,3 +27,4 @@ test_that("permutation worked", {
     expect_equal(sum(is.na(g2_microsats(msats, nperm = 20, nboot = 0, CI = 0.95)$p_val)), 0)
 })
 
+

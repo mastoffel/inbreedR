@@ -5,7 +5,7 @@
 \title{Identity disequilibrium (g2) for different marker subsets}
 \usage{
 resample_g2(genotypes, subsets = NULL, nboot = 100, type = c("msats",
-  "snps"))
+  "snps"), parallel = FALSE, ncores = NULL)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
@@ -17,6 +17,11 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 \item{nboot}{number re-draws per subset size.}
 
 \item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
+
+\item{parallel}{Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized}
+
+\item{ncores}{Specify number of cores to use for parallelization. By default,
+       all available cores are used.}
 }
 \value{
 \item{call}{function call.}

@@ -7,7 +7,10 @@
 #'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.
 #' @param nboot number re-draws per subset size.
 #' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
-#' 
+#' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
+#' @param ncores Specify number of cores to use for parallelization. By default,
+#'        all available cores are used.
+#'        
 #' @return 
 #' \item{call}{function call.}
 #' \item{g2_full}{g2 estimate for the full marker set}
@@ -32,7 +35,8 @@
 #'
 #'
 
-resample_g2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps")) {
+resample_g2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps"), 
+                        parallel = FALSE, ncores = NULL) {
     
     genotypes <- as.matrix(genotypes)
     
@@ -87,16 +91,45 @@ resample_g2 <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats"
     
     step_num <- 1
     
-    for (i in subsets) {
-        
-        cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
-        if (step_num == length(subsets)) {
-            cat("\n", "Last subset!", sep = "")
+    if (parallel == FALSE) {
+    
+        for (i in subsets) {
+            
+            cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
+            if (step_num == length(subsets)) {
+                cat("\n", "Last subset!", sep = "")
+            }
+            
+            all_g2[, step_num] <- replicate(nboot, sample_genotypes(genotypes, i))
+          
+            step_num <- step_num + 1
         }
+    
+    } else if (parallel == TRUE) {
+        # define with counter for parallelized bootstraps
+        sample_genotypes_parallel <- function(boot_num, genotypes, num_subsamp) {
+            ind <- sample(1:ncol(genotypes), num_subsamp)
+            g2 <- g2_fun(genotypes[, ind])[["g2"]]
+            g2
+        }
+        for (i in subsets) {
+            if (is.null(ncores)) {
+                ncores <- parallel::detectCores()-1
+                warning("No core number specified: detectCores() is used to detect the number of \n cores on the local machine")
+            }
+            
+            cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
+            if (step_num == length(subsets)) {
+                cat("\n", "Last subset!", sep = "")
+            }
+            
+            cl <- parallel::makeCluster(ncores)
+            all_g2[, step_num] <- parallel::parSapply(cl, 1:nboot, sample_genotypes_parallel, 
+                                                      genotypes, i)
+            parallel::stopCluster(cl)
         
-        all_g2[, step_num] <- replicate(nboot, sample_genotypes(genotypes, i))
-      
-        step_num <- step_num + 1
+            step_num <- step_num + 1
+        }
     }
     
     # variable names are number of markers used

@@ -72,14 +72,15 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         # numerator --------------------------------------------------------------------
         # pij entry says total amount of individuals that are heterozygous at locus i and locus j
         p <- h %*% t(h)
-        missmat_num <- matrix(rep(0, l*l), ncol = l)
+        numerator_mat <- matrix(rep(0, l*l), ncol = l)
         
         # predefine vec
         vec <- c(1:nrow(h))
         
         for (i in seq(1:nrow(h))){
             vec_temp <- vec[-i]
-            numerator_mat[i,  vec_temp] <- p[i, vec_temp]/ (n - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp])
+            numerator_mat[i,  vec_temp] <- p[i, vec_temp]/ (n - m_loc[i] - 
+                                                                m_loc[vec_temp] + m_ij[i,  vec_temp])
         }
         
         numerator <- sum(numerator_mat, na.rm = TRUE)
@@ -93,8 +94,8 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         
         for (i in seq(1:nrow(h))){
             vec_temp <- vec[-i]
-            denominator_mat[i, vec_temp] <- q[i, vec_temp]/((n - 1) * (n - m_loc[i] - m_loc[vec_temp]) + m_loc[i] * m_loc[vec_temp] -
-                                                 m_ij[i, vec_temp])
+            denominator_mat[i, vec_temp] <- q[i, vec_temp]/((n - 1) * (n - m_loc[i] - m_loc[vec_temp]) + 
+                                            m_loc[i] * m_loc[vec_temp] - m_ij[i, vec_temp])
         }
     
         denominator <- sum(denominator_mat, na.rm = TRUE)
