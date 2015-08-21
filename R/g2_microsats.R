@@ -44,124 +44,122 @@
 #'
 
 
-g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
+g2_microsats_new <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
+    
+    genotypes <- as.matrix(genotypes)
+    # transpose
+    origin <- (t(genotypes)) 
+    origin[(origin!=0) & (origin!=1)] <- -1
+    origin[is.na(origin)] <- -1
+    
+    calc_g2 <- function(origin, perm = 1, boot = 1) {
+        # define matrix with 1 for missing and 0 for all others
+        m <- origin
+        m[m == 1] <- 0
+        m[m == -1] <- 1
+        # H matrix with 0 for -1
+        h <- origin
+        h[(h!=0)&(h!=1)] <- 0
         
-        genotypes <- as.matrix(genotypes)
-        # transpose
-        origin <- (t(genotypes)) 
-        origin[(origin!=0) & (origin!=1)] <- -1
-        origin[is.na(origin)] <- -1
-
-        calc_g2 <- function(origin, perm = 1, boot = 1) {
-                # define matrix with 1 for missing and 0 for all others
-                m <- origin
-                m[m == 1] <- 0
-                m[m == -1] <- 1
-                # H matrix with 0 for -1
-                h <- origin
-                h[(h!=0)&(h!=1)] <- 0
-                
-                n <- ncol(origin) # number of individuals
-                l <- nrow(origin) # number of loci
-
-                # mij: proportion of individuals missing on i and j ?s locus
-                m_ij <- (m %*% t(m))
-                # vector with rowsums 
-                m_loc <- rowSums(m)
-
-                # numerator --------------------------------------------------------------------
-                # pij entry says total amount of individuals that are heterozygous at locus locus i and locus j
-                p <- h %*% t(h)
-                missmat_num <- matrix(rep(0, l*l), ncol = l)
-
-                # predefine vec
-                vec <- c(1:nrow(h))
-                
-                for (i in seq(1:nrow(h))){
-                    vec_temp <- vec[-i]
-                    missmat_num[i,  vec_temp] <- 1/ (n - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp])
-                }
-                numerator_mat <- p * missmat_num
-
-                numerator <- sum(numerator_mat, na.rm = TRUE)
-                
-                # denominator-------------------------------------------------------------------
-                missmat_denom <- matrix(rep(0, l*l), ncol = l)
-
-                for (i in seq(1:nrow(h))){
-                    vec_temp <- vec[-i]
-                    missmat_denom[i, vec_temp] <- 1/((n - 1) * (n - m_loc[i] - m_loc[vec_temp]) + m_loc[i] * m_loc[vec_temp] -
-                                                         m_ij[i, vec_temp])
-                }
-                
-                nullmat <- matrix(rep(1, n*n), ncol=n)
-                diag(nullmat) <- 0
-                q <- h %*% (nullmat %*% t(h))
-
-                denominator_mat <-  missmat_denom * q
-                denominator <- sum(denominator_mat, na.rm = TRUE)
-
-                g2_emp <- (numerator / denominator) - 1
-
-                if (perm %% 20 == 0) {
-                        cat("\n", perm, "permutations done")
-                } else if (perm == nperm-1) {
-                        cat("\n", "### permutations finished ###")
-                }
-
-                if (boot %% 20 == 0) {
-                        cat("\n", boot, "bootstraps done")
-                } else if (boot == nboot-1) {
-                        cat("\n", "### bootstrapping finished, hells yeah!! ###")
-                }
-
-                g2_emp
+        n <- ncol(origin) # number of individuals
+        l <- nrow(origin) # number of loci
+        
+        # mij: individuals missing on i and j ?s locus
+        m_ij <- (m %*% t(m))
+        # missings per locus
+        m_loc <- rowSums(m)
+        
+        # numerator --------------------------------------------------------------------
+        # pij entry says total amount of individuals that are heterozygous at locus i and locus j
+        p <- h %*% t(h)
+        missmat_num <- matrix(rep(0, l*l), ncol = l)
+        
+        # predefine vec
+        vec <- c(1:nrow(h))
+        
+        for (i in seq(1:nrow(h))){
+            vec_temp <- vec[-i]
+            numerator_mat[i,  vec_temp] <- p[i, vec_temp]/ (n - m_loc[i] - m_loc[vec_temp] + m_ij[i,  vec_temp])
         }
-
-        # g2 point estimate
-        g2_emp <- calc_g2(origin)
-
-        # permutation of genotypes
-        g2_permut <- rep(NA, nperm)
-        p_permut <- NA
-
-        if (nperm > 0) {
-                #setkey(origin, eval(parse(names(origin)[1])))
-                perm_genotypes <- function(perm, origin) {
-                        # origin_perm <- origin[, lapply(.SD, sample)]
-                        origin_perm <- t(apply(origin, 1, sample)) # to optimize
-                        g2 <- calc_g2(origin_perm, perm = perm)
-
-                }
-                if (nperm == 1) nperm <- 2
-                g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin = origin))
-                p_permut <- sum(g2_permut >= g2_emp) / nperm
-                perm <- 1
-
+        
+        numerator <- sum(numerator_mat, na.rm = TRUE)
+        
+        # denominator-------------------------------------------------------------------
+        denominator_mat <- matrix(rep(0, l*l), ncol = l)
+        
+        nullmat <- matrix(rep(1, n*n), ncol=n)
+        diag(nullmat) <- 0
+        q <- h %*% (nullmat %*% t(h))
+        
+        for (i in seq(1:nrow(h))){
+            vec_temp <- vec[-i]
+            denominator_mat[i, vec_temp] <- q[i, vec_temp]/((n - 1) * (n - m_loc[i] - m_loc[vec_temp]) + m_loc[i] * m_loc[vec_temp] -
+                                                 m_ij[i, vec_temp])
         }
-        g2_boot <- rep(NA, nboot)
-        g2_se <- NA
-        CI_boot <- c(NA,NA)
-
-        if (nboot > 0) {
-
-                boot_genotypes <- function(boot, origin) {
-                        # bootstrap over individuals in columns
-                        origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
-                        g2 <- calc_g2(origin_boot, boot = boot)
-                }
-                if (nboot == 1) nboot <- 2
-                g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin = origin))
-                g2_se <- sd(g2_boot)
-                CI_boot <- quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+    
+        denominator <- sum(denominator_mat, na.rm = TRUE)
+        
+        g2_emp <- (numerator / denominator) - 1
+        
+        if (perm %% 20 == 0) {
+            cat("\n", perm, "permutations done")
+        } else if (perm == nperm-1) {
+            cat("\n", "### permutations finished ###")
         }
-
-        res <- list(call=match.call(),
-                    g2 = g2_emp, p_val = p_permut, g2_permut = g2_permut,
-                    g2_boot = g2_boot, CI_boot = CI_boot, g2_se = g2_se,
-                    nobs = nrow(genotypes), nloc = ncol(genotypes))
-
-        class(res) <- "inbreed"
-        return(res)
-
+        
+        if (boot %% 20 == 0) {
+            cat("\n", boot, "bootstraps done")
+        } else if (boot == nboot-1) {
+            cat("\n", "### bootstrapping finished, hells yeah!! ###")
+        }
+        
+        g2_emp
+    }
+    
+    # g2 point estimate
+    g2_emp <- calc_g2(origin)
+    
+    # permutation of genotypes
+    g2_permut <- rep(NA, nperm)
+    p_permut <- NA
+    
+    if (nperm > 0) {
+        #setkey(origin, eval(parse(names(origin)[1])))
+        perm_genotypes <- function(perm, origin) {
+            # origin_perm <- origin[, lapply(.SD, sample)]
+            origin_perm <- t(apply(origin, 1, sample)) # to optimize
+            g2 <- calc_g2(origin_perm, perm = perm)
+            
+        }
+        if (nperm == 1) nperm <- 2
+        g2_permut <- c(g2_emp, sapply(1:(nperm-1), perm_genotypes, origin = origin))
+        p_permut <- sum(g2_permut >= g2_emp) / nperm
+        perm <- 1
+        
+    }
+    g2_boot <- rep(NA, nboot)
+    g2_se <- NA
+    CI_boot <- c(NA,NA)
+    
+    if (nboot > 0) {
+        
+        boot_genotypes <- function(boot, origin) {
+            # bootstrap over individuals in columns
+            origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
+            g2 <- calc_g2(origin_boot, boot = boot)
+        }
+        if (nboot == 1) nboot <- 2
+        g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin = origin))
+        g2_se <- sd(g2_boot)
+        CI_boot <- quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+    }
+    
+    res <- list(call=match.call(),
+                g2 = g2_emp, p_val = p_permut, g2_permut = g2_permut,
+                g2_boot = g2_boot, CI_boot = CI_boot, g2_se = g2_se,
+                nobs = nrow(genotypes), nloc = ncol(genotypes))
+    
+    class(res) <- "inbreed"
+    return(res)
+    
 }

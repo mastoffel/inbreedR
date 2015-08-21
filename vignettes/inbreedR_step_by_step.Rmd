@@ -1,6 +1,6 @@
 ---
 title: "inbreedR step by step"
-author: "Martin A. Stoffel"
+author: "Martin A. Stoffel, Mareike Esser, Patrice David, Joe Hoffman"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: bibliography.bib
@@ -21,7 +21,7 @@ The idea behind `inbreedR` is to provide a consistent framework for the analysis
 
 ## Installation
 
-The `inbreedR` package is not yet available on [CRAN](http://cran.r-project.org/). Therefore have to download the newest version from the developer platform [GitHub](https://github.com/mastoffel/inbreedR). At the moment, you should frequently download and reinstall it, as it is under heavy developement, although we are trying to keep the backwards compatibility. To download and install the package plus this vignette, run the following code (you need R version 3.2.2 or newer to run it).
+The `inbreedR` package is not yet available on [CRAN](http://cran.r-project.org/). Therefore you have to download the newest version from the developer platform [GitHub](https://github.com/mastoffel/inbreedR). At the moment it is recommended that you frequently download and reinstall it, as it is under heavy development. To download and install the package plus this vignette, run the following code (you need R version 3.2.2 or newer to run it).
 
 ```{r, eval = FALSE}
 install.packages("devtools")
@@ -116,26 +116,26 @@ The first task is usually to quantify the magnitude and significance of ID for t
 **$g_2$** measures the excess of double heterozygote loci in a population. The original formula by [@david2007reliable] is implemented in the `g2_microsats` function, which also allows calculation of a confidence interval based on bootstrapping (nboot) and a p-value based on permutation tests (nperm). (At the moment, there is a slight deviation to the results in the RMES software)
 
 ```{r, results = "hide"}
-g2_seals <- g2_microsats(mouse_msats_convert, nperm = 100, nboot = 100, CI = 0.95)
+g2_mouse <- g2_microsats(mouse_msats_convert, nperm = 100, nboot = 100, CI = 0.95)
 ```
 
 Just printing the object gives a summary on the results.
 
 ```{r}
-g2_seals
+g2_mouse
 ```
 
 Plotting the object gives a distribution of the bootstrapped values and a confidence interval.
 
 ```{r}
-plot(g2_seals)
+plot(g2_mouse)
 ```
 
 The plots are also customisable to a certain degree. Often you may like to have a more fine or wide scaled
 bar pattern or different labels. Just pass any argument that you can also pass to the `hist()` function. See `?hist`.
 
 ```{r}
-plot(g2_seals, main = "just another title", xlab = "identity disequilibrium (g2)", 
+plot(g2_mouse, main = "just another title", xlab = "identity disequilibrium (g2)", 
      breaks = 5, col = "red")
 ```
 
@@ -159,12 +159,12 @@ The ncores argument is optional and makes it possible to specify the number of c
 
 The computation time difference becomes clear already on a standard computer:
 
-```{r, results = "hide"}
+```{r, results = "hide", eval = FALSE}
 time1 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95))
 time2 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95, parallel = TRUE, ncores = 4))
 ```
 
-```{r}
+```{r, eval = FALSE}
 time1
 time2
 ```
@@ -292,7 +292,6 @@ kable(df, digits=3, caption="Descriptors of HFCs",
                     "$\\hat{r}^2_{Wf}$"))
 
 ```
-  
   
   
 ## Expected power to detect HFCs and sensitivity towards the number of markers

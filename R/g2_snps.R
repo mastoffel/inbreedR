@@ -41,8 +41,11 @@
 #' data(mouse_snps)
 #' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
 #' 
-#' # parallelized version
-#' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95, parallel = TRUE, ncores = 4))
+#' # parallelized version for more bootstraps or permutations
+#' \dontrun{
+#' (g2_mouse <- g2_snps(mouse_snps, nperm = 1000, nboot = 1000, 
+#'                      CI = 0.95, parallel = TRUE, ncores = 4))
+#' }
 #' 
 #' @import data.table
 #' @export
