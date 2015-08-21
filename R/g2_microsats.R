@@ -44,7 +44,7 @@
 #'
 
 
-g2_microsats_new <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
+g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
     
     genotypes <- as.matrix(genotypes)
     # transpose
