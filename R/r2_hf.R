@@ -3,14 +3,15 @@
 #' 
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
-#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
-#' @param subsets a vector specifying the sizes of subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.
-#' @param nboot number re-draws per subset size.
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
+#' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
+#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. This analysis can be 
+#'        used to 
+#' @param nboot number re-draws per subset.
 #' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
 #' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
 #' @param ncores Specify number of cores to use for parallelization. By default,
-#'        all available cores are used.
+#'        all available cores but one are used.
 #'        
 #' 
 #' @return 

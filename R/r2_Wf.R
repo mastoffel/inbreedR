@@ -1,7 +1,7 @@
 #' Expected r2 between inbreeding level (f) and fitness (W)
 #'
-#' @param genotypes data.frame or matrix with individuals in rows and loci in columns,
-#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#' @param genotypes data.frame with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
 #' @param trait vector of any type which can be specified in R's glm() function
 #' @param family distribution of the trait. Default is gaussian. For other distributions, just naming the distribution
 #'        (e.g. binomial) will use the default link function (see ?family). Specifying another

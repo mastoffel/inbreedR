@@ -45,28 +45,4 @@ test_that("Converted data contains just 1, 0 and -1", {
 
 
 
-# # construct datasets
-# library(dplyr)
-# raw_data <- sample(c(1,0), 10000, replace = TRUE, prob = c(0.4,0.7))
-# genotypes <- as.data.frame(matrix(raw_data, ncol = 1000))
-# # genotypes_alleles <- as.data.frame(matrix(data = NA, nrow = nrow(genotypes), ncol = ncol(genotypes) * 2))
-# 
-# genotypes_alleles <- as.data.frame(matrix(data = NA, ncol = ncol(genotypes) * 2, nrow = nrow(genotypes)))
-# second_col <- vector(1:ncol(genotypes_alleles), by = 2)
-# 
-# 
-# make_alleles <- function(locus) {
-#     locus <- as.matrix(locus)
-#     alleles <- matrix(rep(locus, 2), ncol = 2)
-#     # create heterozygotes
-#     alleles[alleles[,1] == 1, 1] <- 2
-#     return(as.data.frame(alleles))
-# }
-# 
-# out <- apply(genotypes, 2, make_alleles)
-# genotypes_alleles <- do.call(cbind, t(apply(genotypes, 2, make_alleles)))
-# 
-# genotypes_alleles <- matrix(unlist(lapply(genotypes, make_alleles)), ncol = ncol(genotypes) * 2)
-# 
-# out <- convert_raw(genotypes_alleles , miss = NA)
 

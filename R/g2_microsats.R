@@ -1,13 +1,15 @@
 #' Estimating g2 from microsatellite data
 #'
-#' @param genotypes data frame with individuals in rows and one locus per column,
-#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#' @param genotypes data.frame with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
 #' @param nperm Number of permutations for testing the hypothesis that the empirical g2-value is higher than by chance
 #' @param nboot Number of bootstraps for estimating a confidence interval
 #' @param CI Confidence interval (default to 0.95)
 #'
-#' @details Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
-#'          the required format
+#' @details Calculates g2 from smaller datasets. The underlying formula is compationally expensive 
+#'          due to double summations over all paits of loci (see David et al. 2007). 
+#'          Use convert_raw to convert raw genotypes (with 2 columns per locus) into
+#'          the required format.
 #'          
 #' @return
 #' g2_microsats returns an object of class "inbreed".

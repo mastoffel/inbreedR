@@ -14,6 +14,7 @@
 #' \link{HHC}
 #' \link{sMLH}
 #' \link{plot.inbreed}
+#' \link{print.inbreed}
 #' 
 #'
 #' @details 

@@ -4,13 +4,13 @@
 #' Heterozygosity at a given locus should be coded as 1 and Homozygosity as 0. Missing values
 #' can be coded as NA or any number (other than 0 or 1).
 #'
-#' @param genotypes data frame with individuals in rows and one locus per column,
-#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#' @param genotypes data.frame with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
 #' @param num_ind Number of individuals
 #' @param num_loci Number of loci / markers
 #'
 #' @details Checks that (1) the genotype data just contains 3 elements, which is 0 for homozygote,
-#'          1 for heterozygote and either NA or any number (except 0 and 1) for missing data, (2) the number 
+#'          1 for heterozygote and NA for missing data, (2) the number 
 #'          of individuals corresponds to the number of rows and the number of loci corresponds to the
 #'          number of columns, (3) the data type is numeric.
 #'      .
@@ -47,6 +47,10 @@ if (!(1 %in% (unique(unlist(vals))))) {
 
 if (!(0 %in% (unique(unlist(vals))))) {
     stop("Homozygosity at a locus is not coded as 0")
+}
+
+if (!(NA %in% (unique(unlist(vals))))) {
+    stop("Missing values have to be coded as NA")
 }
 
 if (!is.null(num_ind)) {

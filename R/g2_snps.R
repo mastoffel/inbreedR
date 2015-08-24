@@ -1,7 +1,7 @@
 #' Estimating g2 from SNP data
 #'
-#' @param genotypes data frame with individuals in rows and one locus per column,
-#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#' @param genotypes data.frame with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
 #' @param nperm number or permutations for calculating the p-value
 #' @param nboot number of bootstraps for CI
 #' @param CI confidence interval (default to 0.95)

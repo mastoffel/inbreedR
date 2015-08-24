@@ -5,7 +5,7 @@
 #' between the resulting sMLH values is calculated.
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
-#'        containing genotypes coded as 0 (homozygote) and 1 (heterozygote)
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
 #' @param niter number of iterations, i.e. splittings of the dataset 
 #' @param CI calculates a CI around the mean het-het correlation
 #'

@@ -2,23 +2,23 @@
 % Please edit documentation in R/resample_g2.R
 \name{resample_g2}
 \alias{resample_g2}
-\title{Identity disequilibrium (g2) for different marker subsets}
+\title{Identity disequilibrium (g2) for different subsets of markers}
 \usage{
 resample_g2(genotypes, subsets = NULL, nboot = 100, type = c("msats",
   "snps"), parallel = FALSE, ncores = NULL)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
 \item{subsets}{a vector specifying the sizes of subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
 be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.}
 
-\item{nboot}{number re-draws per subset size.}
+\item{nboot}{number of re-draws per subset size.}
 
 \item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
 
-\item{parallel}{Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized}
+\item{parallel}{Default is FALSE. If TRUE, resamplings are parallelized}
 
 \item{ncores}{Specify number of cores to use for parallelization. By default,
        all available cores are used.}
@@ -32,7 +32,7 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 \item{nloc}{number of markers}
 }
 \description{
-Identity disequilibrium (g2) for different marker subsets
+Identity disequilibrium (g2) for different subsets of markers
 }
 \examples{
 data(mouse_msats)

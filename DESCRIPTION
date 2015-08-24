@@ -16,6 +16,6 @@ Imports:
     data.table (>= 1.9.4),
     parallel (>= 3.2.1)
 Suggests: 
-    testthat,
+    testthat (>= 0.10.0),
     knitr
 VignetteBuilder: knitr

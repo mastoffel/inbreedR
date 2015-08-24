@@ -8,8 +8,8 @@ g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE,
   ncores = NULL)
 }
 \arguments{
-\item{genotypes}{data frame with individuals in rows and one locus per column,
-containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+\item{genotypes}{data.frame with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
 \item{nperm}{number or permutations for calculating the p-value}
 

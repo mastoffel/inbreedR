@@ -7,8 +7,8 @@
 check_data(genotypes, num_ind = NULL, num_loci = NULL)
 }
 \arguments{
-\item{genotypes}{data frame with individuals in rows and one locus per column,
-containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+\item{genotypes}{data.frame with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
 \item{num_ind}{Number of individuals}
 
@@ -24,7 +24,7 @@ can be coded as NA or any number (other than 0 or 1).
 }
 \details{
 Checks that (1) the genotype data just contains 3 elements, which is 0 for homozygote,
-         1 for heterozygote and either NA or any number (except 0 and 1) for missing data, (2) the number
+         1 for heterozygote and NA for missing data, (2) the number
          of individuals corresponds to the number of rows and the number of loci corresponds to the
          number of columns, (3) the data type is numeric.
      .

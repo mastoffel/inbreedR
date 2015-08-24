@@ -18,6 +18,7 @@ inbreedR contains the following functions:
 \link{HHC}
 \link{sMLH}
 \link{plot.inbreed}
+\link{print.inbreed}
 }
 \details{
 A correlation between heterozygosity (h) and fitness (W) requires a simultaneous effect of inbreeding level (f) on both of them.

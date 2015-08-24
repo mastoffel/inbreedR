@@ -7,8 +7,8 @@
 g2_microsats(genotypes, nperm = 0, nboot = 0, CI = 0.95)
 }
 \arguments{
-\item{genotypes}{data frame with individuals in rows and one locus per column,
-containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+\item{genotypes}{data.frame with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
 \item{nperm}{Number of permutations for testing the hypothesis that the empirical g2-value is higher than by chance}
 
@@ -36,8 +36,10 @@ An `inbreed` object is a list containing the following components:
 Estimating g2 from microsatellite data
 }
 \details{
-Calculates g2 from big SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
-         the required format
+Calculates g2 from smaller datasets. The underlying formula is compationally expensive
+         due to double summations over all paits of loci (see David et al. 2007).
+         Use convert_raw to convert raw genotypes (with 2 columns per locus) into
+         the required format.
 }
 \examples{
 data(mouse_msats)
