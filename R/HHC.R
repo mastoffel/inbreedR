@@ -24,7 +24,7 @@
 #'        
 #' @examples
 #' data(mouse_msats)
-#' genotypes <- convert_raw(mouse_msats, miss = NA)
+#' genotypes <- convert_raw(mouse_msats)
 #' (out <- HHC(genotypes, niter = 100, CI = 0.95))
 #'
 #' @export

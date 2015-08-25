@@ -28,7 +28,7 @@
 #' @examples
 #' data(mouse_msats)
 #' data(bodyweight)
-#' genotypes <- convert_raw(mouse_msats, miss = NA)
+#' genotypes <- convert_raw(mouse_msats)
 #' 
 #' (out <- r2_Wf(genotypes, bodyweight, family = gaussian, type = "msats"))
 #' 

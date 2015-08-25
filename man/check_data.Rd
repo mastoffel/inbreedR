@@ -32,7 +32,7 @@ Checks that (1) the genotype data just contains 3 elements, which is 0 for homoz
 \examples{
 data(mouse_msats)
 # tranform raw genotypes into 0/1 format
-genotypes <- convert_raw(mouse_msats, miss = NA)
+genotypes <- convert_raw(mouse_msats)
 # check data
 check_data(genotypes, num_ind = 36, num_loci = 12)
 }

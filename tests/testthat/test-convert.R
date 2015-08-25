@@ -23,20 +23,17 @@ data_CHAR <- m
 
 # convert raw
 # different missing data
-data_conv_NA <- convert_raw(data_NA, miss = NA)
-data_conv_NUM <- convert_raw(data_NUM, miss = -1)
+data_conv_NA <- convert_raw(data_NA)
 # Characters as genotypes
-data_conv_CHAR <- convert_raw(data_CHAR, miss = NA)
+data_conv_CHAR <- convert_raw(data_CHAR)
 
 test_that("Converted data contains half the number columns", {
-    expect_equal(ncol(convert_raw(data_NA, miss = NA)), ncol(data_NA)/2)
-    expect_equal(ncol(convert_raw(data_NUM, miss = -1)), ncol(data_NUM)/2)
-    expect_equal(ncol(convert_raw(data_CHAR, miss = NA)), ncol(data_CHAR)/2)
+    expect_equal(ncol(convert_raw(data_NA)), ncol(data_NA)/2)
+    expect_equal(ncol(convert_raw(data_CHAR)), ncol(data_CHAR)/2)
 })
 
 test_that("Converted data contains just 1, 0 and -1", {
     expect_equal(sum(!((data_conv_NA == 1) | (data_conv_NA == 0) | (is.na(data_conv_NA)))), 0)
-    expect_equal(sum(!((data_conv_NUM == 1) | (data_conv_NUM == 0) | (is.na(data_conv_NUM)))), 0)
     expect_equal(sum(!((data_conv_CHAR == 1) | (data_conv_CHAR == 0) | (is.na(data_conv_CHAR)))), 0)
 })
 

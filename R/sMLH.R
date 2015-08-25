@@ -19,7 +19,7 @@
 #'        
 #' @examples
 #' data(mouse_msats)
-#' genotypes <- convert_raw(mouse_msats, miss = NA)
+#' genotypes <- convert_raw(mouse_msats)
 #' het <- sMLH(genotypes)
 #'
 #' @export

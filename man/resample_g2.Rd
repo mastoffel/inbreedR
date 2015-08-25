@@ -36,7 +36,7 @@ Identity disequilibrium (g2) for different subsets of markers
 }
 \examples{
 data(mouse_msats)
-genotypes <- convert_raw(mouse_msats, miss = NA)
+genotypes <- convert_raw(mouse_msats)
 (out <- resample_g2(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats"))
 plot(out)
 }

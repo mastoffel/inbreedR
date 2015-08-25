@@ -13,7 +13,7 @@ convert_raw(genotypes)
 }
 \value{
 Data.frame object with 0 (homozygote), 1 (heterozygote) and NA (missing data).
-        Each locus is thus represented by one column.
+        Each locus is a column and each individual is a row.
 }
 \description{
 Turns raw genotype data into 0 (homozygote), 1 (heterozygote) and NA (missing), which is the working format for

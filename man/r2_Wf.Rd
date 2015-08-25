@@ -7,8 +7,8 @@
 r2_Wf(genotypes, trait, family = gaussian, type = c("msats", "snps"))
 }
 \arguments{
-\item{genotypes}{data.frame or matrix with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote) and 1 (heterozygote)}
+\item{genotypes}{data.frame with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
 \item{trait}{vector of any type which can be specified in R's glm() function}
 
@@ -31,7 +31,7 @@ Expected r2 between inbreeding level (f) and fitness (W)
 \examples{
 data(mouse_msats)
 data(bodyweight)
-genotypes <- convert_raw(mouse_msats, miss = NA)
+genotypes <- convert_raw(mouse_msats)
 
 (out <- r2_Wf(genotypes, bodyweight, family = gaussian, type = "msats"))
 }

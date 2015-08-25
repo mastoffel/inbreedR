@@ -158,17 +158,14 @@ g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95, parall
 
 The ncores argument is optional and makes it possible to specify the number of cores to be used.  
 
-The computation time difference becomes clear already on a standard computer:
+The computation time difference becomes clear already on a standard computer. When `inbreedR` is loaded,
+you can try the following on you computer:
 
-```{r, results = "hide"}
+```{r, results = "hide", eval = FALSE}
 time1 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95))
 time2 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95, parallel = TRUE, ncores = 4))
 ```
 
-```{r}
-time1
-time2
-```
 
 For a summary of the results and a plot, just follow the same procedure as with the g2_microsat function.
 
@@ -200,7 +197,7 @@ plot(hhc_microsats, main = "HHC distribution")
 
 ## sMLH
 Several highly intercorrelated measures of heterozygosity have historically been used in HFC studies, while `inbreedR` solely relies on standardized multilocus heterozygosity (sMLH) [@coltman1999parasite]. Although all heterozygosity measures are usually highly intercorrelated, sMLH is in general the most robust measure [@Chapman:2009vmba]. This has the reason that it is not based on allel frequencies which makes it less sensitive towards scoring errors and null alleles than other measures [@Szulkin:2010dxbaca]. Besides this robustness, it is one of the most commonly used measures [@kardos2014evaluating].  
-The package provides a computationally optimized function for the calculation of sMLH [@Coltman:1999wxba]), which can be used within bootstrapping and permutation tests also for large datasets. The function simply takes the genotypes in the `inbreedR` working format as input and gives a simple vector output with each individual´s sMLH.
+The package provides a computationally optimized function for the calculation of sMLH [@Coltman:1999wxba]), which can be used within bootstrapping and permutation tests also for large datasets. The function simply takes the genotypes in the `inbreedR` working format as input and gives a simple vector output with each individual's sMLH.
 ```{r}
 het <- sMLH(mouse_snps)
 hist(het)
@@ -312,7 +309,7 @@ g2_devel <- resample_g2(mouse_msats_convert, subsets = c(2,4,6,8,10,12),
 g2_devel
 ```
 
-A typical way to show the $g_2$ distributions for different subsets of markers are boxplots. `inbreedR` provides a simple means of plotting am `inbreed` object.
+A typical way to show the $g_2$ distributions for different subsets of markers are boxplots.  Using the plot function on `inbreed` objects that involve different sized subsets shows boxplots.
 
 ```{r}
 plot(g2_devel)

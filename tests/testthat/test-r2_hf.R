@@ -1,9 +1,9 @@
 library(inbreedR)
-context("r2_het_inbreeding")
+context("r2_hf")
 
 # loading microsat data
 data(mouse_msats)
-msats <- convert_raw(mouse_msats, miss = NA)
+msats <- convert_raw(mouse_msats)
 
 # loading snp data
 data(mouse_snps)
