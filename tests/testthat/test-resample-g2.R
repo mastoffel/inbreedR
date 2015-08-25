@@ -1,4 +1,3 @@
-library(inbreedR)
 context("resample_g2")
 
 # loading microsat data
@@ -27,7 +26,6 @@ test_that("subset specifications work", {
 })
 
 test_that("subset exceeds marker number throws error", {
-
     expect_error(resample_g2(msats, nboot = 2, 
                             subsets = c(2, 4, 6, 1000), type = "msats"))
 })

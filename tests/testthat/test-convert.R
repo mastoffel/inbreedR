@@ -1,4 +1,3 @@
-library(inbreedR)
 context("convert_raw")
 
 # load data with NA as missing

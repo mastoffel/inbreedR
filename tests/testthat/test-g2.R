@@ -1,4 +1,3 @@
-library(inbreedR)
 context("g2_functions")
 
 # loading microsat data

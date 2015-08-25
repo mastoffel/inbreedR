@@ -1,4 +1,3 @@
-library(inbreedR)
 context("HHC")
 
 # loading microsat data
