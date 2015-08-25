@@ -13,7 +13,7 @@ test_that("g2 point estimate is correct", {
     expect_equal(round(resample_g2(snps, nboot = 0, subsets= NULL, type = "snps")$g2, 8), 0.02270884)
 })
 
-test_that("No bootstraps lead to NA´s in output", {
+test_that("No bootstraps lead to NAs in output", {
     expect_equal(is.na(resample_g2(msats, nboot = 0, subsets = NULL, type = "msats")$all_g2_res), TRUE)
     expect_equal(is.na(resample_g2(snps, nboot = 0, subsets = NULL, type = "snps")$all_g2_res), TRUE)
 })
