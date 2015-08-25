@@ -13,7 +13,7 @@ data[is.na(data)] <- -1
 data_NUM <- data
 
 # character data frame (for SNP data)
-bp <- c("A","T","G","C")
+bp <- c('A','T','G','C')
 m <- as.data.frame(matrix(data = bp, nrow = 100, ncol = 100))
 m[] <- lapply(m, as.character)
 m[] <- lapply(m, sample)
