@@ -1,8 +1,9 @@
 #' Checks the data for consistency with the inbreedR working format.
 #' 
-#' inbreedR requires each column to be a locus and one row per individual. 
-#' Heterozygosity at a given locus should be coded as 1 and Homozygosity as 0. Missing values
-#' can be coded as NA or any number (other than 0 or 1).
+#' The inbreedR working format is an i * l genotype matrix, whereby each individual is a row 
+#' and each column is a locus.
+#' Heterozygosity at a given locus should be coded as 1, homozygosity as 0 and missing values
+#' should be coded as NA.
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
