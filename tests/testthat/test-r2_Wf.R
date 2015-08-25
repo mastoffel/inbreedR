@@ -21,3 +21,4 @@ test_that("matrix input works", {
     expect_equal(r2_Wf(as.matrix(msats), bodyweight, family = gaussian)$r2_Wf_full, 0.433, tolerance = 0.001)
     expect_equal(r2_Wf(as.matrix(snps), bodyweight, family = gaussian, type = "snps")$r2_Wf_full, 0.1287353, tolerance = 0.001)
 })
+
