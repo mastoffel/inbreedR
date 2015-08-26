@@ -22,7 +22,7 @@ test_that("subset specifications work", {
     expect_equal(sum(is.na(resample_g2(msats, nboot = 5, 
                        subsets = c(2, 4, 6), type = "msats")$summary_all_g2$SD)), 0)
     expect_equal(sum(is.na(resample_g2(msats, nboot = 5, 
-                                      subsets = c(2, 4, 6), type = "msats")$summary_all_g2$Mean)), 0)
+                       subsets = c(2, 4, 6), type = "msats")$summary_all_g2$Mean)), 0)
 })
 
 test_that("subset exceeds marker number throws error", {

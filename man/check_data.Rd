@@ -18,9 +18,10 @@ containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 TRUE if the data format is correct, error message if any test failed
 }
 \description{
-inbreedR requires each column to be a locus and one row per individual.
-Heterozygosity at a given locus should be coded as 1 and Homozygosity as 0. Missing values
-can be coded as NA or any number (other than 0 or 1).
+The inbreedR working format is an i * l genotype matrix, whereby each individual is a row
+and each column is a locus.
+Heterozygosity at a given locus should be coded as 1, homozygosity as 0 and missing values
+should be coded as NA.
 }
 \details{
 Checks that (1) the genotype data just contains 3 elements, which is 0 for homozygote,
