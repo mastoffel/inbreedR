@@ -2,7 +2,7 @@
 inbreedR
 ========
 
-[![Build Status](https://travis-ci.org/mastoffel/inbreedR)](https://travis-ci.org/mastoffel/inbreedR)
+\[![Build Status](https://travis-ci.org/mastoffel/inbreedR.svg?branch=master)\]
 
 inbreedR provides functions and workflows for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on molecular markers such as microsatellites and SNPs. It has four main application areas:
 
