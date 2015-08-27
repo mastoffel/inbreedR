@@ -40,5 +40,4 @@ To get started read the vignette:
 
 ``` r
 vignette("inbreedR_step_by_step", package = "inbreedR")
-#> starting httpd help server ... done
 ```

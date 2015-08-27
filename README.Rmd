@@ -57,7 +57,7 @@ martin.adam.stoffel[at]gmail.com
 
 To get started read the vignette:  
 
-```{r}
+```{r, eval = FALSE}
 vignette("inbreedR_step_by_step", package = "inbreedR")
 ```
 
