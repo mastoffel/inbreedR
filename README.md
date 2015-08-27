@@ -36,8 +36,9 @@ If you encounter a clear bug or if you have any suggestions for improvement, jus
 Get started with inbreedR
 -------------------------
 
-To get started read the intro vignette
+To get started read the vignette:
 
-    ```R
-    vignette("inbreedR_step_by_step", package = "inbreedR")
-    ```
+``` r
+vignette("inbreedR_step_by_step", package = "inbreedR")
+#> starting httpd help server ... done
+```

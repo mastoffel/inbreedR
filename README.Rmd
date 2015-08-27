@@ -38,7 +38,7 @@ You can install:
 
     ```R
     install.packages("inbreedR")
-    ````
+    ```
 
 * the latest development version from github with
 
@@ -48,18 +48,21 @@ You can install:
     }
     devtools::install_github("mastoffel/inbreedR", build_vignettes = TRUE)
     ```
-
+   
 
 If you encounter a clear bug or if you have any suggestions for improvement, just contact me: 
 martin.adam.stoffel[at]gmail.com
 
 ## Get started with inbreedR
 
-To get started read the intro vignette
+To get started read the vignette:  
 
-    ```R
-    vignette("inbreedR_step_by_step", package = "inbreedR")
-    ```
+```{r}
+vignette("inbreedR_step_by_step", package = "inbreedR")
+```
+
+
+ 
     
 
 
