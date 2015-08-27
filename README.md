@@ -36,4 +36,8 @@ If you encounter a clear bug or if you have any suggestions for improvement, jus
 Get started with inbreedR
 -------------------------
 
-To get started read the intro vignette: Or the paper:
+To get started read the intro vignette
+
+    ```R
+    vignette("inbreedR_step_by_step", package = "inbreedR")
+    ```
