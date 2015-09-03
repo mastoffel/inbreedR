@@ -4,7 +4,13 @@
 * win-builder (release)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs or NOTEs
+There were no ERRORs or WARNINGs 
+
+There was 1 NOTE
+
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Martin A. Stoffel <martin.adam.stoffel@gmail.com>'
+New submission
 
 
 ## Downstream dependencies
