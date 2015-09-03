@@ -17,3 +17,11 @@ New submission
 I have also run R CMD check on downstream dependencies of inbreedR.
 All packages that I could install passed.
     
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Changed the Description field to not start with the package name.
+
+* Made the title shorter and removed acronyms
+
+* Assigned several functions to the stats or graphics package.
