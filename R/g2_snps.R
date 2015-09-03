@@ -199,8 +199,8 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
         
         if (nboot > 0 & parallel == FALSE) {
                 g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin))
-                g2_se <- sd(g2_boot)
-                CI_boot <- quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+                g2_se <- stats::sd(g2_boot)
+                CI_boot <- stats::quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
         }
         
         if (nboot > 0 & parallel == TRUE) {
@@ -213,8 +213,8 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
             cl <- parallel::makeCluster(ncores)
             g2_boot <- c(g2_emp, parallel::parSapply(cl, 1:(nboot-1), boot_genotypes, origin))
             parallel::stopCluster(cl)
-            g2_se <- sd(g2_boot)
-            CI_boot <- quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+            g2_se <- stats::sd(g2_boot)
+            CI_boot <- stats::quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
             
 #             R.boot <- unname(parallel::parApply(cl, Ysim, 2, R.pe, groups = groups))
 #             parallel::stopCluster(cl)

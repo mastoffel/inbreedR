@@ -55,7 +55,7 @@ HHC <- function(genotypes, niter = 100, CI = 0.95) {
     }
     HHC_vals <- vapply(1:niter, calc_cor, numeric(1), genotypes)
     
-    CI_HHC <- quantile(HHC_vals, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+    CI_HHC <- stats::quantile(HHC_vals, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
 
     res <- list(call = match.call(),
                 HHC_vals = HHC_vals,

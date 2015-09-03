@@ -16,43 +16,83 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", cache = FALSE,
                       fig.width = 5, fig.height = 4) # warning = FALSE
 ```
 
-The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. The package is in a very early state and we are happy about any comments and suggestions. Just write a mail to martin.adam.stoffel[at]gmail.com.
+## inbreedR
+
+The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. This is the initial version of the package and we are happy about any comments and suggestions. Just write a mail to martin.adam.stoffel[at]gmail.com.
 
 
 ## Installation
 
-The `inbreedR` package is not yet available on [CRAN](http://cran.r-project.org/). Therefore you have to download the newest version from the developer platform [GitHub](https://github.com/mastoffel/inbreedR). At the moment it is recommended that you frequently download and reinstall it, as it is under heavy development. To download and install the package plus this vignette, run the following code (you need R version 3.2.2 or newer to run it).
+`inbreedR` is available on [CRAN](http://cran.r-project.org/). Here is the code to download and install the current stable release.
+
+```{r, eval = FALSE}
+install.packages("inbeedR")
+```
+
+The latest version can be accessed on the developer platform [GitHub](https://github.com/mastoffel/inbreedR) or with the following code from R.
 
 ```{r, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("mastoffel/inbreedR", build_vignettes = TRUE)
 ```
 
-
-And load the package.
+The package provides documentation for every function. To get an overview, just look at `inbreedR`'s help file.
 
 ```{r}
 library("inbreedR")
 ```
 
-To get an overview over all the functions just use the help files or access the vignette.
-
 ```{r, eval = FALSE}
 ?inbreedR
-browseVignettes("inbreedR")
+```
+
+inbreedR contains the following functions:  
+----------------
+
+* `convert_raw`: Converts a common format for genetic markers (two columns per locus) into the `inbreedR` working format, type `?convert_raw` for detailed information.  
+  
+* `check_data`: Checks whether the data.frame or matrix has the correct format for the `inbreedR` functions.
+  
+* `sMLH`: Computes standardized multilocus heterozygosities [@coltman1999parasite]
+  
+* `g2_microsats`: Calculates g2, a measure if identity disequlibrium (ID) from smaller datasets, such as microsatellites. Based on the formula from @DAVID:2007kgba. 
+  
+* `g2_snps`: Calculates g2 for larger datasets, such as SNPs. Allows for parallelization to speed up computation times. Based on the formula from the appendix of @Hoffman:2014bxba.  
+  
+* `resample_g2` : Calculates g2 for randomly drawn subsets of markers. Can be used to explore the influence of marker number. 
+  
+* `HHC`: Computes heterozygosity-heterozygosity correlations, another measure of identity disequilibrium [@balloux2004does].  
+  
+* `r2_Wf` : Calculates the expected impact of inbreeding-level (f) on a fitness trait (W) with a formula derived by @szulkin2010heterozygosity.  
+  
+* `r2_hf`: Calculates the expected impact of inbreeding-level (f) on heterozygosity (h) with a formula derived by @szulkin2010heterozygosity. Also implements a subsampling analysis to explore the influence of marker number.
+  
+* `plot.inbreedR`: Plots the output of `inbreedR` functions  
+
+
+## Example datasets
+
+In the following sections, the functionality of `inbreedR` is illustrated using genetic and phenotypic data from an inbred captive population of oldfield mice (Peromyscus polionotus) [@Hoffman:2014bxba].  These mice were paired to produce offspring with a range of inbreeding coefficients (0-0.453) over six generations of laboratory breeding and the resulting pedigree was recorded, from which individual f values were calculated.  Example files are provided containing the genotypes of 36 P. polionotus individuals at 12 microsatellites and 13,198 SNPs respectively.  Data on body mass at weaning, a fitness proxy, are also available for the same individuals.
+
+```{r, echo=TRUE, cache = TRUE,  results='hide'}
+library(inbreedR)
+data("mouse_msats") # microsatellite data 
+data("mouse_snps")  # snp data
+data("bodyweight")  # fitness data
+
 ```
 
 ## Data format and checking
 
-The data format used by all functions is fairly simple. The input is always a `data.frame` or `matrix`, whereby rows represent individuals, and each column represents a locus. If an individual is heterozygous at a certain locus, it is coded as `1` while homozygote loci should be `0`. Missing data should be encoded as NA. `mouse_snps` is a sample dataset accompanying the package. 
+The working format of `inbreedR` is an `individual * loci` matrix or data frame in which rows represent individuals and each column represents a locus.  If an individual is heterozygous at a given locus, it is coded as 1, whereas a homozygote is coded as 0, and missing data are coded as NA. The `mouse_snps` dataset accompanying the package is already formatted in the right way.
 
 ```{r}
 data("mouse_snps")
 mouse_snps[1:10, 1:10]
 ```
 
-You can check whether your data is in the right format with the `check_data` function, which gives an error with a message when something
-went wrong and `TRUE` otherwise. Look at `?check_data` to see what exactly is checked for.
+You can check whether your data is in the right format with the `check_data` function, which gives 
+an error with a message when something went wrong and `TRUE` otherwise. Look up the documentation with `?check_data` to see what exactly this functions checks for.
 
 ```{r}
 check_data(mouse_snps, num_ind = 36, num_loci = 13198)
@@ -60,297 +100,174 @@ check_data(mouse_snps, num_ind = 36, num_loci = 13198)
 
 ### Conversion from a more common format
 
-`convert_raw` is a function to convert a more common format, where each locus is represented by two coloumns (alleles), into the inbreedR working format. Microsatellite data is often formatted like `mouse_msats`, which is the second dataset accompanying the package.
+`convert_raw` is a function to convert a more common format, where each locus is represented by two columns (alleles), into the `inbreedR` working format. Microsatellite data is often formatted like `mouse_msats`, which is the second dataset accompanying the package.
 
 ```{r}
 data("mouse_msats")
 mouse_msats[1:8, 1:8]
 ```
 
-The dataframe itself should just contain the marker data, while rownames for individuals or columnnames for loci are possible. To convert it into the `inbreedR` working format, just use the `convert_raw` function.
+To convert it into the `inbreedR` working format, just use the `convert_raw` function.
 
 ```{r}
-mouse_msats_convert <- convert_raw(mouse_msats) 
-mouse_msats_convert[1:8, 1:8]
+mouse_microsats <- convert_raw(mouse_msats) 
+mouse_microsats[1:8, 1:8]
 ```
 
-It is now converted to the working format (0 = homozygote, 1 = heterozygote, NA = missing). The same procedure works when
-you have letters (e.g. basepairs "A", "T") in two adjacent columns instead of microsatellite length numbers.
+The same procedure works when you have letters (e.g. basepairs "A", "T") in two adjacent columns instead of microsatellite allele lengths.
 
-## A short theory of heterozygosity-fitness correlations
+## A short theory of heterozygosity-fitness correlations (HFC)
 
-Before we start with a step by step guide to the functions in the package, we will start with some background on how the `inbreedR` functions are embedded in the current theoretical and empirical framework of inbreeding and HFCs. You can skip this section if you are familiar with the theory and directly want to dive into the `inbreedR` manual.
+Most HFC studies solely report the correlation between heterozygosity (*h*) and fitness (*W*).  However, according to HFC theory, this correlation results from the simultaneous effects of inbreeding level (*f*) on fitness ($r(W,f)$) and heterozygosity ($r(h,f$)) [@Slate:2004iibacadaeafagahaia; @szulkin2010heterozygosity]: 
 
-### The influence of inbreeding on heterozygosity and fitness
+$$ r(W,h) = r(h,f)r(W,f) $$ (Equation 1)
 
-There has been an ongoing debate of whether HFCs are caused by genome-wide or local effects, whereby the latter are caused by a marker that is directly linked to a fitness-relevant gene [Slate:2004iibacadaeafagahaia]. However, when heterozygosity is estimated from many markers, and just one would be in linkage disequilibrium (LD) with a fitness-relevant gene, it should be unlikely to find an HFC due to the dilution effect. Thus, HFCs require variation in inbreeding (and ID) while linkage would just strengthen this effect [@hartl2007principles, @Szulkin:2010dxbaca]. Starting from this assumption, each HFC is the result of two correlations:
+Thus, empirical data on heterozygosity and fitness, together with the above equation, allow estimation of the impact of **inbreeding** on **fitness**.
+In the absence of a pedigree, *f* cannot be directly estimated.  Instead, one can use the extent to which heterozygosity is correlated across loci, termed identity disequilibrium (ID), as a proxy.  A measure of ID that can be related to HFC theory is the two-locus heterozygosity disequilibrium, $g_2$ [@DAVID:2007kgba], which quantifies the extent to which heterozygosities are correlated across pairs of loci.  Based on $g_2$ as an estimate of ID, it is then possible to calculate $\hat{r}^2(h, f)$ as follows [@szulkin2010heterozygosity]:
 
-$$r(W,h) = r(h,f)r(W,f)$$
+$$\hat{r}^2(h, f) = \frac{\hat{g}_{2}}{\hat{\sigma}^2(h)}$$ (Equation 2)
 
-A correlation between fitness (**W**) and heterozygosity (**h**) is the result of a simultaneous effect of inbreeding level (**f**) on **h** and **W** [@Slate:2004iibacadaeafagahaia, @Szulkin:2010dxbaca]. While typically just the HFC itself has been reported,  knowledge of the relationship between heterozygosity, fitness and inbreeding is necessary for the understanding of the underlying mechanism and has suggested to be standard practice in HFC studies [@kardos2014evaluating, @Szulkin:2010dxbaca].
+Finally, the expected determination coefficient between a fitness trait and inbreeding level can simply be derived be rearranging equation 1 [@szulkin2010heterozygosity]:
 
-@Szulkin:2010dxbaca derived the coefficient of determination between **h** and **f** as follows:
+$$\hat{r}^2(W, f) = \frac{\hat{r}^2(W, h)}{\hat{r}^2(h, f)}$$ (Equation 3)
 
-$$\hat{r}^2(h, f) = \frac{\hat{g}_{2}}{\hat{\sigma}^2(h)}$$
-
-As a consequence the $r^2$ between a fitness trait and inbreeding can easly be calculated:
-
-$$\hat{r}^2(W, f) = \frac{\hat{r}^2(W, h)}{\hat{r}^2(h, f)}$$
-
-### Estimating inbreeding level from genetic markers: identity disequilibrium 
-
-Without a pedigree, the inbreeding level (*f*) can be approximated by calculating the identity disequilibrium (ID), which is the correlation of heterozygosity (or homozygosity) across loci. Two statistics have been used to estimate ID: the heterozygosity-heterozygosity correlation (HHC) and the $g_2$ statistic [@Szulkin:2010dxbaca]. While both measures seem intuitively appropriate to measure whether heterozygosity is correlated across markers, $g_2$ is thought to both (1) avoid the problem of pseudoreplication and (2) to be appropriatly linked to HFC theory [@Szulkin:2010dxbaca]. 
-
-Measuring ID with $g_2$ thus provides the basis for estimating the strength of correlation between both heterozygosity and fitness with inbreeding [@kardos2014evaluating, @Szulkin:2010dxbaca, @Slate:2004iibacadaeafagahaia]. Other informative parameters are the variance in heterozygosity as well as the regression slope of fitness on heterozygosity. `inbreedR` makes it easy to calculate all of them for both SNP and microsatellite data.  
-
-### Choice of heterozygosity measure
-
-Several highly intercorrelated measures of heterozygosity have historically been used in HFC studies, while `inbreedR` solely relies on standardized multilocus heterozygosity (function: `sMLH`) [@coltman1999parasite]. Although all heterozygosity measures are usually highly intercorrelated, sMLH is in general the most robust measure [@Chapman:2009vmba]. This has the reason that it is not based on allel frequencies which makes it less sensitive towards scoring errors and null alleles than other measures [@Szulkin:2010dxbaca]. Besides this robustness, it is one of the most commonly used measures [@kardos2014evaluating] and proved to be computationally much faster than allel-based measures which makes it applicable even to permutation and bootstrapping procedures in large datasets.
+Software is already available for calculating $g_2$ from microsatellite datasets [@DAVID:2007kgba].  However, for larger datasets, e.g. SNPs, the original formula is not computationally practical, as it requires a double summation over all pairs of loci.  For example, with 15,000 loci, the double summations take of the order of 0.2 × 109 computation steps.  For this reason, `inbreedR` implements a computationally more feasible formula based on the assumption that missing values do not vary much between pairs of loci [@Hoffman:2014bxba].  In turn, the $g_2$ parameter builds the foundation for the implementation of the above framework to analyse HFCs, which is recommended to be routinely computed in future HFC studies [@szulkin2010heterozygosity].
 
 
-## Identity disequilibrium with $g_2$ and HHC
+## Identity disequilibrium
 
-The first task is usually to quantify the magnitude and significance of ID for the full sample. ID is often used as a proxy for inbreeding, whereby two measures are frequently used. Both of them, i.e. the heterozygosity-heterozygosity correlation (HHC) as well as the $g_2$ statistic are part of the `inbreedR` package and are briefly explained in the following section.
+The package provides two functions to calculate **$g_2$**, a proxy for Identity disequilibrium, for both small datasets (e.g. microsatellites) and large datasets (e.g.SNPs).   
+  
+* The `g2_microsats` function implements the formula given in @DAVID:2007kgba.    
+  
+* For large datasets, e.g. SNPs, the `g2_snps` function implements a computationally more feasible formula. This function also provides an additional argument for parallelization which distributes bootstrapping and permutation across cores.  The results of both functions can be plotted as histograms with CIs.       
 
-### g2_microsats for smaller datasets (microsatellites)
+Have a look at the help files with `?g2_microsats` and `?g2_snps` for more information on the formulae. 
 
-**$g_2$** measures the excess of double heterozygote loci in a population. The original formula by [@david2007reliable] is implemented in the `g2_microsats` function, which also allows calculation of a confidence interval based on bootstrapping and a p-value based on permutation tests. The function arguments `nperm` and `nboot` specify the number of permutations for estimating a p-value and the number of bootstraps for estimating a confidence interval, respectively. CI specifies the range of the confidence interval.
+For both microsatellites and SNPs, `inbreedR` calculates confidence intervals by bootstrapping over individuals.  It also permutes the genetic data to generate a P-value for the null hypothesis of no variance in inbreeding in the sample (i.e. $g_2$ = 0). 
 
-```{r, results = "hide"}
-g2_mouse <- g2_microsats(mouse_msats_convert, nperm = 100, nboot = 100, CI = 0.95)
+
+```{r, echo=TRUE, cache = TRUE,  results='hide'}
+g2_mouse_microsats <- g2_microsats(mouse_microsats, nperm = 1000, nboot = 1000, CI = 0.95)
+g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, 
+                         CI = 0.95, parallel = FALSE, ncores = NULL)
 ```
 
-A summary of the results is shown by simply typing the object name.
+To display a summary of the results just print the output of an `inbreedR` function. 
 
 ```{r}
-g2_mouse
+g2_mouse_microsats
 ```
 
-Every output (except function sMLH) of an `inbreedR` function is an `inbreed` object. You can use the `plot` function to show the distribution of the bootstrapped values and a confidence interval.
+`plot` shows the distribution of bootstrap results including the confidence interval.
+
+```{r g2_bootstrapping, echo=TRUE, fig.cap="Distribution of g2 from bootstrapping with confidence interval", fig.width=7, fig.height=4}
+par(mfrow=c(1,2))
+plot(g2_mouse_microsats, main = "Microsatellites",
+     col = "cornflowerblue", cex.axis=0.85)
+plot(g2_mouse_snps, main = "SNPs",
+     col = "darkgoldenrod1", cex.axis=0.85)
+```
+
+Another approach for estimating ID is to divide the marker panel into two random subsets, compute the correlation in heterozygosity between the two, and repeat this hundreds or thousands of times in order to obtain a distribution of **heterozygosity-heterozygosity  correlation coefficients (HHCs)** [@balloux2004does]. This approach is intuitive but can be criticised on the grounds that samples within the HHC distribution are non-independent.  Moreover, $g_2$ is preferable because it directly relates to HFC theory (equation 2).  The `HHC` function in `inbreedR` calculates HHCs together with confidence intervals, specifying how often the dataset is randomly split into two halves with the `niter` argument.  The results can be outputted as text or plotted as histograms with CIs.
+
+```{r, echo=TRUE, cache = TRUE,  results='hide'}
+HHC_mouse_microsats <- HHC(mouse_microsats , niter = 1000)
+HHC_mouse_snps <- HHC(mouse_snps, niter = 100)
+```
 
 ```{r}
-plot(g2_mouse)
+HHC_mouse_microsats
 ```
 
-The plots are also customisable to a certain degree. Often you may like to have a more fine or wide scaled
-bar pattern or different labels. Just pass any argument that you can also pass to the `hist()` function. See `?hist`.
-
-```{r}
-plot(g2_mouse, main = "just another title", xlab = "identity disequilibrium (g2)", 
-     breaks = 5, col = "red")
+```{r HHC, echo=TRUE, fig.cap="Distribution of heterozygosity-heterozygosity correlations", fig.width=7, fig.height=4}
+par(mfrow=c(1,2))
+plot(HHC_mouse_microsats, main = "Microsatellites",
+     col = "cornflowerblue", cex.axis=0.85)
+plot(HHC_mouse_snps, main = "SNPs",
+     col = "darkgoldenrod1", cex.axis=0.85)
 ```
 
-### g2_snps function for larger datasets (SNPs)
+## HFC parameters
 
-Calculating $g_2$ based on the original formula is computationally expensive and unpractical for large (i.e. SNP) datasets, especially where bootstraps/permutations are required, as this requires double summation over all pairs of loci. With 15,000 loci, the double summations take the order of $0.2 * 10^9$ computation steps. [Hoffman:2014bxba] present a computationally more tractable form, based on the assumption that the number of missing values does not vary a lot among individuals. This formula is has been implemented in the `g2_snps` function, which again allows for permutation and bootstrapping within a reasonable amount of time. This function uses uses data.table to optimize the computation speed.
+Assuming that HFCs are due to inbreeding depression, it is possible to calculate both the expected correlation between heterozygosity and inbreeding level ($\hat{r}^2(h, f)$) and the expected correlation between a fitness trait and inbreeding ($\hat{r}^2(W, f)$) as described in Equation 1.  These are implemented in `inbreedR` using the functions `r2_hf` and `r2_Wf`.  Equal to the `glm` function, the distribution of the fitness trait can be specified in the `family` argument, as shown below:
 
-```{r, results = "hide"}
-g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95)
-```
-
-#### parallelization of the g2_snps function
-
-For rather large datasets, each single permutation or bootstrap can take a couple of minutes. While parallelization can be useful already on a standard computer with 4 cores, thousands of permutations and bootstraps are better performed on a multicore server. `g2_snps` provides an argument for the usage of parallel computation.
-
-```{r, eval = FALSE}
-g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95, parallel = TRUE, ncores = 4)
-```
-
-The ncores argument is optional and makes it possible to specify the number of cores to be used.  
-
-The computation time difference becomes clear already on a standard computer. When `inbreedR` is loaded,
-you can try the following on you computer:
-
-```{r, results = "hide", eval = FALSE}
-time1 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95))
-time2 <- system.time(g2_snps(mouse_snps, nperm = 100, nboot = 100, CI = 0.95, parallel = TRUE, ncores = 4))
-```
-
-
-For a summary of the results and a plot, just follow the same procedure as with the g2_microsat function.
-
-```{r}
-g2_mouse_snps
-plot(g2_mouse_snps)
-```
-
-
-### Heterozygosity-heterozygosity correlations (HHC)
-
-HHC is another way to quantify variance in inbreeding. The genetic markers are randomly split into two equal parts and the correlation between the resulting standardized multilocus heterozygosity (sMLH) values is calculated. This is repeated over n iterations. The resulting values ranges from 0 (no differences in inbreeding-level) to 1 (large variance in inbreeding-level). The `HHC` functions takes as input the marker data, the number of iterations and the size of the confidence interval to calculate around the mean HHC.
-
-```{r, results = "hide"}
-hhc_microsats <- HHC(mouse_msats_convert, niter = 100, CI = 0.95)
-```
-
-By simply typing the object we get a summary again.
-
-```{r}
-hhc_microsats
-```
-
-A histogram of the resulting HHC distribution can be shown with `plot`.
-
-```{r}
-plot(hhc_microsats, main = "HHC distribution")
-```
-
-## sMLH
-Several highly intercorrelated measures of heterozygosity have historically been used in HFC studies, while `inbreedR` solely relies on standardized multilocus heterozygosity (sMLH) [@coltman1999parasite]. Although all heterozygosity measures are usually highly intercorrelated, sMLH is in general the most robust measure [@Chapman:2009vmba]. This has the reason that it is not based on allel frequencies which makes it less sensitive towards scoring errors and null alleles than other measures [@Szulkin:2010dxbaca]. Besides this robustness, it is one of the most commonly used measures [@kardos2014evaluating].  
-The package provides a computationally optimized function for the calculation of sMLH [@Coltman:1999wxba]), which can be used within bootstrapping and permutation tests also for large datasets. The function simply takes the genotypes in the `inbreedR` working format as input and gives a simple vector output with each individual's sMLH.
-```{r}
-het <- sMLH(mouse_snps)
-hist(het)
-```
-
-It just takes a quarter of a second to calculate it on a standard laptop for out SNP dataset.
-
-```{r}
-dim(mouse_snps) # 13198 loci
-system.time(sMLH(mouse_snps))
-```
-
-## Embedding $g_2$ into HFC theory
-
-### The influence of inbreeding on heterozygosity and fitness
-
-As mentioned in the introduction, each HFC is the result of two correlations:
-
-$$r(W,h) = r(h,f)r(W,f)$$
-
-As the important parameters around the left-hand side of the equation can be estimated directly with a `glm` in R, effect of inbreeding level (f) on heteorzygosity (h) and fitness (W) has to be derived by appropriate formulae.
-
-The coefficient of determination between h and f can be written as [@Slate:2004iibacadaeafagahaia, @Szulkin:2010dxbaca]:
-
-$$\hat{r}^2(h, f) = \frac{\hat{g}_{2}}{\hat{\sigma}^2(h)}$$
-
-As a consequence he $r^2$ between a fitness trait and inbreeding can easly be calculated:
-
-$$\hat{r}^2(W, f) = \frac{\hat{r}^2(W, h)}{\hat{r}^2(h, f)}$$
-
-Other potentially informative parameters are the variance in heterozygosity $\sigma^2(sMLH)$ as well as the regression slope $\beta_{W,h}$ of fitness on heterozygosity.
-
-`inbreedR` makes it easy to calculate all of the above correlations for both SNP and microsatellite data. `inbreedR::` is used to illustrate which functions are coming from the package, but is not necessary as long as the package itself is loaded.
-
-**Microsatellites**
-
-```{r, echo=TRUE,  results='hide'}
-# fitness data
-data("bodyweight")
-# g2
-g2       <- inbreedR::g2_microsats(mouse_msats_convert)
-# calculate sMLH
-het      <- inbreedR::sMLH(mouse_msats_convert)
-# variance in sMLH
-het_var  <- var(het)
-# Regression of trait on heterozygosity
-mod      <- lm(bodyweight ~ het)
-# beta coefficient
-beta_Wh  <- coef(mod)[2]
-# r^2 between fitness (W) and heterozygosity (h)
-Wh       <- cor(bodyweight,predict(mod))^2
-# r^2 between inbreeding (f) and heterozygosity (h)
-hf       <- inbreedR::r2_hf(genotypes = mouse_msats_convert, type = "msats")
-# r^2 between inbreeding (f) and fitness (W)
-Wf       <- inbreedR::r2_Wf(genotypes = mouse_msats_convert, trait = bodyweight, 
-                            family = gaussian, type = "msats")
-```
-
-**SNPs**
-```{r, echo=TRUE,  results='hide'}
-# g2
-g2_snps <- g2_snps(mouse_snps)
-# calculate sMLH
-het_snps <- sMLH(mouse_snps)
-# variance in sMLH
-het_var_snps <- var(het_snps)
-# Regression of trait on heterozygosity
-mod_snps <- lm(bodyweight ~ het_snps)
-# beta coefficient
-beta_Wh_snps <- coef(mod_snps)[2]
-# r^2 between fitness and heterozygosity
-Wh_snps <- cor(bodyweight,predict(mod_snps))^2
+```{r, echo=TRUE, cache = TRUE}
 # r^2 between inbreeding and heterozygosity
-hf_snps <- r2_hf(genotypes = mouse_snps, type = "snps")
+hf <- r2_hf(genotypes = mouse_microsats, type = "msats")
 # r^2 between inbreeding and fitness
-Wf_snps <- r2_Wf(genotypes = mouse_snps, trait = bodyweight, 
-                 family = gaussian, type = "snps")
-```  
+Wf <- r2_Wf(genotypes = mouse_microsats, trait = bodyweight, 
+            family = gaussian, type = "msats")
+```
+
+## Workflow for estimating the impact of inbreeding on fitness using HFC
+
+@szulkin2010heterozygosity in their online Appendix 1 provide a worked example of how to estimate the impact of inbreeding on fitness within an HFC framework.  Below, we show how the required calculations can be implemented in `inbreedR`.  We are now describing a coding workflow to estimate useful parameters for the interpretation of HFCs. We compare the results based on microsatellite and SNP data derived from a single inbred population of oldfield mice. We start with the estimation of identity disequilibrium ($\hat{g}_2$) and calculation of the distribution variance of standardized multilocus heterozygosity ($\hat{\sigma}^2(h)$), followed by the regression slope of fitness on heterozygosity ($\hat{\beta}_{Wh}$)  and the three correlations from equation 1. Example code for the microsatellite dataset is shown below and the results for both microsatellites and SNPs are given in Table 1.
+
+
+```{r, echo=TRUE, results='hide'}
+# g2
+g2 <- g2_microsats(mouse_microsats)
+# calculate sMLH
+het <- sMLH(mouse_microsats)
+# variance in sMLH
+het_var <- var(het)
+# Linear model of fitness trait on heterozygosity
+mod <- lm(bodyweight ~ het)
+# regression slope
+beta <- coef(mod)[2]
+# r^2 between fitness and heterozygosity
+Wh <- cor(bodyweight,predict(mod))^2
+# r^2 between inbreeding and heterozygosity
+hf <- r2_hf(genotypes = mouse_microsats, type = "msats")
+# r^2 between inbreeding and fitness
+Wf <- r2_Wf(genotypes = mouse_microsats, trait = bodyweight, 
+            family = gaussian, type = "msats")
+```
 
 ```{r, echo=FALSE}
 library(knitr)
-df_msats <- data.frame(g2[["g2"]], het_var, beta_Wh, Wh, hf$r2_hf_full, Wf$r2_Wf_full)
-df_snps <- data.frame(g2_snps[["g2"]], het_var_snps, beta_Wh_snps, Wh_snps, hf_snps$r2_hf_full, Wf_snps$r2_Wf_full)
-names(df_snps) <- names(df_msats)
-df <- rbind(df_msats, df_snps)
-row.names(df) <- c("microsats", "SNPs")
+df_msats <- data.frame(g2[["g2"]], het_var, beta, Wh, hf$r2_hf_full, Wf$r2_Wf_full)
+row.names(df_msats) <- c("microsats")
 
-kable(df, digits=3, caption="Descriptors of HFCs",
-      col.names = c("$\\hat{g}_2$","$\\hat{\\sigma}^2(h)$", "$\\hat{\\beta}_{Wh}$", "$\\hat{r}^2_{Wh}$", "$\\hat{r}^2_{hf}$",
-                    "$\\hat{r}^2_{Wf}$"))
+kable(df_msats, digits=3, caption="Descriptors of HFCs",
+      col.names = c("$\\hat{g}_2$", "$\\hat{\\sigma}^2(h)$", "$\\hat{\\beta}_{Wh}$", "$\\hat{r}^2_{Wh}$", "$\\hat{r}^2_{hf}$","$\\hat{r}^2_{Wf}$"))
 
 ```
-  
-  
-## Expected power to detect HFCs and sensitivity towards the number of markers
 
-Subsampling analyses have been used recently to estimate both the power to detect ID and HFCs as well the potential change in effect sizes when using more or a different type of markers [@Miller:2013jqbaca, @Hoffman:2014bxba]. 
 
-### Estimates of ID with $g_2$
+## Sensitivity to the number of markers 
 
-One question adressed by recent papers [@miller2014assessment, @Hoffman:2014bxba] is the sensitivity of $g_2$ towards the number of markers used. The function `resample_g2()` calculates $g_2$ for different marker subsets specified by the user. The `nboot` argument specifies how often each subset should be drawn from the full set.
+Subsampling analysis [@Miller:2013jqbaca; @stoffel2015chemical] can provide insights into the power provided by a given marker panel.  The `resample_g2` function within `inbreedR` can be used to randomly select marker subsets of specified sizes, from which trends in the average estimated  as well as its variance with marker number can be derived.  Note that the variance will scale negatively with an increasing proportion of sampled loci.  The `resample_g2` function within inbreedR allows specification of subsets and how often each subset should be resampled (nboot) and calculates the respective $g_2$ values, their mean and standard deviation.  The results can be visualised as a series of boxplots with `plot`.
 
-```{r, results = "hide"}
-g2_devel <- resample_g2(mouse_msats_convert, subsets = c(2,4,6,8,10,12), 
-                        nboot = 1000, type = "msats")
-```
 
-```{r}
-g2_devel
-```
+```{r, echo=TRUE, cache = TRUE,  results='hide'}
+resamp_g2_mouse_microsats <- resample_g2(mouse_microsats, subsets = c(2,4,6,8,10,12), 
+                                     nboot = 100, type = "msats")
+resamp_g2_mouse_snps <- resample_g2(mouse_snps, subsets = c(100, 500, 1000, 2000, 5000,                                         13000), nboot = 10, type = "snps")
+```  
 
-A typical way to show the $g_2$ distributions for different subsets of markers are boxplots.  Using the plot function on `inbreed` objects that involve different sized subsets shows boxplots.
-
-```{r}
-plot(g2_devel)
-```
-
-You can also customise most elements of these boxplots. Just add any arguments that you would usually pass to `boxplot()`. See `?boxplot()` for infos. 
-
-```{r}
-plot(g2_devel, main = "identity disequilibrium for different marker subsets", col = "green")
+```{r resample_g2, echo=TRUE, fig.cap="g2 for different subsets of markers", fig.width=7, fig.height=4}
+par(mfrow = c(1, 2))
+plot(resamp_g2_mouse_microsats, main = "Microsatellites", col = "cornflowerblue", cex.axis=0.85)
+plot(resamp_g2_mouse_snps, main = "SNPs", col = "darkgoldenrod1", cex.axis=0.85)
 ```
 
 
-### Expected $r^2$ between heterozygosity and inbreeding
+Finally, sensitivity of $\hat{r}^2(h, f)$ can be explored in a similar way using the `r2_hf` function, which again allows specification of the marker subsets and how often each subset should be sampled. 
 
-When looking at heterozygosity-fitness correlations (HFCs), one of the central questions is how well heterozygosity (sMLH) represents the level of inbreeding. According to [@Szulkin:2010dxbaca], the expected correlation between sMLH and inbreeding level (f) is $$r^2(sMLH, f) = \frac{g2}{\sigma^2(sMLH)}$$
-
-To explore the influence of marker size, we again use the function `r2_hf`. This calculates the expected $r^2$ between f and sMLH for different sized, randomly selected, subsets of loci.  The user needs to specify the subset sizes for the analysis.  For example, for a dataset of 10,000 SNPs, one could specify `subsets = c(1, 10, 100, 1000, 2000, 3000, 4000, 5000, 10000)`.  In addition the user should specify how often the current subset is drawn from the overall marker set to calculate the expected $r^2$, and the type of marker, which determines the g2 function to be used.
-
-```{r, results = "hide"}
-result <- r2_hf(mouse_msats_convert, subsets = c(2,4,6,8,10,12), 
-                nboot = 100, type = "msats")
+```{r, echo=TRUE, cache = TRUE,  results='hide'}
+r2_hf_mouse_microsats <- r2_hf(mouse_microsats, subsets = c(2,4,6,8,10,12), 
+                           nboot = 100, type = "msats")
+r2_hf_mouse_snps <- r2_hf(mouse_snps, subsets = c(100, 500, 1000, 2000, 5000, 13000), 
+                          nboot = 10, type = "snps")
 ```
 
-Then again you can look at the summarized results.
-
-```{r}
-result
+```{r r2_hf, echo=FALSE, fig.cap="Expected r2 between inbreeding level (f) and heterozygosity", fig.width=7, fig.height=4}
+par(mfrow = c(1, 2))
+plot(r2_hf_mouse_microsats, main = "Microsatellites", col = "cornflowerblue", cex.axis=0.85)
+plot(r2_hf_mouse_snps, main = "SNPs", col = "darkgoldenrod1", cex.axis=0.85)
 ```
-
-And plot the distribution of expected $r^2$ for each subset.
-
-```{r}
-plot(result)
-```
-
-Again, you can customise certain aspects of the plot by adding `boxplot()` arguments. Next to changing labels and the title, you may find notched boxplots quite appealing.
-
-```{r}
-plot(result, notch = TRUE, col = "purple")
-```
-
 
 ## Extracting raw data from inbreedR objects 
 
@@ -359,7 +276,7 @@ You may wish to extract and plot the data yourself. Most function outputs are `i
 Running the function.
 
 ```{r, results = "hide"}
-g2_seals <- g2_microsats(mouse_msats_convert, nperm = 100, 
+g2_seals <- g2_microsats(mouse_microsats, nperm = 100, 
                          nboot = 100, CI = 0.95)
 ``` 
 

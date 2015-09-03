@@ -69,7 +69,7 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
             g2 <- g2_microsats(gtypes)[["g2"]]
             # according to the miller paper, negative g2s are set to r2 = 0.
             if (g2 < 0) return(r2 <- 0)
-            var_sh <- var(sMLH(gtypes))
+            var_sh <- stats::var(sMLH(gtypes))
             r2 <- g2/var_sh
             r2
         }
@@ -80,7 +80,7 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
             g2 <- g2_snps(gtypes)[["g2"]]
             # according to the miller paper, negative g2s are set to r2 = 0.
             if (g2 < 0) return(r2 <- 0)
-            var_sh <- var(sMLH(gtypes))
+            var_sh <- stats::var(sMLH(gtypes))
             r2 <- g2/var_sh
         }
     }
