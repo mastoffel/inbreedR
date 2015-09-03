@@ -46,8 +46,8 @@ library("inbreedR")
 ?inbreedR
 ```
 
-inbreedR contains the following functions:  
-----------------
+
+## inbreedR contains the following functions:  
 
 * `convert_raw`: Converts a common format for genetic markers (two columns per locus) into the `inbreedR` working format, type `?convert_raw` for detailed information.  
   
@@ -98,6 +98,7 @@ an error with a message when something went wrong and `TRUE` otherwise. Look up 
 check_data(mouse_snps, num_ind = 36, num_loci = 13198)
 ```
 
+
 ### Conversion from a more common format
 
 `convert_raw` is a function to convert a more common format, where each locus is represented by two columns (alleles), into the `inbreedR` working format. Microsatellite data is often formatted like `mouse_msats`, which is the second dataset accompanying the package.
@@ -114,7 +115,7 @@ mouse_microsats <- convert_raw(mouse_msats)
 mouse_microsats[1:8, 1:8]
 ```
 
-The same procedure works when you have letters (e.g. basepairs "A", "T") in two adjacent columns instead of microsatellite allele lengths.
+The same procedure works when you have letters (e.g. basepairs 'A', 'T') in two adjacent columns instead of microsatellite allele lengths.
 
 ## A short theory of heterozygosity-fitness correlations (HFC)
 
@@ -131,8 +132,7 @@ Finally, the expected determination coefficient between a fitness trait and inbr
 
 $$\hat{r}^2(W, f) = \frac{\hat{r}^2(W, h)}{\hat{r}^2(h, f)}$$ (Equation 3)
 
-Software is already available for calculating $g_2$ from microsatellite datasets [@DAVID:2007kgba].  However, for larger datasets, e.g. SNPs, the original formula is not computationally practical, as it requires a double summation over all pairs of loci.  For example, with 15,000 loci, the double summations take of the order of 0.2 × 109 computation steps.  For this reason, `inbreedR` implements a computationally more feasible formula based on the assumption that missing values do not vary much between pairs of loci [@Hoffman:2014bxba].  In turn, the $g_2$ parameter builds the foundation for the implementation of the above framework to analyse HFCs, which is recommended to be routinely computed in future HFC studies [@szulkin2010heterozygosity].
-
+Software is already available for calculating $g_2$ from microsatellite datasets [@DAVID:2007kgba].  However, for larger datasets, e.g. SNPs, the original formula is not computationally practical, as it requires a double summation over all pairs of loci.  For example, with 15.000 loci, the double summations take of the order of 0.2 x 109 computation steps.  For this reason, `inbreedR` implements a computationally more feasible formula based on the assumption that missing values do not vary much between pairs of loci [@Hoffman:2014bxba].  In turn, the $g_2$ parameter builds the foundation for the implementation of the above framework to analyse HFCs, which is recommended to be routinely computed in future HFC studies [@szulkin2010heterozygosity].
 
 ## Identity disequilibrium
 
@@ -152,6 +152,9 @@ g2_mouse_microsats <- g2_microsats(mouse_microsats, nperm = 1000, nboot = 1000, 
 g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 100, 
                          CI = 0.95, parallel = FALSE, ncores = NULL)
 ```
+
+
+
 
 To display a summary of the results just print the output of an `inbreedR` function. 
 
@@ -200,6 +203,7 @@ Wf <- r2_Wf(genotypes = mouse_microsats, trait = bodyweight,
             family = gaussian, type = "msats")
 ```
 
+
 ## Workflow for estimating the impact of inbreeding on fitness using HFC
 
 @szulkin2010heterozygosity in their online Appendix 1 provide a worked example of how to estimate the impact of inbreeding on fitness within an HFC framework.  Below, we show how the required calculations can be implemented in `inbreedR`.  We are now describing a coding workflow to estimate useful parameters for the interpretation of HFCs. We compare the results based on microsatellite and SNP data derived from a single inbred population of oldfield mice. We start with the estimation of identity disequilibrium ($\hat{g}_2$) and calculation of the distribution variance of standardized multilocus heterozygosity ($\hat{\sigma}^2(h)$), followed by the regression slope of fitness on heterozygosity ($\hat{\beta}_{Wh}$)  and the three correlations from equation 1. Example code for the microsatellite dataset is shown below and the results for both microsatellites and SNPs are given in Table 1.
@@ -216,11 +220,11 @@ het_var <- var(het)
 mod <- lm(bodyweight ~ het)
 # regression slope
 beta <- coef(mod)[2]
-# r^2 between fitness and heterozygosity
+# r2 between fitness and heterozygosity
 Wh <- cor(bodyweight,predict(mod))^2
-# r^2 between inbreeding and heterozygosity
+# r2 between inbreeding and heterozygosity
 hf <- r2_hf(genotypes = mouse_microsats, type = "msats")
-# r^2 between inbreeding and fitness
+# r2 between inbreeding and fitness
 Wf <- r2_Wf(genotypes = mouse_microsats, trait = bodyweight, 
             family = gaussian, type = "msats")
 ```
