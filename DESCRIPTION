@@ -1,6 +1,6 @@
 Package: inbreedR
 Title: Workflows for Analysing Inbreeding and HFCs Based on SNP or Microsatellite Markers
-Version: 0.1
+Version: 0.1.0
 Authors@R: c(
         person(c("Martin", "A."), "Stoffel", 
                email= "martin.adam.stoffel@gmail.com", role = c("aut", "cre")),
