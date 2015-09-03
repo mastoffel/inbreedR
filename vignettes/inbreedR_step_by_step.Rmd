@@ -29,7 +29,7 @@ The idea behind `inbreedR` is to provide a consistent framework for the analysis
 install.packages("inbeedR")
 ```
 
-The latest version can be accessed on the developer platform [GitHub](https://github.com/mastoffel/inbreedR) or with the following code from R.
+The latest version can be downloaded from [GitHub](https://github.com/mastoffel/inbreedR) with the following code:
 
 ```{r, eval = FALSE}
 install.packages("devtools")
@@ -55,11 +55,11 @@ library("inbreedR")
   
 * `sMLH`: Computes standardized multilocus heterozygosities [@coltman1999parasite]
   
-* `g2_microsats`: Calculates g2, a measure if identity disequlibrium (ID) from smaller datasets, such as microsatellites. Based on the formula from @DAVID:2007kgba. 
+* `g2_microsats`: Calculates $g_2$, a measure if identity disequlibrium (ID) from smaller datasets, such as microsatellites. Based on the formula from @DAVID:2007kgba. 
   
-* `g2_snps`: Calculates g2 for larger datasets, such as SNPs. Allows for parallelization to speed up computation times. Based on the formula from the appendix of @Hoffman:2014bxba.  
+* `g2_snps`: Calculates $g_2$ for larger datasets, such as SNPs. Allows for parallelization to speed up computation times. Based on the formula from the appendix of @Hoffman:2014bxba.  
   
-* `resample_g2` : Calculates g2 for randomly drawn subsets of markers. Can be used to explore the influence of marker number. 
+* `resample_g2` : Calculates $g_2$ for randomly drawn subsets of markers. Can be used to explore the influence of marker number. 
   
 * `HHC`: Computes heterozygosity-heterozygosity correlations, another measure of identity disequilibrium [@balloux2004does].  
   
@@ -248,7 +248,8 @@ Subsampling analysis [@Miller:2013jqbaca; @stoffel2015chemical] can provide insi
 ```{r, echo=TRUE, cache = TRUE,  results='hide'}
 resamp_g2_mouse_microsats <- resample_g2(mouse_microsats, subsets = c(2,4,6,8,10,12), 
                                      nboot = 100, type = "msats")
-resamp_g2_mouse_snps <- resample_g2(mouse_snps, subsets = c(100, 500, 1000, 2000, 5000,                                         13000), nboot = 10, type = "snps")
+resamp_g2_mouse_snps <- resample_g2(mouse_snps, subsets = c(100, 500, 1000, 2000, 5000, 
+                                    13000), nboot = 10, type = "snps")
 ```  
 
 ```{r resample_g2, echo=TRUE, fig.cap="g2 for different subsets of markers", fig.width=7, fig.height=4}
@@ -257,8 +258,8 @@ plot(resamp_g2_mouse_microsats, main = "Microsatellites", col = "cornflowerblue"
 plot(resamp_g2_mouse_snps, main = "SNPs", col = "darkgoldenrod1", cex.axis=0.85)
 ```
 
-
-Finally, sensitivity of $\hat{r}^2(h, f)$ can be explored in a similar way using the `r2_hf` function, which again allows specification of the marker subsets and how often each subset should be sampled. 
+  
+Finally, sensitivity of $\hat{r}^2(h, f)$ towards the number of markers used can be explored in a similar way using the `r2_hf` function, which again allows specification of the marker subsets and how often each subset should be sampled. 
 
 ```{r, echo=TRUE, cache = TRUE,  results='hide'}
 r2_hf_mouse_microsats <- r2_hf(mouse_microsats, subsets = c(2,4,6,8,10,12), 
