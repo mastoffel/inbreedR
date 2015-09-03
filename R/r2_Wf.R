@@ -30,14 +30,14 @@
 #' data(bodyweight)
 #' genotypes <- convert_raw(mouse_msats)
 #' 
-#' (out <- r2_Wf(genotypes, bodyweight, family = gaussian, type = "msats"))
+#' (out <- r2_Wf(genotypes, bodyweight, family = "gaussian", type = "msats"))
 #' 
 #' 
 #' @export
 #'
 #'
 
-r2_Wf <- function(genotypes, trait, family = gaussian,type = c("msats", "snps")) {
+r2_Wf <- function(genotypes, trait, family = "gaussian", type = c("msats", "snps")) {
     
     # genotypes matrix
     genotypes <- as.matrix(genotypes)
@@ -78,7 +78,7 @@ r2_Wf <- function(genotypes, trait, family = gaussian,type = c("msats", "snps"))
         # beta coefficient
         beta_Wh <- stats::coef(mod)[2]
         # R2 Wh
-        R2 <- stats::cor(trait,predict(mod))^2
+        R2 <- stats::cor(trait,stats::predict(mod))^2
         # g2
         g2 <- g2_fun(genotypes)[["g2"]]
         # according to the miller paper, negative g2s are set to r2 = 0.

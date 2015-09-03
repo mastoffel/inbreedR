@@ -161,9 +161,9 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
     r2_hf_res <- data.frame(r2 = c(all_r2), nloc = factor(rep(subsets, each = nboot)))
     
     # mean and sd per number of loci
-    summary_r2_hf <- as.data.frame(as.list(aggregate(r2 ~ nloc, data = r2_hf_res, 
+    summary_r2_hf <- as.data.frame(as.list(stats::aggregate(r2 ~ nloc, data = r2_hf_res, 
                                 FUN = function(x) c(mean = mean(x, na.rm = TRUE), 
-                                                    sd = sd(x, na.rm = TRUE)))))
+                                                    sd = stats::sd(x, na.rm = TRUE)))))
     names(summary_r2_hf) <- c("nloc", "Mean", "SD")
     
     res <- list(call = match.call(),

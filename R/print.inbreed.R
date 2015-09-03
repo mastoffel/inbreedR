@@ -98,7 +98,7 @@ print.inbreed <- function(x, ...) {
             "Function call = ", deparse(x$call), "\n",
             sep = "")
         cat("\n", "HHC Mean : " ,round(mean(x$HHC_vals, na.rm = TRUE), 3),
-            "\n", "HHC SD: " , round(sd(x$HHC_vals, na.rm = TRUE), 3), 
+            "\n", "HHC SD: " , round(stats::sd(x$HHC_vals, na.rm = TRUE), 3), 
             "\n", "HHC CI: [", round(x$CI_HHC[1],3), ", ", round(x$CI_HHC[2],3), "]", sep = "")
     }
 }

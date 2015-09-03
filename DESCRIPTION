@@ -1,12 +1,12 @@
 Package: inbreedR
-Title: Workflows for Analysing Inbreeding and HFCs Based on SNP or Microsatellite Markers
+Title: Analysing inbreeding based on genetic markers 
 Version: 0.1.0
 Authors@R: c(
         person(c("Martin", "A."), "Stoffel", 
                email= "martin.adam.stoffel@gmail.com", role = c("aut", "cre")),
         person("Mareike", "Esser", email = "messer@uni-bielefeld.de" ,role = c("aut")))
-Description: inbreedR provides functions around the framework of heterozygosity-fitness correlations and inbreeding from both 
-             microsatellite and SNP datsets.
+Description: A framework for analysing inbreeding and heterozygosity-fitness correlations (HFCs) from  
+             microsatellite and SNP markers.
 Depends: 
     R (>= 3.2.2)
 License: GPL-2

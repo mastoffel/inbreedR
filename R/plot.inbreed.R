@@ -99,7 +99,7 @@ plot.inbreed <- function(x, ...) {
             # y position of confidence band
             v.pos <- max(do.call(graphics::hist, (c(list(x = g2_boot, plot = FALSE, warn.unused = FALSE), args1)))$counts)
             # plot
-            do.call(hist, (c(list(x = g2_boot, ylim = c(0, v.pos*1.5)), args1))) 
+            do.call(graphics::hist, (c(list(x = g2_boot, ylim = c(0, v.pos*1.5)), args1))) 
             graphics::lines(x = c(g2, g2), y = c(0, v.pos * 1.15), lwd = 2.5, col = "black", lty = 5)
             graphics::arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
                    length=0.1, angle=90, code=3, lwd = 2.5, col = "black")

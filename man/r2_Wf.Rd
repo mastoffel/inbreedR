@@ -4,7 +4,7 @@
 \alias{r2_Wf}
 \title{Expected r2 between inbreeding level (f) and fitness (W)}
 \usage{
-r2_Wf(genotypes, trait, family = gaussian, type = c("msats", "snps"))
+r2_Wf(genotypes, trait, family = "gaussian", type = c("msats", "snps"))
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
@@ -33,7 +33,7 @@ data(mouse_msats)
 data(bodyweight)
 genotypes <- convert_raw(mouse_msats)
 
-(out <- r2_Wf(genotypes, bodyweight, family = gaussian, type = "msats"))
+(out <- r2_Wf(genotypes, bodyweight, family = "gaussian", type = "msats"))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

@@ -42,7 +42,7 @@ HHC <- function(genotypes, niter = 100, CI = 0.95) {
         new_ord <- sample(loci)
         sMLH1 <- sMLH(genotypes[, new_ord[1:floor(loc_num/2)]])
         sMLH2 <- sMLH(genotypes[, new_ord[(floor(loc_num/2) + 1):loc_num]])
-        het_het_cor <- cor(sMLH1, sMLH2)
+        het_het_cor <- stats::cor(sMLH1, sMLH2)
         
         if (num_iter == 1) {
             cat("\n", "starting het-het correlations")
