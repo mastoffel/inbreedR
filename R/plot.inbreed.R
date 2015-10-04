@@ -138,7 +138,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         # add names (will be argument names) to args1 values
         args1[names(dots)] <- dots
         
-        boot_hist <- function(g2, g2_boot, CI.l, CI.u, args1) {
+        boot_hist_HHC <- function(g2, g2_boot, CI.l, CI.u, args1) {
             # y position of confidence band
             v.pos <- max(do.call(graphics::hist, (c(list(x = g2_boot, plot = FALSE, warn.unused = FALSE), args1)))$counts)
             # plot
@@ -150,7 +150,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
             graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("black"),
                    c("mean HHC with CI"), box.lty = 0)
         }
-        boot_hist(g2 = mean(x$HHC_vals, na.rm = TRUE), g2_boot = x$HHC_vals, 
+        boot_hist_HHC(g2 = mean(x$HHC_vals, na.rm = TRUE), g2_boot = x$HHC_vals, 
                   CI.l = x$CI_HHC[1], CI.u = x$CI_HHC[2], args1 = args1)
     }
         
