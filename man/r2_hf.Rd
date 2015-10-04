@@ -4,31 +4,38 @@
 \alias{r2_hf}
 \title{Expected r2 between standardized multilocus heterozygosity (h) and inbreeding level (f)}
 \usage{
-r2_hf(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps"),
-  parallel = FALSE, ncores = NULL)
+r2_hf(genotypes, nboot = NULL, type = c("msats", "snps"),
+  parallel = FALSE, ncores = NULL, CI = 0.95, subsets = NULL,
+  nboot_loci = 100)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
 containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
-\item{subsets}{a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. This analysis can be
-used to}
-
-\item{nboot}{number re-draws per subset.}
+\item{nboot}{number of bootstraps over individuals to estimate a confidence interval
+around r2(h, f)}
 
 \item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
 
 \item{parallel}{Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized}
 
 \item{ncores}{Specify number of cores to use for parallelization. By default,
-       all available cores but one are used.}
+all available cores but one are used.}
+
+\item{CI}{confidence interval (default to 0.95)}
+
+\item{subsets}{a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
+be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. This analysis can be
+used to}
+
+\item{nboot_loci}{number of re-draws per subset of loci.}
 }
 \value{
 \item{call}{function call.}
 \item{r2_hf_full}{expected r2 between inbreeding and sMLH for the full dataset}
+\item{r2_hf_boot}{expected r2 values from bootstrapping over individuals}
 \item{r2_hf_res}{expected r2 for each randomly subsetted dataset}
-\item{summary_r2_hf}{r2 mean and sd for each number of subsetted loci}
+\item{summary_r2_hf_res}{r2 mean and sd for each number of subsetted loci}
 \item{nobs}{number of observations}
 \item{nloc}{number of markers}
 }
@@ -38,8 +45,8 @@ Expected r2 between standardized multilocus heterozygosity (h) and inbreeding le
 \examples{
 data(mouse_msats)
 genotypes <- convert_raw(mouse_msats)
-(out <- r2_hf(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats",
-              parallel = FALSE))
+(out <- r2_hf(genotypes, nboot = 100, type = "msats", parallel = FALSE,
+              subsets = c(2,4,6,8,10,12), nboot_loci = 100))
 plot(out)
 }
 \author{

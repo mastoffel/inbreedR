@@ -25,3 +25,9 @@ This is a resubmission. In this version I have:
 * Made the title shorter and removed acronyms
 
 * Assigned several functions to the stats or graphics package.
+
+## Resubmission 2
+
+This is the second resubmission. In this version I have:
+
+* Changed the title field to title case

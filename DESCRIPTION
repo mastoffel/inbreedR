@@ -1,5 +1,5 @@
 Package: inbreedR
-Title: Analysing Inbreeding based on Genetic Markers 
+Title: Analysing Inbreeding Based on Genetic Markers 
 Version: 0.1.0
 Authors@R: c(
         person(c("Martin", "A."), "Stoffel", 

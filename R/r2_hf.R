@@ -4,21 +4,25 @@
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
-#' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. This analysis can be 
-#'        used to 
-#' @param nboot number re-draws per subset.
+#' @param nboot number of bootstraps over individuals to estimate a confidence interval
+#'        around r2(h, f)
 #' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
 #' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
 #' @param ncores Specify number of cores to use for parallelization. By default,
 #'        all available cores but one are used.
+#' @param CI confidence interval (default to 0.95)
+#' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
+#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. This analysis can be 
+#'        used to 
+#' @param nboot_loci number of re-draws per subset of loci.
 #'        
 #' 
 #' @return 
 #' \item{call}{function call.}
 #' \item{r2_hf_full}{expected r2 between inbreeding and sMLH for the full dataset}
+#' \item{r2_hf_boot}{expected r2 values from bootstrapping over individuals}
 #' \item{r2_hf_res}{expected r2 for each randomly subsetted dataset}
-#' \item{summary_r2_hf}{r2 mean and sd for each number of subsetted loci}
+#' \item{summary_r2_hf_res}{r2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
 #' \item{nloc}{number of markers}
 #' 
@@ -36,15 +40,15 @@
 #' @examples
 #' data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats)
-#' (out <- r2_hf(genotypes, subsets = c(2,4,6,8,10,12), nboot = 1000, type = "msats", 
-#'               parallel = FALSE))
+#' (out <- r2_hf(genotypes, nboot = 100, type = "msats", parallel = FALSE, 
+#'               subsets = c(2,4,6,8,10,12), nboot_loci = 100))
 #' plot(out)
 #' @export
 #'
 #'
 
-r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snps"), 
-                  parallel = FALSE, ncores = NULL) {
+r2_hf <- function(genotypes, nboot = NULL, type = c("msats", "snps"), 
+                  parallel = FALSE, ncores = NULL, CI = 0.95, subsets = NULL, nboot_loci = 100) {
     
 #     if (!(steps > 1) | (steps > ncol(genotypes))) {
 #         stop("steps have to be at least two and smaller or equal than the number of markers used")
@@ -63,37 +67,72 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
         stop("type argument needs to be msats or snps")
     } 
     
-    # define calculation of expected r2
+    # define g2 function
     if (type == "msats") {
-        calc_r2 <- function(gtypes) {
-            g2 <- g2_microsats(gtypes)[["g2"]]
+        g2_fun <- g2_microsats
+    } else if (type == "snps") {
+        g2_fun <- g2_snps
+    }
+    
+    # define calculation of expected r2
+    calc_r2 <- function(gtypes) {
+            g2 <- g2_fun(gtypes)[["g2"]]
             # according to the miller paper, negative g2s are set to r2 = 0.
             if (g2 < 0) return(r2 <- 0)
             var_sh <- stats::var(sMLH(gtypes))
             r2 <- g2/var_sh
             r2
-        }
     }
     
-    if (type == "snps") {
-        calc_r2 <- function(gtypes) {
-            g2 <- g2_snps(gtypes)[["g2"]]
-            # according to the miller paper, negative g2s are set to r2 = 0.
-            if (g2 < 0) return(r2 <- 0)
-            var_sh <- stats::var(sMLH(gtypes))
-            r2 <- g2/var_sh
-        }
-    }
     
     # calculate r2 for full data
     r2_hf_full <- calc_r2(gtypes)
     
-    # check if nboot = 0
-    if ((nboot <= 0) | (is.null(subsets))) {
+    # initialise r2_hf_boot
+    r2_hf_boot <- NA
+    
+    # bootstrapping over r2?
+    if (!is.null(nboot)) {
+        if (nboot < 2) stop("specify at least 2 bootstraps with nboot to 
+                            estimate a confidence interval")
+        # initialise
+        r2_hf_boot <- matrix(nrow = nboot)
+        
+        # bootstrap function
+        calc_r2_hf_boot <- function(boot, gtypes) {
+            inds <- sample(1:nrow(gtypes), replace = TRUE)
+            out <- calc_r2(gtypes[inds, ])
+            # notifications
+            if (boot %% 20 == 0) cat("\n", boot, "bootstraps over individuals done")
+            if (boot == nboot) cat("\n", "### bootstrapping over individuals finished! ###")
+            # result
+            return(out)
+        }
+        
+        # parallel bootstrapping ?
+        if (parallel == FALSE) r2_hf_boot <- sapply(1:nboot, calc_r2_hf_boot, gtypes)
+        
+        if (parallel == TRUE) {
+            if (is.null(ncores)) {
+                ncores <- parallel::detectCores()-1
+                warning("No core number specified: detectCores() is used to detect the number 
+                        of \n cores on the local machine")
+            }
+            # run cluster
+            cl <- parallel::makeCluster(ncores)
+            parallel::clusterExport(cl, c("g2_microsats", "g2_snps", "sMLH"), envir = .GlobalEnv)
+            r2_hf_boot <- parallel::parSapply(cl, 1:nboot, calc_r2_hf_boot, gtypes)
+            parallel::stopCluster(cl)
+        }
+    }
+    
+    # subsetting loci ?
+    if ((nboot_loci <= 0) | (is.null(subsets))) {
         res <- list(call = match.call(),
                     r2_hf_full = r2_hf_full,
                     r2_hf_res = NA,
-                    summary_r2_hf = NA,
+                    summary_r2_hf_res = NA,
+                    r2_hf_boot = r2_hf_boot,
                     nobs = nrow(genotypes), 
                     nloc = ncol(genotypes))
         
@@ -103,10 +142,9 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
     
     # sorting
     subsets <- sort(subsets)
-    
     # initialise
-    all_r2 <- matrix(nrow = nboot, ncol = length(subsets))
-    
+    all_r2 <- matrix(nrow = nboot_loci, ncol = length(subsets))
+
     calc_r2_sub <- function(gtypes, i) {
         loci <- sample((1:ncol(gtypes)), i)
         out <- calc_r2(gtypes[, loci])
@@ -121,10 +159,9 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
         for (i in subsets) {
             
             cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
-            if (step_num == length(subsets)) {
-                cat("\n", "Last subset!", sep = "")
-            }
-            all_r2[, step_num] <- replicate(nboot, calc_r2_sub(gtypes, i))
+            if (step_num == length(subsets)) cat("\n", "Last subset!", sep = "")
+            
+            all_r2[, step_num] <- replicate(nboot_loci, calc_r2_sub(gtypes, i))
             step_num <- step_num + 1
         }
         
@@ -140,17 +177,17 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
         for (i in subsets) {
             
             cat("\n", "Iterating subset number ", step_num, " from ", length(subsets), sep = "")
-            if (step_num == length(subsets)) {
-                cat("\n", "Last subset!", sep = "")
-            }
+            if (step_num == length(subsets)) cat("\n", "Last subset!", sep = "")
             
             if (is.null(ncores)) {
                 ncores <- parallel::detectCores()-1
-                warning("No core number specified: detectCores() is used to detect the number of \n cores on the local machine")
+                warning("No core number specified: detectCores() is used to detect the number 
+                        of \n cores on the local machine")
             }
             
             cl <- parallel::makeCluster(ncores)
-            all_r2[, step_num] <- parallel::parSapply(cl, 1:nboot, calc_r2_sub_parallel, gtypes, i)
+            parallel::clusterExport(cl, c("g2_microsats", "g2_snps", "sMLH"), envir = .GlobalEnv)
+            all_r2[, step_num] <- parallel::parSapply(cl, 1:nboot_loci, calc_r2_sub_parallel, gtypes, i)
             parallel::stopCluster(cl)
 
             step_num <- step_num + 1
@@ -158,18 +195,22 @@ r2_hf <- function(genotypes, subsets = NULL, nboot = 100, type = c("msats", "snp
     }
     
     # expected r2 per subset
-    r2_hf_res <- data.frame(r2 = c(all_r2), nloc = factor(rep(subsets, each = nboot)))
+    r2_hf_res <- data.frame(r2 = c(all_r2), nloc = factor(rep(subsets, each = nboot_loci)))
     
     # mean and sd per number of loci
-    summary_r2_hf <- as.data.frame(as.list(stats::aggregate(r2 ~ nloc, data = r2_hf_res, 
+    summary_r2_hf_res <- as.data.frame(as.list(stats::aggregate(r2 ~ nloc, data = r2_hf_res, 
                                 FUN = function(x) c(mean = mean(x, na.rm = TRUE), 
-                                                    sd = stats::sd(x, na.rm = TRUE)))))
-    names(summary_r2_hf) <- c("nloc", "Mean", "SD")
+                                                    sd = stats::sd(x, na.rm = TRUE),
+                                                    CI_boot = stats::quantile(
+                                                        x, c((1-CI)/2,1-(1-CI)/2), 
+                                                        na.rm=TRUE)))))
+    names(summary_r2_hf_res) <- c("nloc", "Mean", "SD", "CI_lower", "CI_upper")
     
     res <- list(call = match.call(),
                 r2_hf_full = r2_hf_full,
+                r2_hf_boot = r2_hf_boot,
                 r2_hf_res = r2_hf_res,
-                summary_r2_hf = summary_r2_hf,
+                summary_r2_hf_res = summary_r2_hf_res,
                 nobs = nrow(genotypes), 
                 nloc = ncol(genotypes))
     

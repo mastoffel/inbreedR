@@ -44,9 +44,9 @@ print.inbreed <- function(x, ...) {
             "Function call = ", deparse(x$call), "\n\n",
             sep = "")
         cat("Expected r2 based on all markers: ", x$r2_hf_full, "\n\n")
-        if(is.data.frame(x$summary_r2_hf)){
+        if(is.data.frame(x$summary_r2_hf_res)){
             cat("Average expected r2 of each marker subset: ", "\n\n")
-            print(format(x$summary_r2_hf, digits = 2))
+            print(format(x$summary_r2_hf_res, digits = 2))
         }
     }
     

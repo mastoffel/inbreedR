@@ -45,7 +45,7 @@ plot.inbreed <- function(x, ...) {
     }
     # check if its r2_hf
     if(!is.null(x$r2_hf_res)) {
-        if(!is.data.frame(x$summary_r2_hf)) stop("No bootstraps done, so nothing to plot")
+        if(!is.data.frame(x$summary_r2_hf_res)) stop("No resampling done, so nothing to plot")
         # save ellipsis args
         dots <- list(...)
         # make empty arguments list

@@ -113,7 +113,7 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         if (boot %% 20 == 0) {
             cat("\n", boot, "bootstraps done")
         } else if (boot == nboot-1) {
-            cat("\n", "### bootstrapping finished, hells yeah!! ###")
+            cat("\n", "### bootstrapping finished, hell yeah!! ###")
         }
         
         g2_emp
