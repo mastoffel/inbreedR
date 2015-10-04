@@ -34,6 +34,7 @@ used to}
 \item{call}{function call.}
 \item{r2_hf_full}{expected r2 between inbreeding and sMLH for the full dataset}
 \item{r2_hf_boot}{expected r2 values from bootstrapping over individuals}
+\item{CI_boot}{confidence interval around the expected r2}
 \item{r2_hf_res}{expected r2 for each randomly subsetted dataset}
 \item{summary_r2_hf_res}{r2 mean and sd for each number of subsetted loci}
 \item{nobs}{number of observations}

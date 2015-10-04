@@ -13,7 +13,7 @@
 #' @export
 #'
 
-plot.inbreed <- function(x, ...) {
+plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     # check if its a g2 calculater
     if (!is.null(x[["g2"]])) {
         if (is.na(x$g2_se)) stop("Number of bootstraps specified in g2 function was 0, so there is nothing to plot")
@@ -44,10 +44,19 @@ plot.inbreed <- function(x, ...) {
                   CI.u = unname(x$CI_boot[2]), args1 = args1)
     }
     # check if its r2_hf
-    if(!is.null(x$r2_hf_res)) {
-        if(!is.data.frame(x$summary_r2_hf_res)) stop("No resampling done, so nothing to plot")
+    if (as.character(x$call[[1]]) == "r2_hf") {
         # save ellipsis args
         dots <- list(...)
+        # if plottype argument not specified, assign boxplot
+        if (length(plottype) == 2) plottype <- plottype[1]
+
+        # plotting resampling boxplots
+        if (plottype == "boxplot") {
+            
+        if(!is.null(x$r2_hf_res)) {
+        # check whether values available
+        if(!is.data.frame(x$summary_r2_hf_res)) stop("No resampling done, so nothing to plot")
+        
         # make empty arguments list
         args1 <- list()
         
@@ -60,6 +69,37 @@ plot.inbreed <- function(x, ...) {
         
         do.call(graphics::boxplot, c(list(formula = r2 ~ nloc, data = x$r2_hf_res,
                 pch = 16, outcol ="black"), args1))
+        }
+        } else if (plottype == "histogram") {
+            if (length(x$r2_hf_boot) < 2) stop("No bootstrapping done, so nothing to plot")
+            
+            # make empty arguments list
+            args1 <- list()
+            if (!("main" %in% dots)) args1$main <- "r2 bootstrap distribution"
+            if (!("xlab" %in% dots)) args1$xlab <- "r2 (heterozygosity, inbreeding)"
+            if (!("ylab" %in% dots)) args1$ylab <- "counts"
+            # add names (will be argument names) to args1 values
+            args1[names(dots)] <- dots
+            
+            boot_hist <- function(r2_hf_full, r2_hf_boot, CI.l, CI.u, args1) {
+                
+                # y position of confidence band
+                v.pos <- max(do.call(graphics::hist, (c(list(x = r2_hf_boot, plot = FALSE, 
+                                                             warn.unused = FALSE), args1)))$counts)
+                # plot
+                do.call(graphics::hist, (c(list(x = r2_hf_boot, ylim = c(0, v.pos*1.5)), args1))) 
+                graphics::lines(x = c(r2_hf_full, r2_hf_full), y = c(0, v.pos * 1.15), lwd = 2.5, 
+                                col = "black", lty = 5)
+                graphics::arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
+                                 length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
+                graphics::points(r2_hf_full, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
+                graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", 
+                                 col = c("black"), c("r2 with CI"), box.lty = 0)
+            }
+            boot_hist(r2_hf_full = x$r2_hf_full, r2_hf_boot = x$r2_hf_boot, 
+                      CI.l = unname(x$CI_boot[1]), 
+                      CI.u = unname(x$CI_boot[2]), args1 = args1)
+        }
     }
     
     

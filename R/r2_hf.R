@@ -21,6 +21,7 @@
 #' \item{call}{function call.}
 #' \item{r2_hf_full}{expected r2 between inbreeding and sMLH for the full dataset}
 #' \item{r2_hf_boot}{expected r2 values from bootstrapping over individuals}
+#' \item{CI_boot}{confidence interval around the expected r2}
 #' \item{r2_hf_res}{expected r2 for each randomly subsetted dataset}
 #' \item{summary_r2_hf_res}{r2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
@@ -90,7 +91,7 @@ r2_hf <- function(genotypes, nboot = NULL, type = c("msats", "snps"),
     
     # initialise r2_hf_boot
     r2_hf_boot <- NA
-    
+    CI_boot <- NA
     # bootstrapping over r2?
     if (!is.null(nboot)) {
         if (nboot < 2) stop("specify at least 2 bootstraps with nboot to 
@@ -124,15 +125,17 @@ r2_hf <- function(genotypes, nboot = NULL, type = c("msats", "snps"),
             r2_hf_boot <- parallel::parSapply(cl, 1:nboot, calc_r2_hf_boot, gtypes)
             parallel::stopCluster(cl)
         }
+        CI_boot <- stats::quantile(c(r2_hf_full, r2_hf_boot), c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
     }
     
     # subsetting loci ?
     if ((nboot_loci <= 0) | (is.null(subsets))) {
         res <- list(call = match.call(),
                     r2_hf_full = r2_hf_full,
+                    r2_hf_boot = r2_hf_boot,
+                    CI_boot = CI_boot,
                     r2_hf_res = NA,
                     summary_r2_hf_res = NA,
-                    r2_hf_boot = r2_hf_boot,
                     nobs = nrow(genotypes), 
                     nloc = ncol(genotypes))
         
@@ -209,6 +212,7 @@ r2_hf <- function(genotypes, nboot = NULL, type = c("msats", "snps"),
     res <- list(call = match.call(),
                 r2_hf_full = r2_hf_full,
                 r2_hf_boot = r2_hf_boot,
+                CI_boot = CI_boot,
                 r2_hf_res = r2_hf_res,
                 summary_r2_hf_res = summary_r2_hf_res,
                 nobs = nrow(genotypes), 
