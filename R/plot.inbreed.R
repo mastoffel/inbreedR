@@ -2,6 +2,9 @@
 #' 
 #'
 #' @param x An inbreed object.
+#' @param plottype "boxplot" or "histogram" to plot the output of r2_hf() and to show either
+#'        the boxplots through resampling of loci or the histogram from the bootstrapping of 
+#'        r2 over individuals.
 #' @param \dots Additional arguments to the hist() function for the g2 and the HHC functions. 
 #'              Additional arguments to the boxplot() function for plotting the result of the r2_hf() function.
 #'
@@ -81,7 +84,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
             # add names (will be argument names) to args1 values
             args1[names(dots)] <- dots
             
-            boot_hist <- function(r2_hf_full, r2_hf_boot, CI.l, CI.u, args1) {
+            boot_hist_r2_hf <- function(r2_hf_full, r2_hf_boot, CI.l, CI.u, args1) {
                 
                 # y position of confidence band
                 v.pos <- max(do.call(graphics::hist, (c(list(x = r2_hf_boot, plot = FALSE, 
@@ -96,7 +99,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
                 graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", 
                                  col = c("black"), c("r2 with CI"), box.lty = 0)
             }
-            boot_hist(r2_hf_full = x$r2_hf_full, r2_hf_boot = x$r2_hf_boot, 
+            boot_hist_r2_hf(r2_hf_full = x$r2_hf_full, r2_hf_boot = x$r2_hf_boot, 
                       CI.l = unname(x$CI_boot[1]), 
                       CI.u = unname(x$CI_boot[2]), args1 = args1)
         }

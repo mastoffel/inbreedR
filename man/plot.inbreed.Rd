@@ -4,10 +4,14 @@
 \alias{plot.inbreed}
 \title{Plot an inbreed object}
 \usage{
-\method{plot}{inbreed}(x, ...)
+\method{plot}{inbreed}(x, plottype = c("boxplot", "histogram"), ...)
 }
 \arguments{
 \item{x}{An inbreed object.}
+
+\item{plottype}{"boxplot" or "histogram" to plot the output of r2_hf() and to show either
+the boxplots through resampling of loci or the histogram from the bootstrapping of
+r2 over individuals.}
 
 \item{\dots}{Additional arguments to the hist() function for the g2 and the HHC functions.
              Additional arguments to the boxplot() function for plotting the result of the r2_hf() function.}
