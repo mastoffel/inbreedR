@@ -4,11 +4,12 @@
 \alias{r2_Wf}
 \title{Expected r2 between inbreeding level (f) and fitness (W)}
 \usage{
-r2_Wf(genotypes, trait, family = "gaussian", type = c("msats", "snps"))
+r2_Wf(genotypes, trait, family = "gaussian", type = c("msats", "snps"),
+  nboot = NULL, parallel = FALSE, ncores = NULL, CI = 0.95)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing).}
 
 \item{trait}{vector of any type which can be specified in R's glm() function}
 
@@ -18,10 +19,22 @@ link function can be done in the same way as in the glm() function. A binomial d
 probit instead of logit link would be specified with family = binomial(link = "probit")}
 
 \item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
+
+\item{nboot}{number of bootstraps over individuals to estimate a confidence interval
+around r2(W, f).}
+
+\item{parallel}{Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized.}
+
+\item{ncores}{Specify number of cores to use for parallelization. By default,
+all available cores but one are used.}
+
+\item{CI}{confidence interval (default to 0.95)}
 }
 \value{
 \item{call}{function call.}
 \item{exp_r2_full}{expected r2 between inbreeding and sMLH for the full dataset}
+\item{r2_Wf_boot}{expected r2 values from bootstrapping over individuals}
+\item{CI_boot}{confidence interval around the expected r2}
 \item{nobs}{number of observations}
 \item{nloc}{number of markers}
 }
@@ -33,7 +46,8 @@ data(mouse_msats)
 data(bodyweight)
 genotypes <- convert_raw(mouse_msats)
 
-(out <- r2_Wf(genotypes, bodyweight, family = "gaussian", type = "msats"))
+(out <- r2_Wf(genotypes = genotypes, trait = bodyweight, family = "gaussian", type = "msats",
+              nboot = 100, parallel = FALSE, ncores = NULL, CI = 0.95))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

@@ -21,3 +21,8 @@ test_that("matrix input works", {
     expect_equal(r2_Wf(as.matrix(snps), bodyweight, family = gaussian, type = "snps")$r2_Wf_full, 0.1287353, tolerance = 0.001)
 })
 
+test_that("bootstrapping works", {
+    expect_equal(r2_Wf(msats, trait = bodyweight, nboot = NULL,type = "msats")$r2_Wf_boot, NA)
+    expect_equal(is.numeric(r2_Wf(msats, trait = bodyweight, nboot = 10,type = "msats")$r2_Wf_boot), TRUE)
+    expect_equal(length(r2_Wf(msats, trait = bodyweight, nboot = 10,type = "msats")$r2_Wf_boot), 11)
+})

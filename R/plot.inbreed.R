@@ -105,6 +105,38 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         }
     }
     
+    # check if its r2_Wf
+    if (as.character(x$call[[1]]) == "r2_Wf") {
+        if (length(x$r2_Wf_boot) < 2) stop("No bootstrapping done, so nothing to plot")
+        
+        dots <- list(...)
+        # make empty arguments list
+        args1 <- list()
+        if (!("main" %in% dots)) args1$main <- "r2 bootstrap distribution"
+        if (!("xlab" %in% dots)) args1$xlab <- "r2 (fitness, inbreeding)"
+        if (!("ylab" %in% dots)) args1$ylab <- "counts"
+        # add names (will be argument names) to args1 values
+        args1[names(dots)] <- dots
+        
+        boot_hist_r2_Wf <- function(r2_Wf_full, r2_Wf_boot, CI.l, CI.u, args1) {
+            
+            # y position of confidence band
+            v.pos <- max(do.call(graphics::hist, (c(list(x = r2_Wf_boot, plot = FALSE, 
+                                                         warn.unused = FALSE), args1)))$counts)
+            # plot
+            do.call(graphics::hist, (c(list(x = r2_Wf_boot, ylim = c(0, v.pos*1.5)), args1))) 
+            graphics::lines(x = c(r2_Wf_full, r2_Wf_full), y = c(0, v.pos * 1.15), lwd = 2.5, 
+                            col = "black", lty = 5)
+            graphics::arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
+                             length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
+            graphics::points(r2_Wf_full, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
+            graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", 
+                             col = c("black"), c("r2 with CI"), box.lty = 0)
+        }
+        boot_hist_r2_Wf(r2_Wf_full = x$r2_Wf_full, r2_Wf_boot = x$r2_Wf_boot, 
+                        CI.l = unname(x$CI_boot[1]), 
+                        CI.u = unname(x$CI_boot[2]), args1 = args1)
+    }
     
     # check if its resample_g2
     if(!is.null(x$all_g2_res)) {

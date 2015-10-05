@@ -61,6 +61,9 @@ print.inbreed <- function(x, ...) {
                 "Function call = ", deparse(x$call), "\n\n",
                 sep = "")
             cat("Expected r2 based on all markers: ", x$r2_Wf_full, "\n\n")
+            cat("Confidence interval for r2 based on bootstrapping over individuals:", "\n")
+            print(x$CI_boot)
+            cat("\n")
         }
     
     

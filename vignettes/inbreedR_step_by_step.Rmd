@@ -203,6 +203,13 @@ Wf <- r2_Wf(genotypes = mouse_microsats, trait = bodyweight,
             family = gaussian, type = "msats")
 ```
 
+In addition, bootstrapping over individuals can be used to estimate confidence intervals around these estimates:
+```{r, echo=TRUE}
+# r^2 between inbreeding and heterozygosity with bootstrapping
+hf <- r2_hf(genotypes = mouse_microsats, nboot = 100, type = "msats")
+```
+
+
 
 ## Workflow for estimating the impact of inbreeding on fitness using HFC
 

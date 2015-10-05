@@ -32,6 +32,6 @@ test_that("Matrix input works", {
 test_that("bootstrapping works", {
     expect_equal(r2_hf(msats, nboot = NULL,type = "msats")$r2_hf_boot, NA)
     expect_equal(is.numeric(r2_hf(msats, nboot = 10,type = "msats")$r2_hf_boot), TRUE)
-    expect_equal(length(r2_hf(msats, nboot = 10,type = "msats")$r2_hf_boot), 10)
+    expect_equal(length(r2_hf(msats, nboot = 10,type = "msats")$r2_hf_boot), 11)
 })
 

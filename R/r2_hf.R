@@ -125,7 +125,8 @@ r2_hf <- function(genotypes, nboot = NULL, type = c("msats", "snps"),
             r2_hf_boot <- parallel::parSapply(cl, 1:nboot, calc_r2_hf_boot, gtypes)
             parallel::stopCluster(cl)
         }
-        CI_boot <- stats::quantile(c(r2_hf_full, r2_hf_boot), c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+        r2_hf_boot <- c(r2_hf_full, r2_hf_boot)
+        CI_boot <- stats::quantile(r2_hf_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
     }
     
     # subsetting loci ?
