@@ -13,9 +13,9 @@ License: GPL-2
 LazyData: true
 Imports:
     data.table (>= 1.9.4),
-    parallel (>= 3.2.2),
-    stats (>= 3.2.2),
-    graphics (>= 3.2.2)
+    parallel,
+    stats,
+    graphics 
 Suggests: 
     testthat (>= 0.10.0),
     knitr
