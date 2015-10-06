@@ -29,9 +29,15 @@ test_that("Matrix input works", {
                  0.6698, tolerance = 0.001)
 })
 
-test_that("bootstrapping works", {
+test_that("bootstrapping works for msats", {
     expect_equal(r2_hf(msats, nboot = NULL,type = "msats")$r2_hf_boot, NA)
     expect_equal(is.numeric(r2_hf(msats, nboot = 10,type = "msats")$r2_hf_boot), TRUE)
     expect_equal(length(r2_hf(msats, nboot = 10,type = "msats")$r2_hf_boot), 11)
+})
+
+test_that("bootstrapping works for snps", {
+    expect_equal(r2_hf(snps, nboot = NULL,type = "snps")$r2_hf_boot, NA)
+    expect_equal(is.numeric(r2_hf(snps, nboot = 10,type = "snps")$r2_hf_boot), TRUE)
+    expect_equal(length(r2_hf(snps, nboot = 10,type = "snps")$r2_hf_boot), 11)
 })
 
