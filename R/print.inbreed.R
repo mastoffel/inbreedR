@@ -38,7 +38,7 @@ print.inbreed <- function(x, ...) {
     
     # check if its r2_hf
     if(!is.null(x$r2_hf_res)) {
-        cat("\n\n", "Calculation of expected r2 between f and sMLH for an increasing number of markers", "\n",
+        cat("\n\n", "Calculation of expected r2 between inbreeding level (f) and heterozygosity (sMLH)", "\n",
                     "---------------------------------------------------------------------------------", "\n\n", sep = "")
         cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
             "Function call = ", deparse(x$call), "\n\n",

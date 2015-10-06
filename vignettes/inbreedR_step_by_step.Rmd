@@ -203,12 +203,18 @@ Wf <- r2_Wf(genotypes = mouse_microsats, trait = bodyweight,
             family = gaussian, type = "msats")
 ```
 
-In addition, bootstrapping over individuals can be used to estimate confidence intervals around these estimates:
-```{r, echo=TRUE}
+In addition, bootstrapping over individuals can be used to estimate confidence intervals around these estimates. Also, there is the possibility of parallelization, by specifying `parallel = TRUE`
+```{r, echo=TRUE, results = "hide"}
 # r^2 between inbreeding and heterozygosity with bootstrapping
-hf <- r2_hf(genotypes = mouse_microsats, nboot = 100, type = "msats")
+hf <- r2_hf(genotypes = mouse_microsats, nboot = 100, type = "msats", parallel = FALSE)
 ```
 
+Note: For plotting the histogram with confidence interval for `r2_hf` you have to specify an additional argument to the
+`plot` function, because there will be another plotting possibility for the output of this function as you will read later in this vignette.
+
+```{r}
+plot(hf, plottype = "histogram")
+```
 
 
 ## Workflow for estimating the impact of inbreeding on fitness using HFC
