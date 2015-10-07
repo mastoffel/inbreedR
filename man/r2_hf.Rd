@@ -4,7 +4,7 @@
 \alias{r2_hf}
 \title{Expected r2 between standardized multilocus heterozygosity (h) and inbreeding level (f)}
 \usage{
-r2_hf(genotypes, nboot = NULL, type = c("msats", "snps"),
+r2_hf(genotypes, type = c("msats", "snps"), nboot = NULL,
   parallel = FALSE, ncores = NULL, CI = 0.95, subsets = NULL,
   nboot_loci = 100)
 }
@@ -12,10 +12,10 @@ r2_hf(genotypes, nboot = NULL, type = c("msats", "snps"),
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
 containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
+\item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
+
 \item{nboot}{number of bootstraps over individuals to estimate a confidence interval
 around r2(h, f)}
-
-\item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
 
 \item{parallel}{Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized}
 
