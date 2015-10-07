@@ -24,7 +24,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         dots <- list(...)
         # make empty arguments list
         args1 <- list()
-        if (!("main" %in% dots)) args1$main <- "g2 bootstrap distribution"
+        if (!("main" %in% dots)) args1$main <- "g2 bootstrapping distribution - \nempirical g2 with confidence interval"
         if (!("xlab" %in% dots)) args1$xlab <- "g2"
         if (!("ylab" %in% dots)) args1$ylab <- "counts"
         # add names (will be argument names) to args1 values
@@ -40,8 +40,8 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
                 graphics::arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
                        length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
                 graphics::points(g2, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
-                graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("black"),
-                       c("g2 with CI"), box.lty = 0)
+                # graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("black"),
+                       # c("g2 with CI"), box.lty = 0)
         }
         boot_hist(g2 = x$g2, g2_boot = x$g2_boot, CI.l = unname(x$CI_boot[1]), 
                   CI.u = unname(x$CI_boot[2]), args1 = args1)
@@ -78,7 +78,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
             
             # make empty arguments list
             args1 <- list()
-            if (!("main" %in% dots)) args1$main <- "r2 bootstrap distribution"
+            if (!("main" %in% dots)) args1$main <- "r2 bootstrapping distribution - \nestimated r2 with confidence interval"
             if (!("xlab" %in% dots)) args1$xlab <- "r2 (heterozygosity, inbreeding)"
             if (!("ylab" %in% dots)) args1$ylab <- "counts"
             # add names (will be argument names) to args1 values
@@ -96,8 +96,8 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
                 graphics::arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
                                  length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
                 graphics::points(r2_hf_full, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
-                graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", 
-                                 col = c("black"), c("r2 with CI"), box.lty = 0)
+                # graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", 
+                #                 col = c("black"), c("r2 with CI"), box.lty = 0)
             }
             boot_hist_r2_hf(r2_hf_full = x$r2_hf_full, r2_hf_boot = x$r2_hf_boot, 
                       CI.l = unname(x$CI_boot[1]), 
