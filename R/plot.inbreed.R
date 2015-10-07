@@ -180,8 +180,8 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
             graphics::arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
                    length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
             graphics::points(g2, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
-            graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("black"),
-                   c("mean HHC with CI"), box.lty = 0)
+            #graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", col = c("black"),
+            #       c("mean HHC with CI"), box.lty = 0)
         }
         boot_hist_HHC(g2 = mean(x$HHC_vals, na.rm = TRUE), g2_boot = x$HHC_vals, 
                   CI.l = x$CI_HHC[1], CI.u = x$CI_HHC[2], args1 = args1)
