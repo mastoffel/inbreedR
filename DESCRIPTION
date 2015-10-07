@@ -8,7 +8,7 @@ Authors@R: c(
 Description: A framework for analysing inbreeding and heterozygosity-fitness correlations (HFCs) from  
              microsatellite and SNP markers.
 Depends: 
-    R (>= 3.2.2)
+    R (>= 3.2.1)
 License: GPL-2
 LazyData: true
 Imports:
