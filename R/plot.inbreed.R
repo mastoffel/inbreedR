@@ -112,7 +112,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         dots <- list(...)
         # make empty arguments list
         args1 <- list()
-        if (!("main" %in% dots)) args1$main <- "r2 bootstrap distribution"
+        if (!("main" %in% dots)) args1$main <- "r2 bootstrapping distribution - \nestimated r2 with confidence interval"
         if (!("xlab" %in% dots)) args1$xlab <- "r2 (fitness, inbreeding)"
         if (!("ylab" %in% dots)) args1$ylab <- "counts"
         # add names (will be argument names) to args1 values
@@ -130,8 +130,8 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
             graphics::arrows(CI.l, v.pos*1.15, CI.u, v.pos*1.15,
                              length=0.1, angle=90, code=3, lwd = 2.5, col = "black")
             graphics::points(r2_Wf_full, v.pos*1.15, cex = 1.2, pch = 19, col = "black")
-            graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", 
-                             col = c("black"), c("r2 with CI"), box.lty = 0)
+            # graphics::legend(x = "topleft", inset = 0.01, pch = 19, cex = 1, bty = "n", 
+            #                 col = c("black"), c("r2 with CI"), box.lty = 0)
         }
         boot_hist_r2_Wf(r2_Wf_full = x$r2_Wf_full, r2_Wf_boot = x$r2_Wf_boot, 
                         CI.l = unname(x$CI_boot[1]), 
@@ -163,7 +163,8 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         # make empty arguments list
         args1 <- list()
         
-        if (!("main" %in% dots)) args1$main <-  "heterozygosity-heterozygosity correlation distribution"
+        if (!("main" %in% dots)) args1$main <-  "heterozygosity-heterozygosity correlation distribution - 
+                                                \nmean HHC with confidence interval"
         if (!("xlab" %in% dots)) args1$xlab <- "correlation coefficient r"
         if (!("ylab" %in% dots)) args1$ylab <- "counts"
         
