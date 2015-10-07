@@ -4,9 +4,9 @@
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
+#' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
 #' @param nboot number of bootstraps over individuals to estimate a confidence interval
 #'        around r2(h, f)
-#' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
 #' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
 #' @param ncores Specify number of cores to use for parallelization. By default,
 #'        all available cores but one are used.
@@ -48,7 +48,7 @@
 #'
 #'
 
-r2_hf <- function(genotypes, nboot = NULL, type = c("msats", "snps"), 
+r2_hf <- function(genotypes, type = c("msats", "snps"), nboot = NULL, 
                   parallel = FALSE, ncores = NULL, CI = 0.95, subsets = NULL, nboot_loci = 100) {
     
 #     if (!(steps > 1) | (steps > ncol(genotypes))) {
