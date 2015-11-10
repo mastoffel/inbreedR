@@ -14,7 +14,6 @@ inbreedR contains the following functions:
 \link{check_data}
 \link{r2_hf}
 \link{r2_Wf}
-\link{resample_g2}
 \link{HHC}
 \link{sMLH}
 \link{plot.inbreed}
