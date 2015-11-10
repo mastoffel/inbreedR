@@ -138,23 +138,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
                         CI.u = unname(x$CI_boot[2]), args1 = args1)
     }
     
-    # check if its resample_g2
-    if(!is.null(x$all_g2_res)) {
-        # save ellipsis args
-        dots <- list(...)
-        # make empty arguments list
-        args1 <- list()
-        
-        if (!("main" %in% dots)) args1$main <- "g2 for different marker subsets"
-        if (!("xlab" %in% dots)) args1$xlab <- "number of loci"
-        if (!("ylab" %in% dots)) args1$ylab <- "g2"
-        
-        # add names (will be argument names) to args1 values
-        args1[names(dots)] <- dots
-        
-        do.call(graphics::boxplot, c(list(formula = g2 ~ nloc, data = x$all_g2_res,
-                                pch = 16, outcol ="black"), args1))
-    }
+
     
     # check if HHC
     if(!is.null(x$HHC_vals)) {

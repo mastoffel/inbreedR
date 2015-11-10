@@ -59,8 +59,6 @@ library("inbreedR")
   
 * `g2_snps`: Calculates $g_2$ for larger datasets, such as SNPs. Allows for parallelization to speed up computation times. Based on the formula from the appendix of @Hoffman:2014bxba.  
   
-* `resample_g2` : Calculates $g_2$ for randomly drawn subsets of markers. Can be used to explore the influence of marker number. 
-  
 * `HHC`: Computes heterozygosity-heterozygosity correlations, another measure of identity disequilibrium [@balloux2004does].  
   
 * `r2_Wf` : Calculates the expected impact of inbreeding-level (f) on a fitness trait (W) with a formula derived by @szulkin2010heterozygosity.  
@@ -255,24 +253,9 @@ kable(df_msats, digits=3, caption="Descriptors of HFCs",
 
 ## Sensitivity to the number of markers 
 
-Subsampling analysis [@Miller:2013jqbaca; @stoffel2015chemical] can provide insights into the power provided by a given marker panel.  The `resample_g2` function within `inbreedR` can be used to randomly select marker subsets of specified sizes, from which trends in the average estimated  as well as its variance with marker number can be derived.  Note that the variance will scale negatively with an increasing proportion of sampled loci.  The `resample_g2` function within inbreedR allows specification of subsets and how often each subset should be resampled (nboot) and calculates the respective $g_2$ values, their mean and standard deviation.  The results can be visualised as a series of boxplots with `plot`.
-
-
-```{r, echo=TRUE, results='hide'}
-resamp_g2_mouse_microsats <- resample_g2(mouse_microsats, subsets = c(2,4,6,8,10,12), 
-                                     nboot = 100, type = "msats")
-resamp_g2_mouse_snps <- resample_g2(mouse_snps, subsets = c(100, 500, 1000, 2000, 5000, 
-                                    13000), nboot = 10, type = "snps")
-```  
-
-```{r resample_g2, echo=TRUE, fig.cap="g2 for different subsets of markers", fig.width=7, fig.height=4}
-par(mfrow = c(1, 2))
-plot(resamp_g2_mouse_microsats, main = "Microsatellites", col = "cornflowerblue", cex.axis=0.85)
-plot(resamp_g2_mouse_snps, main = "SNPs", col = "darkgoldenrod1", cex.axis=0.85)
-```
-
+Subsampling analysis [@Miller:2013jqbaca; @stoffel2015chemical] can provide insights into the power provided by a given marker panel.
   
-Finally, sensitivity of $\hat{r}^2(h, f)$ towards the number of markers used can be explored in a similar way using the `r2_hf` function, which again allows specification of the marker subsets and how often each subset should be sampled. 
+For that reason, the sensitivity of $\hat{r}^2(h, f)$ towards the number of markers used can be explored using the `r2_hf` function, which allows specification of the marker subsets and how often each subset should be sampled. 
 
 ```{r, echo=TRUE, results='hide'}
 r2_hf_mouse_microsats <- r2_hf(mouse_microsats, subsets = c(2,4,6,8,10,12), 

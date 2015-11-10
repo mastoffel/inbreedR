@@ -15,7 +15,7 @@
 
 print.inbreed <- function(x, ...) {
     
-    # check if its a g2 calculater
+    # check if its a g2 calculator
     if (!is.null(x$g2)) {
         if (as.character(x$call)[1] == "g2_microsats") {
                 cat("\n\n", "Calculation of identity disequilibrium with g2 for microsatellite data", "\n",
@@ -82,19 +82,7 @@ print.inbreed <- function(x, ...) {
 #         }
 #     }
     
-    # check its resample_g2
-    if(!is.null(x$all_g2_res)) {
-        cat("\n\n", "Calculation of identity disequilibrium (g2) for an increasing number of markers", "\n",
-            "---------------------------------------------------------------------------------", "\n\n", sep = "")
-        cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
-            "Function call = ", deparse(x$call), "\n\n",
-            sep = "")
-        cat("g2 estimate based on all markers: ", x$g2_full, "\n\n")
-        if(is.data.frame(x$summary_all_g2)){
-            cat("Average g2 of each marker subset: ", "\n\n")
-            print(format(x$summary_all_g2, digits = 2))
-        }
-    }
+
 
     # check if HHC
     if(!is.null(x$HHC_vals)) {
