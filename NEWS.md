@@ -10,3 +10,14 @@
 bootstrapping or `plottype = "boxplot"` to show the boxplots resulting from resampling of different
 loci subsets.
 
+
+# inbreedR 0.3.0
+
+## Improvements
+
+* `g2_resampling` function deleted 
+
+* `simulate_g2` function added
+
+* `r2_Wf` calculation bug fixed
+

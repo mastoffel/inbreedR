@@ -49,3 +49,4 @@ sMLH <- function(genotypes) {
     sMLH
 }
 
+

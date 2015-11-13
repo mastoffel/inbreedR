@@ -1,0 +1,154 @@
+#' Simulate g2 
+#' 
+#' Simulates g2 values based on different marker numbers. 
+#'
+#' @param n_ind number of individuals to sample from the population
+#' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
+#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data
+#' @param reps number of resampling repetitions
+#' @param genotypes optional: provide genotypes in \code{inbreedR} format to estimate the empricial multilocus heterozygosity
+#'        (MLH) across loci and use these estimates to simulate data from the same distribution
+#' @param mean_loc_MLH mean multilocus heterozygosity across loci. Should range between 0-1. This will be automatically
+#'        calculated from the empirical data when genotypes in inbreedR format are given
+#' @param sd_loc_MLH standard deviation of multilocus heterozygosity across loci.
+#'
+#' @details The \code{simulate_g2} function can be used to explore the confidence of a g2 estimate calculated
+#'          from different sized marker sets. The simulation assumes (1) unlinked loci,
+#'          (2) equal allele frequencies among all loci with expected heterozygosity of 0.5 and
+#'          (3) random mating. The mean and standard deviation of genome-wide expected 
+#'          heterozygosity can either be specified with the \code{mean_loc_MLH} and \code{sd_loc_MLH}
+#'          arguments or will be calculated from emprical genotypes when these are specified in 
+#'          the \code{genotypes} argument.
+#'          
+#'          
+#' @author  Marty Kardos &
+#'          Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
+#' @export
+
+
+simulate_g2 <- function(n_ind = NULL, subsets = NULL, reps = 100, 
+                        genotypes = NULL, mean_loc_MLH = NULL, sd_loc_MLH = NULL) {
+################################################################################
+# simulate a population with variable inbreeding
+# then estimate g2 from independently sampled / non-overlapping subsets of loci 
+################################################################################
+
+# predefine
+# check if empirical data is given
+if (!is.null(genotypes)) {
+    if (check_data(genotypes)) {
+        loc_MLH <- MLH(genotypes)
+        mean_loc_MLH <- mean(loc_MLH)
+        sd_loc_MLH <- sd(loc_MLH)
+    }
+}
+    
+# number of individuals to sample from the population
+if (is.null(n_ind))   stop("Specify the number of individuals to sample with n_ind")  
+# subsets of loci to sample   
+if (is.null(subsets)) stop("specify the size of loci subsamples in 'subsets', i.e. subsets = c(2,4,6,8) to 
+                           calculate g2 from up to 8 loci")
+# expected heterozygosity at all loci (assumes expected heterozygosity has zero variance across a the simulated loci)
+if (is.null(mean_loc_MLH)) stop("Specify the mean expected heterozygosity (value between 0-1) with mean_loc_MLH")     
+if (is.null(sd_loc_MLH))  stop("Specify the standard deviation of expected heterozygosity with sd_loc_MLH")
+
+# total number of loci to simulate
+n_loc <- subsets[length(subsets)]
+allLoci <- reps*n_loc                            
+
+#-------------------------
+# simulate the individual 
+# genotypes
+#-------------------------
+
+hets <- NULL        # initialize a data frame to store the genotypic information
+
+for (i in 1:n_ind) {
+    
+	thisHet <- NULL                       # randomly select a TRUE genome-wide MLH (i.e., the proportion of hypothetically infinitely many loci that are heterozygous in the ith individual)
+	thisHet <- rnorm(1,mean=mean_loc_MLH,sd=sd_loc_MLH)
+
+	rands <- NULL                         # randomly generated numbers between 0 and 1 that are used to determine whether the individual is heterozygous at each locus
+	rands <- runif(allLoci,min=0,max=1)
+
+	theseHets <- NULL
+	theseHets <- as.numeric(rands < thisHet)
+	
+	hets <- rbind(hets,theseHets)
+	}
+
+#------------------------------------------------------------------------
+# repetitively subsample the loci independently, each time estimating g2
+#------------------------------------------------------------------------
+sampNVec <- c(subsets)
+
+estMat <- NULL    # matrix to store teh g2 estimates
+sampCols <- 1:ncol(hets)    # vector of loci that are available for sampling
+
+
+estMat <- NULL
+
+for (i in 1:length(sampNVec))    # loop through the differen subsample sizes
+	{
+	theseEsts <- rep(NA,reps)    # vector to store the estimates from this number of loci
+	for (j in 1:reps)
+		{
+        theseSampCols <- NULL                                       # get a new independent sample of loci
+		theseSampCols <- sample(sampCols,sampNVec[i],replace=FALSE)
+
+		theseGenos <- NULL
+		theseGenos <- hets[,theseSampCols]
+
+		theseEsts[j] <- g2_microsats(theseGenos)[2][[1]]
+		sampCols <- sampCols[-theseSampCols]
+
+		}
+
+	estMat <- rbind(estMat,theseEsts)
+	sampCols <- 1:ncol(hets)    # reconstitute the original vector of loci that are available for sampling
+	print(paste("done with subsampling of ",sampNVec[i]," loci",sep=""))
+
+	}
+estMat <- unname(estMat)
+# get the upper and lower bounds of the y-axis
+
+minG2 <- min(estMat)
+maxG2 <- max(estMat)
+
+res <- list(call=match.call(),
+            estMat = estMat,
+            n_ind = n_ind,
+            n_loc = n_loc,
+            subsets = subsets,
+            reps = reps,
+            genotypes = genotypes,
+            mean_loc_MLH = mean_loc_MLH,
+            sd_loc_MLH = sd_loc_MLH,
+            minG2 = minG2,
+            maxG2 = maxG2,
+            sampNVec = sampNVec
+            )
+
+class(res) <- "inbreed"
+return(res)
+}
+
+
+# additional  function to calculate marker MLH for simulation
+MLH <- function(genotypes) {
+    # transform to matrix
+    genes <- as.matrix(genotypes)
+    # genes[is.na(genes)] <- -1
+    # get logical matrix of non-missing values as TRUE
+    typed <- (genes == 1) | (genes == 0)
+    typed[is.na(typed)] <- FALSE
+    # initialise
+    nloc <- ncol(genes)
+    nind <- nrow(genes)
+    typed_sum <- colSums(typed, na.rm = TRUE)
+    
+    # heterozygosity per locus
+    het_loc <- colSums(genes == 1, na.rm = TRUE) / typed_sum
+    het_loc
+}
+

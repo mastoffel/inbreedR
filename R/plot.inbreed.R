@@ -170,5 +170,36 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         boot_hist_HHC(g2 = mean(x$HHC_vals, na.rm = TRUE), g2_boot = x$HHC_vals, 
                   CI.l = x$CI_HHC[1], CI.u = x$CI_HHC[2], args1 = args1)
     }
+    
+    
+    if(!is.null(x$mean_loc_MLH)){
+    #-----------------------------------
+    # plot the results
+    #-----------------------------------
+    sampNVec <- x$sampNVec
+    estMat <- x$estMat
+    plot(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$minG2,x$maxG2),type="n",ylab="g2",xlab="Number of Loci")
+    
+    meanVec <- rep(NA,nrow(estMat))
+    sdVec <- rep(NA,nrow(estMat))
+    
+    for (j in 1:nrow(estMat))
+    {
+        meanVec[j] <- mean (estMat[j,])
+        sdVec[j] <- sd(estMat[j,])
+    }
+    
+    # library(Hmisc)
+    # library(scales)
+    
+    for(i in 1:nrow(estMat))
+    {
+        points(rep(sampNVec[i],ncol(estMat)),estMat[i,],col=alpha("orange",0.4))
+    }
+    
+    Hmisc::errbar(x= sampNVec,y= meanVec,yminus=meanVec-sdVec,
+           yplus = meanVec+sdVec,col="blue",add=TRUE,errbar.col="blue")
+    lines(sampNVec,meanVec,col="black",lty="dashed")
+    }
         
 }

@@ -12,8 +12,7 @@
 #'        all available cores but one are used.
 #' @param CI confidence interval (default to 0.95)
 #' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. This analysis can be 
-#'        used to 
+#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. 
 #' @param nboot_loci number of re-draws per subset of loci.
 #'        
 #' 
@@ -84,7 +83,6 @@ r2_hf <- function(genotypes, type = c("msats", "snps"), nboot = NULL,
             r2 <- g2/var_sh
             r2
     }
-    
     
     # calculate r2 for full data
     r2_hf_full <- calc_r2(gtypes)

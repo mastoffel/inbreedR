@@ -25,8 +25,7 @@ all available cores but one are used.}
 \item{CI}{confidence interval (default to 0.95)}
 
 \item{subsets}{a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. This analysis can be
-used to}
+be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.}
 
 \item{nboot_loci}{number of re-draws per subset of loci.}
 }
