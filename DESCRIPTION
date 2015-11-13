@@ -16,7 +16,8 @@ Imports:
     parallel,
     stats,
     graphics,
-    Hmisc
+    Hmisc,
+    scales
 Suggests: 
     testthat (>= 0.10.0),
     knitr

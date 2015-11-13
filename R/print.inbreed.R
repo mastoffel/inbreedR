@@ -95,4 +95,25 @@ print.inbreed <- function(x, ...) {
             "\n", "HHC SD: " , round(stats::sd(x$HHC_vals, na.rm = TRUE), 3), 
             "\n", "HHC CI: [", round(x$CI_HHC[1],3), ", ", round(x$CI_HHC[2],3), "]", sep = "")
     }
+    
+    # check if simulate_g2
+    if(!is.null(x$mean_loc_MLH)){
+        cat("\n\n", "Simulation - Expected g2 for an increasing number of markers", "\n",
+            "--------------------------------------------------------------------", "\n", sep = "")
+        cat("Function call = ", deparse(x$call), "\n", sep = "")  
+        cat("\n", "Number of individuals: ", x$n_ind, "\n",
+                  "Number of independent draws from the genome per subset of loci: ", x$reps, "\n",
+                  "Subset sizes range from ", x$subsets[1], " to ", x$subsets[length(x$subsets)], " loci", "\n\n\n", sep = "")
+        num_subsets <- length(x$subsets)
+        df <- data.frame("number_of_markers" = x$subsets, "mean" = rep(NA, num_subsets), "sd" = rep(NA, num_subsets), 
+                         "CI_lower" = rep(NA, num_subsets), "CI_upper" = rep(NA, num_subsets))
+        df$mean <- rowMeans(x$estMat)
+        df$sd <- x$all_sd
+        df[c("CI_lower", "CI_upper")] <- x$all_CI
+        cat("g2 mean and variation for each marker subset: ", "\n\n")
+        print(format(df, digits = 2), row.names = FALSE)
+    }
+      
+    
+    
 }

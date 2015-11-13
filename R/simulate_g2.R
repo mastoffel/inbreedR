@@ -1,6 +1,6 @@
 #' Simulate g2 
 #' 
-#' Simulates g2 values based on different marker numbers. 
+#' Simulates g2 values estimated from different numbers of markers by sampling independent loci.
 #'
 #' @param n_ind number of individuals to sample from the population
 #' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
@@ -11,23 +11,31 @@
 #' @param mean_loc_MLH mean multilocus heterozygosity across loci. Should range between 0-1. This will be automatically
 #'        calculated from the empirical data when genotypes in inbreedR format are given
 #' @param sd_loc_MLH standard deviation of multilocus heterozygosity across loci.
+#' @param CI Confidence intervals to calculate (default to 0.95)
 #'
 #' @details The \code{simulate_g2} function can be used to explore the confidence of a g2 estimate calculated
-#'          from different sized marker sets. The simulation assumes (1) unlinked loci,
-#'          (2) equal allele frequencies among all loci with expected heterozygosity of 0.5 and
-#'          (3) random mating. The mean and standard deviation of genome-wide expected 
-#'          heterozygosity can either be specified with the \code{mean_loc_MLH} and \code{sd_loc_MLH}
-#'          arguments or will be calculated from emprical genotypes when these are specified in 
-#'          the \code{genotypes} argument.
+#'          from different sized marker sets. All loci are sampled independently from the simulated genome.
+#'          The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci 
+#'          with expected heterozygosity of 0.5 and (3) random mating. The mean and standard 
+#'          deviation of genome-wide expected heterozygosity can either be specified with 
+#'          the \code{mean_loc_MLH} and \code{sd_loc_MLH} arguments or will be calculated 
+#'          from emprical genotypes when these are specified in the \code{genotypes} argument.
 #'          
 #'          
-#' @author  Marty Kardos &
+#' @author  Marty Kardos (marty.kardos@@ebc.uu.se) &
 #'          Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
+#'          
+#' @examples 
+#' data(mouse_msats)
+#' genotypes <- convert_raw(mouse_msats)
+#' sim_g2 <- simulate_g2(n_ind = 10, subsets = c(2,4,6), reps = 100, genotypes = genotypes)
+#' plot(sim_g2)
 #' @export
 
 
 simulate_g2 <- function(n_ind = NULL, subsets = NULL, reps = 100, 
-                        genotypes = NULL, mean_loc_MLH = NULL, sd_loc_MLH = NULL) {
+                        genotypes = NULL, mean_loc_MLH = NULL, sd_loc_MLH = NULL,
+                        CI = 0.95) {
 ################################################################################
 # simulate a population with variable inbreeding
 # then estimate g2 from independently sampled / non-overlapping subsets of loci 
@@ -115,6 +123,14 @@ estMat <- unname(estMat)
 minG2 <- min(estMat)
 maxG2 <- max(estMat)
 
+# calculate CIs and SDs
+calc_CI <- function(estMat_subset) {
+    stats::quantile(estMat_subset, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
+}
+
+all_CI <- t(apply(estMat, 1, calc_CI))
+all_sd <- apply(estMat, 1, sd)
+
 res <- list(call=match.call(),
             estMat = estMat,
             n_ind = n_ind,
@@ -126,7 +142,9 @@ res <- list(call=match.call(),
             sd_loc_MLH = sd_loc_MLH,
             minG2 = minG2,
             maxG2 = maxG2,
-            sampNVec = sampNVec
+            sampNVec = sampNVec,
+            all_CI = all_CI,
+            all_sd = all_sd
             )
 
 class(res) <- "inbreed"
@@ -146,7 +164,6 @@ MLH <- function(genotypes) {
     nloc <- ncol(genes)
     nind <- nrow(genes)
     typed_sum <- colSums(typed, na.rm = TRUE)
-    
     # heterozygosity per locus
     het_loc <- colSums(genes == 1, na.rm = TRUE) / typed_sum
     het_loc

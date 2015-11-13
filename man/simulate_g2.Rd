@@ -5,7 +5,7 @@
 \title{Simulate g2}
 \usage{
 simulate_g2(n_ind = NULL, subsets = NULL, reps = 100, genotypes = NULL,
-  mean_loc_MLH = NULL, sd_loc_MLH = NULL)
+  mean_loc_MLH = NULL, sd_loc_MLH = NULL, CI = 0.95)
 }
 \arguments{
 \item{n_ind}{number of individuals to sample from the population}
@@ -22,21 +22,29 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 calculated from the empirical data when genotypes in inbreedR format are given}
 
 \item{sd_loc_MLH}{standard deviation of multilocus heterozygosity across loci.}
+
+\item{CI}{Confidence intervals to calculate (default to 0.95)}
 }
 \description{
-Simulates g2 values based on different marker numbers.
+Simulates g2 values estimated from different numbers of markers by sampling independent loci.
 }
 \details{
 The \code{simulate_g2} function can be used to explore the confidence of a g2 estimate calculated
-         from different sized marker sets. The simulation assumes (1) unlinked loci,
-         (2) equal allele frequencies among all loci with expected heterozygosity of 0.5 and
-         (3) random mating. The mean and standard deviation of genome-wide expected
-         heterozygosity can either be specified with the \code{mean_loc_MLH} and \code{sd_loc_MLH}
-         arguments or will be calculated from emprical genotypes when these are specified in
-         the \code{genotypes} argument.
+         from different sized marker sets. All loci are sampled independently from the simulated genome.
+         The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci
+         with expected heterozygosity of 0.5 and (3) random mating. The mean and standard
+         deviation of genome-wide expected heterozygosity can either be specified with
+         the \code{mean_loc_MLH} and \code{sd_loc_MLH} arguments or will be calculated
+         from emprical genotypes when these are specified in the \code{genotypes} argument.
+}
+\examples{
+data(mouse_msats)
+genotypes <- convert_raw(mouse_msats)
+sim_g2 <- simulate_g2(n_ind = 10, subsets = c(2,4,6), reps = 100, genotypes = genotypes)
+plot(sim_g2)
 }
 \author{
-Marty Kardos &
+Marty Kardos (marty.kardos@ebc.uu.se) &
          Martin A. Stoffel (martin.adam.stoffel@gmail.com)
 }
 

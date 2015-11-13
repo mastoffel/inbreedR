@@ -14,7 +14,8 @@
 #' @seealso \link{g2_snps}, \link{g2_microsats}
 #'
 #' @export
-#'
+#' @importFrom Hmisc errbar
+#' @importFrom scales alpha
 
 plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     # check if its a g2 calculater
@@ -185,7 +186,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     
     for (j in 1:nrow(estMat))
     {
-        meanVec[j] <- mean (estMat[j,])
+        meanVec[j] <- mean(estMat[j,])
         sdVec[j] <- sd(estMat[j,])
     }
     
@@ -194,9 +195,8 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     
     for(i in 1:nrow(estMat))
     {
-        points(rep(sampNVec[i],ncol(estMat)),estMat[i,],col=alpha("orange",0.4))
+        points(rep(sampNVec[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
     }
-    
     Hmisc::errbar(x= sampNVec,y= meanVec,yminus=meanVec-sdVec,
            yplus = meanVec+sdVec,col="blue",add=TRUE,errbar.col="blue")
     lines(sampNVec,meanVec,col="black",lty="dashed")
