@@ -251,9 +251,9 @@ kable(df_msats, digits=3, caption="Descriptors of HFCs",
 ```
 
 
-## Sensitivity to the number of markers 
+## Sensitivity to the number of genetic markers 
 
-Subsampling analysis [@Miller:2013jqbaca; @stoffel2015chemical] can provide insights into the power provided by a given marker panel.
+Subsampling analysis [@Miller:2013jqbaca; @stoffel2015chemical] can provide insights into the power provided by a given marker panel. 
   
 For that reason, the sensitivity of $\hat{r}^2(h, f)$ towards the number of markers used can be explored using the `r2_hf` function, which allows specification of the marker subsets and how often each subset should be sampled. 
 
@@ -268,6 +268,18 @@ r2_hf_mouse_snps <- r2_hf(mouse_snps, subsets = c(100, 500, 1000, 2000, 5000, 13
 par(mfrow = c(1, 2))
 plot(r2_hf_mouse_microsats, main = "Microsatellites", col = "cornflowerblue", cex.axis=0.85)
 plot(r2_hf_mouse_snps, main = "SNPs", col = "darkgoldenrod1", cex.axis=0.85)
+```
+
+
+`inbreedR` also provides a simulation function to estimate the precision of g2 for different marker subsets. The idea is to
+draw independent subsets of loci from 
+
+```{r, echo=TRUE, results='hide'}
+sim_g2 <- simulate_g2(n_ind = 20, subsets = c(4,6,8,10,12), reps = 100, genotypes = mouse_microsats)
+```
+
+```{r sim_g2, echo=FALSE, fig.cap="Simulation: Sensitivity of g2 estimated from an increasing number of markers", fig.width=7, fig.height=4}
+plot(sim_g2)
 ```
 
 ## Extracting raw data from inbreedR objects 

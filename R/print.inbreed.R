@@ -101,16 +101,24 @@ print.inbreed <- function(x, ...) {
         cat("\n\n", "Simulation - Expected g2 for an increasing number of markers", "\n",
             "--------------------------------------------------------------------", "\n", sep = "")
         cat("Function call = ", deparse(x$call), "\n", sep = "")  
-        cat("\n", "Number of individuals: ", x$n_ind, "\n",
-                  "Number of independent draws from the genome per subset of loci: ", x$reps, "\n",
-                  "Subset sizes range from ", x$subsets[1], " to ", x$subsets[length(x$subsets)], " loci", "\n\n\n", sep = "")
+        cat("\n", "For this simulation, marker subsets ranging from ", x$subsets[1], " to ", 
+            x$subsets[length(x$subsets)], " have been independently drawn ", x$reps, " times each from ", 
+            x$n_ind, " individuals.", "\n\n", sep = "")
+        if (!is.null(x$genotypes)) {
+            cat("As you provided genotype data, the simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_loc_MLH, 3),
+                "and a standard deviation of", round(x$sd_loc_MLH, 3), ", equivalent to your empirical data", "\n\n")
+        } else {
+            cat("The simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_loc_MLH, 3),
+                "and a standard deviation of", round(x$sd_loc_MLH, 3), "\n\n")
+        }
+        
         num_subsets <- length(x$subsets)
         df <- data.frame("number_of_markers" = x$subsets, "mean" = rep(NA, num_subsets), "sd" = rep(NA, num_subsets), 
                          "CI_lower" = rep(NA, num_subsets), "CI_upper" = rep(NA, num_subsets))
         df$mean <- rowMeans(x$estMat)
         df$sd <- x$all_sd
         df[c("CI_lower", "CI_upper")] <- x$all_CI
-        cat("g2 mean and variation for each marker subset: ", "\n\n")
+        cat("Summary of g2 estimates for each marker subset: ", "\n\n")
         print(format(df, digits = 2), row.names = FALSE)
     }
       
