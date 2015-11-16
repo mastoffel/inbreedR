@@ -5,8 +5,7 @@
 \title{Simulate g2}
 \usage{
 simulate_g2(n_ind = NULL, subsets = NULL, reps = 100, type = c("msats",
-  "snps"), genotypes = NULL, mean_loc_MLH = NULL, sd_loc_MLH = NULL,
-  CI = 0.95)
+  "snps"), genotypes = NULL, mean_MLH = NULL, sd_MLH = NULL, CI = 0.95)
 }
 \arguments{
 \item{n_ind}{number of individuals to sample from the population}
@@ -16,15 +15,15 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 
 \item{reps}{number of resampling repetitions}
 
-\item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
+\item{type}{specifies g2 formula. Type "snps" for large datasets and "msats" for smaller datasets.}
 
 \item{genotypes}{optional: provide genotypes in \code{inbreedR} format to estimate the empirical multilocus heterozygosity
 (MLH) and use these estimates to simulate data from the same distribution}
 
-\item{mean_loc_MLH}{mean multilocus heterozygosity. Should range between 0-1. This will be automatically
+\item{mean_MLH}{mean multilocus heterozygosity. Should range between 0-1. This will be automatically
 calculated from the empirical data when genotypes in \code{inbreedR} format are given.}
 
-\item{sd_loc_MLH}{standard deviation of multilocus heterozygosity. This will be automatically
+\item{sd_MLH}{standard deviation of multilocus heterozygosity. This will be automatically
 calculated from the empirical data when genotypes in \code{inbreedR} format are given.}
 
 \item{CI}{Confidence intervals to calculate (default to 0.95)}
@@ -42,7 +41,7 @@ The \code{simulate_g2} function can be used to explore the confidence of g2 esti
          The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci
          with expected heterozygosity of 0.5 and (3) random mating. The mean and standard
          deviation of genome-wide expected heterozygosity can either be specified with
-         the \code{mean_loc_MLH} and \code{sd_loc_MLH} arguments or will be calculated
+         the \code{mean_MLH} and \code{sd_MLH} arguments or will be calculated
          from emprical genotypes when these are specified in the \code{genotypes} argument.
 }
 \examples{

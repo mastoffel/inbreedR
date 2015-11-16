@@ -3,7 +3,7 @@
 \name{sMLH}
 \alias{MLH}
 \alias{sMLH}
-\title{Calculate multilocus heterozygosity (MLH) and standardized multilocu heteorzygosity (sMLH)}
+\title{Calculate multilocus heterozygosity (MLH) and standardized multilocus heteorzygosity (sMLH)}
 \usage{
 sMLH(genotypes)
 
