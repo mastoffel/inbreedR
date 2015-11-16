@@ -3,6 +3,7 @@
 S3method(plot,inbreed)
 S3method(print,inbreed)
 export(HHC)
+export(MLH)
 export(check_data)
 export(convert_raw)
 export(g2_microsats)

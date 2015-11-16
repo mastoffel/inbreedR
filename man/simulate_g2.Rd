@@ -4,8 +4,9 @@
 \alias{simulate_g2}
 \title{Simulate g2}
 \usage{
-simulate_g2(n_ind = NULL, subsets = NULL, reps = 100, genotypes = NULL,
-  mean_loc_MLH = NULL, sd_loc_MLH = NULL, CI = 0.95)
+simulate_g2(n_ind = NULL, subsets = NULL, reps = 100, type = c("msats",
+  "snps"), genotypes = NULL, mean_loc_MLH = NULL, sd_loc_MLH = NULL,
+  CI = 0.95)
 }
 \arguments{
 \item{n_ind}{number of individuals to sample from the population}
@@ -15,22 +16,29 @@ be a reasonable choice. The minimum subset size is 2 and the maximum is the numb
 
 \item{reps}{number of resampling repetitions}
 
-\item{genotypes}{optional: provide genotypes in \code{inbreedR} format to estimate the empricial multilocus heterozygosity
-(MLH) across loci and use these estimates to simulate data from the same distribution}
+\item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
 
-\item{mean_loc_MLH}{mean multilocus heterozygosity across loci. Should range between 0-1. This will be automatically
-calculated from the empirical data when genotypes in inbreedR format are given}
+\item{genotypes}{optional: provide genotypes in \code{inbreedR} format to estimate the empirical multilocus heterozygosity
+(MLH) and use these estimates to simulate data from the same distribution}
 
-\item{sd_loc_MLH}{standard deviation of multilocus heterozygosity across loci.}
+\item{mean_loc_MLH}{mean multilocus heterozygosity. Should range between 0-1. This will be automatically
+calculated from the empirical data when genotypes in \code{inbreedR} format are given.}
+
+\item{sd_loc_MLH}{standard deviation of multilocus heterozygosity. This will be automatically
+calculated from the empirical data when genotypes in \code{inbreedR} format are given.}
 
 \item{CI}{Confidence intervals to calculate (default to 0.95)}
 }
 \description{
-Simulates g2 values estimated from different numbers of markers by sampling independent loci.
+This function can be used to simulate genotype data, draw random subsamples and calculate the
+respective g2 values. Every subsample of markers is drawn independently to give insights
+into the variation of g2 values calculated from a given number of markers and individuals.
+Empirical genotype data can be used to estimate multilocus heterozygosity (MLH) and provide a distribution
+(from mean and sd of MLH) for the simulated genotypes.
 }
 \details{
-The \code{simulate_g2} function can be used to explore the confidence of a g2 estimate calculated
-         from different sized marker sets. All loci are sampled independently from the simulated genome.
+The \code{simulate_g2} function can be used to explore the confidence of g2 estimates calculated
+         from marker sets of different sizes. Every new locus set is drawn independently.
          The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci
          with expected heterozygosity of 0.5 and (3) random mating. The mean and standard
          deviation of genome-wide expected heterozygosity can either be specified with

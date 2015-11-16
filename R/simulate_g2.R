@@ -174,29 +174,6 @@ return(res)
 }
 
 
-# additional  function to calculate marker MLH for simulation
-MLH <- function(genotypes) {
-    # transform to matrix
-    genes <- as.matrix(genotypes)
-    # genes[is.na(genes)] <- -1
-    # get logical matrix of non-missing values as TRUE
-    typed <- (genes == 1) | (genes == 0)
-    typed[is.na(typed)] <- FALSE
-    # initialise
-    nloc <- ncol(genes)
-    nind <- nrow(genes)
-    typed_sum <- colSums(typed, na.rm = TRUE)
-    # heterozygosity per locus
-    het_loc <- colSums(genes == 1, na.rm = TRUE) / typed_sum
-    # replicate vector to matrix
-    het_loc_mat <- matrix(het_loc, nrow = nind, ncol = nloc, byrow = TRUE)
-    het_loc_mat[!typed] <- 0
-    mh <- rowSums(het_loc_mat, na.rm = TRUE)
-    N  <- rowSums(typed, na.rm = TRUE)
-    H  <- rowSums(genes == 1, na.rm = TRUE)
-    MLH <- (H/N)
-}
-
 
 
 
