@@ -5,13 +5,13 @@
 \title{Calculates heterzygosity-heterozygosity correlations with
 standardized multilocus heterozygosities (sMLH)}
 \usage{
-HHC(genotypes, niter = 100, CI = 0.95)
+HHC(genotypes, reps = 100, CI = 0.95)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
 containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
-\item{niter}{number of iterations, i.e. splittings of the dataset}
+\item{reps}{number of iterations, i.e. splittings of the dataset}
 
 \item{CI}{calculates a CI around the mean het-het correlation}
 }
@@ -29,7 +29,7 @@ between the resulting sMLH values is calculated.
 \examples{
 data(mouse_msats)
 genotypes <- convert_raw(mouse_msats)
-(out <- HHC(genotypes, niter = 100, CI = 0.95))
+(out <- HHC(genotypes, reps = 100, CI = 0.95))
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

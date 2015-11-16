@@ -170,11 +170,11 @@ plot(g2_mouse_snps, main = "SNPs",
      col = "darkgoldenrod1", cex.axis=0.85)
 ```
 
-Another approach for estimating ID is to divide the marker panel into two random subsets, compute the correlation in heterozygosity between the two, and repeat this hundreds or thousands of times in order to obtain a distribution of **heterozygosity-heterozygosity  correlation coefficients (HHCs)** [@balloux2004does]. This approach is intuitive but can be criticised on the grounds that samples within the HHC distribution are non-independent.  Moreover, $g_2$ is preferable because it directly relates to HFC theory (equation 2).  The `HHC` function in `inbreedR` calculates HHCs together with confidence intervals, specifying how often the dataset is randomly split into two halves with the `niter` argument.  The results can be outputted as text or plotted as histograms with CIs.
+Another approach for estimating ID is to divide the marker panel into two random subsets, compute the correlation in heterozygosity between the two, and repeat this hundreds or thousands of times in order to obtain a distribution of **heterozygosity-heterozygosity  correlation coefficients (HHCs)** [@balloux2004does]. This approach is intuitive but can be criticised on the grounds that samples within the HHC distribution are non-independent.  Moreover, $g_2$ is preferable because it directly relates to HFC theory (equation 2).  The `HHC` function in `inbreedR` calculates HHCs together with confidence intervals, specifying how often the dataset is randomly split into two halves with the `reps` argument.  The results can be outputted as text or plotted as histograms with CIs.
 
 ```{r, echo=TRUE, results='hide'}
-HHC_mouse_microsats <- HHC(mouse_microsats , niter = 1000)
-HHC_mouse_snps <- HHC(mouse_snps, niter = 100)
+HHC_mouse_microsats <- HHC(mouse_microsats , reps = 1000)
+HHC_mouse_snps <- HHC(mouse_snps, reps = 100)
 ```
 
 ```{r}
