@@ -173,7 +173,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     }
     
     
-    if(!is.null(x$mean_loc_MLH)){
+    if(!is.null(x$mean_MLH)){
     #-----------------------------------
     # plot the results
     #-----------------------------------

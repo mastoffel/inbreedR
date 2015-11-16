@@ -97,7 +97,7 @@ print.inbreed <- function(x, ...) {
     }
     
     # check if simulate_g2
-    if(!is.null(x$mean_loc_MLH)){
+    if(!is.null(x$mean_MLH)){
         cat("\n\n", "Simulation - Expected g2 for an increasing number of genetic markers", "\n",
             "--------------------------------------------------------------------", "\n", sep = "")
         cat("Function call = ", deparse(x$call), "\n", sep = "") 
@@ -106,11 +106,11 @@ print.inbreed <- function(x, ...) {
         cat("Repetitions per marker set: ", x$reps, "\n\n", sep = "")
         
         if (!is.null(x$genotypes)) {
-            cat("As you provided genotype data, the simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_loc_MLH, 3),
-                "and a standard deviation of", round(x$sd_loc_MLH, 3), ", equivalent to your empirical data", "\n\n")
+            cat("As you provided genotype data, the simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_MLH, 3),
+                "and a standard deviation of", round(x$sd_MLH, 3), ", equivalent to your empirical data", "\n\n")
         } else {
-            cat("The simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_loc_MLH, 3),
-                "and a standard deviation of", round(x$sd_loc_MLH, 3), "\n\n")
+            cat("The simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_MLH, 3),
+                "and a standard deviation of", round(x$sd_MLH, 3), "\n\n")
         }
         
         num_subsets <- length(x$subsets)

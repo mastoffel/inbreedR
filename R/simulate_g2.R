@@ -10,12 +10,12 @@
 #' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
 #'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data
 #' @param reps number of resampling repetitions
-#' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
+#' @param type specifies g2 formula. Type "snps" for large datasets and "msats" for smaller datasets.
 #' @param genotypes optional: provide genotypes in \code{inbreedR} format to estimate the empirical multilocus heterozygosity
 #'        (MLH) and use these estimates to simulate data from the same distribution
-#' @param mean_loc_MLH mean multilocus heterozygosity. Should range between 0-1. This will be automatically
+#' @param mean_MLH mean multilocus heterozygosity. Should range between 0-1. This will be automatically
 #'        calculated from the empirical data when genotypes in \code{inbreedR} format are given.
-#' @param sd_loc_MLH standard deviation of multilocus heterozygosity. This will be automatically
+#' @param sd_MLH standard deviation of multilocus heterozygosity. This will be automatically
 #'        calculated from the empirical data when genotypes in \code{inbreedR} format are given.
 #' @param CI Confidence intervals to calculate (default to 0.95)
 #'
@@ -24,7 +24,7 @@
 #'          The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci 
 #'          with expected heterozygosity of 0.5 and (3) random mating. The mean and standard 
 #'          deviation of genome-wide expected heterozygosity can either be specified with 
-#'          the \code{mean_loc_MLH} and \code{sd_loc_MLH} arguments or will be calculated 
+#'          the \code{mean_MLH} and \code{sd_MLH} arguments or will be calculated 
 #'          from emprical genotypes when these are specified in the \code{genotypes} argument.
 #'          
 #'          
@@ -40,7 +40,7 @@
 
 
 simulate_g2 <- function(n_ind = NULL, subsets = NULL, reps = 100, type = c("msats", "snps"),
-                        genotypes = NULL, mean_loc_MLH = NULL, sd_loc_MLH = NULL,
+                        genotypes = NULL, mean_MLH = NULL, sd_MLH = NULL,
                         CI = 0.95) {
 ################################################################################
 # simulate a population with variable inbreeding
@@ -52,8 +52,8 @@ simulate_g2 <- function(n_ind = NULL, subsets = NULL, reps = 100, type = c("msat
 if (!is.null(genotypes)) {
     if (check_data(genotypes)) {
         loc_MLH <- MLH(genotypes)
-        mean_loc_MLH <- mean(loc_MLH)
-        sd_loc_MLH <- sd(loc_MLH)
+        mean_MLH <- mean(loc_MLH)
+        sd_MLH <- sd(loc_MLH)
     }
 }
 
@@ -65,8 +65,8 @@ if (is.null(subsets)) stop("specify the size of loci subsamples in 'subsets', i.
 if (any(subsets < 2)) stop("Specify a minimum of 2 markers in subsets")
 if (!isTRUE(all(subsets == floor(subsets)))) stop("'subsets' must only contain integer values")
 # expected heterozygosity at all loci (assumes expected heterozygosity has zero variance across a the simulated loci)
-if (is.null(mean_loc_MLH)) stop("Specify the mean expected heterozygosity (value between 0-1) with mean_loc_MLH")     
-if (is.null(sd_loc_MLH))  stop("Specify the standard deviation of expected heterozygosity with sd_loc_MLH")
+if (is.null(mean_MLH)) stop("Specify the mean expected heterozygosity (value between 0-1) with mean_MLH")     
+if (is.null(sd_MLH))  stop("Specify the standard deviation of expected heterozygosity with sd_MLH")
 
     # check g2 function argument
     if (length(type) == 2){
@@ -96,7 +96,7 @@ hets <- NULL        # initialize a data frame to store the genotypic information
 for (i in 1:n_ind) {
     
 	thisHet <- NULL                       # randomly select a TRUE genome-wide MLH (i.e., the proportion of hypothetically infinitely many loci that are heterozygous in the ith individual)
-	thisHet <- rnorm(1,mean=mean_loc_MLH,sd=sd_loc_MLH)
+	thisHet <- rnorm(1,mean=mean_MLH,sd=sd_MLH)
 
 	rands <- NULL                         # randomly generated numbers between 0 and 1 that are used to determine whether the individual is heterozygous at each locus
 	rands <- runif(allLoci,min=0,max=1)
@@ -160,8 +160,8 @@ res <- list(call=match.call(),
             subsets = subsets,
             reps = reps,
             genotypes = genotypes,
-            mean_loc_MLH = mean_loc_MLH,
-            sd_loc_MLH = sd_loc_MLH,
+            mean_MLH = mean_MLH,
+            sd_MLH = sd_MLH,
             minG2 = minG2,
             maxG2 = maxG2,
             sampNVec = sampNVec,
