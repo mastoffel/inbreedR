@@ -1,13 +1,13 @@
 Package: inbreedR
-Title: Analysing Inbreeding Based on Genetic Markers 
+Title: Analysing Inbreeding Based on Genetic Markers
 Version: 0.2.9000
 Authors@R: c(
         person(c("Martin", "A."), "Stoffel", 
                email= "martin.adam.stoffel@gmail.com", role = c("aut", "cre")),
         person("Mareike", "Esser", email = "messer@uni-bielefeld.de" ,role = c("aut")))
-Description: A framework for analysing inbreeding and heterozygosity-fitness correlations (HFCs) from  
-             microsatellite and SNP markers.
-Depends: 
+Description: A framework for analysing inbreeding and heterozygosity-fitness
+    correlations (HFCs) from microsatellite and SNP markers.
+Depends:
     R (>= 3.2.1)
 License: GPL-2
 LazyData: true
@@ -18,7 +18,8 @@ Imports:
     graphics,
     Hmisc,
     scales
-Suggests: 
+Suggests:
     testthat (>= 0.10.0),
     knitr
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

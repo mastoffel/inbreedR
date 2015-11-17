@@ -179,7 +179,8 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     #-----------------------------------
     sampNVec <- x$sampNVec
     estMat <- x$estMat
-    plot(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$minG2,x$maxG2),type="n",ylab="g2",xlab="Number of Loci")
+    plot(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$minG2,x$maxG2),
+         type="n",ylab="g2",xlab="Number of Loci", main = "g2 estimates with mean and CI")
     
     meanVec <- rep(NA,nrow(estMat))
     sdVec <- rep(NA,nrow(estMat))
@@ -197,8 +198,13 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     {
         points(rep(sampNVec[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
     }
-    Hmisc::errbar(x= sampNVec,y= meanVec,yminus=meanVec-sdVec,
-           yplus = meanVec+sdVec,col="blue",add=TRUE,errbar.col="blue")
+    
+    # CI
+    
+#     Hmisc::errbar(x= sampNVec,y= meanVec,yminus=meanVec-sdVec,
+#            yplus = meanVec+sdVec,col="blue",add=TRUE,errbar.col="blue")
+    Hmisc::errbar(x= sampNVec,y= meanVec,yminus=x$all_CI[, 1],
+                             yplus = x$all_CI[, 2],col="blue",add=TRUE,errbar.col="blue")
     lines(sampNVec,meanVec,col="black",lty="dashed")
     }
         

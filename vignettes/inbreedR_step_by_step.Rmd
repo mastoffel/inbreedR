@@ -64,6 +64,9 @@ library("inbreedR")
 * `r2_Wf` : Calculates the expected impact of inbreeding-level (f) on a fitness trait (W) with a formula derived by @szulkin2010heterozygosity.  
   
 * `r2_hf`: Calculates the expected impact of inbreeding-level (f) on heterozygosity (h) with a formula derived by @szulkin2010heterozygosity. Also implements a subsampling analysis to explore the influence of marker number.
+
+* `simulate_g2`: Simulates g2 values based on independently drawn sets of genetic markers. The number of individuals, marker number and the destribution of heterozygosity can be specified by
+the user. This simulation can be used to estimate the precision of g2 for a given dataset.
   
 * `plot.inbreedR`: Plots the output of `inbreedR` functions  
 

@@ -1,16 +1,14 @@
-#' Calculate multilocus heterozygosity (MLH) and standardized multilocus heteorzygosity (sMLH)
+#' Calculate multilocus heterozygosity (MLH) 
 #' 
 #' sMLH is defined as the total number of heterozygous loci in an individual divided 
 #' by the sum of average observed heterozygosities in the population over the 
 #' subset of loci successfully typed in the focal individual.
-#' MLH is defined as the total number of heterozygous loci in an individual divided 
-#' by the number of loci typed in the focal individual.
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
 #'
 #' @return
-#' Vector of individual (standardized) multilocus heterozygosities
+#' Vector of individual standardized multilocus heterozygosities
 #'
 #' @references
 #' Coltman, D. W., Pilkington, J. G., Smith, J. A., & Pemberton, J. M. (1999). 
@@ -52,7 +50,24 @@ sMLH <- function(genotypes) {
     sMLH
 }
 
-#' @rdname sMLH
+
+#' Calculate multilocus heterozygosity (MLH) 
+#' 
+#' MLH is defined as the total number of heterozygous loci in an individual divided 
+#' by the number of loci typed in the focal individual.
+#'
+#' @param genotypes data.frame with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
+#'
+#' @return
+#' Vector of individual multilocus heterozygosities
+#'
+#' @references
+#' Coltman, D. W., Pilkington, J. G., Smith, J. A., & Pemberton, J. M. (1999). 
+#' Parasite-mediated selection against inbred Soay sheep in a free-living, 
+#' island population. Evolution, 1259-1267.
+#'
+#' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
 #' @export
 #' 
 MLH <- function(genotypes) {
