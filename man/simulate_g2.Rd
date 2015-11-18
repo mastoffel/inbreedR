@@ -10,8 +10,8 @@ simulate_g2(n_ind = NULL, subsets = NULL, reps = 100, type = c("msats",
 \arguments{
 \item{n_ind}{number of individuals to sample from the population}
 
-\item{subsets}{a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data}
+\item{subsets}{a vector specifying the sizes of marker-subsets to draw. Specifying  \code{subsets = c(2, 5, 10, 15, 20)} 
+woud draw marker sets of 2 to 20 markers. The minimum number of markers to calculate g2 is 2.}
 
 \item{reps}{number of resampling repetitions}
 
@@ -32,8 +32,9 @@ calculated from the empirical data when genotypes in \code{inbreedR} format are 
 This function can be used to simulate genotype data, draw random subsamples and calculate the
 respective g2 values. Every subsample of markers is drawn independently to give insights
 into the variation of g2 values calculated from a given number of markers and individuals. 
-Empirical genotype data can be used to estimate multilocus heterozygosity (MLH) and provide a distribution
-(from mean and sd of MLH) for the simulated genotypes.
+If empirical genotypes are given, the funciton will calculate the mean and sd of multilocus heterozygosity (MLH).
+Each indiviudals' MLH and the simulated loci are then randomly drawn from a normal distribution with mean = mean(MLH)
+and sd = sd(MLH).
 }
 \details{
 The \code{simulate_g2} function can be used to explore the confidence of g2 estimates calculated

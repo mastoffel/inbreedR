@@ -174,37 +174,38 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     
     
     if(!is.null(x$mean_MLH)){
+        
+        # save ellipsis args
+        dots <- list(...)
+        # make empty arguments list
+        args1 <- list()
+        if (!("main" %in% dots)) args1$main <-  "g2 estimates with mean and CI"
+        if (!("xlab" %in% dots)) args1$xlab <- "Number of Loci"
+        if (!("ylab" %in% dots)) args1$ylab <- "g2"
+        # add names (will be argument names) to args1 values
+        args1[names(dots)] <- dots
+        
     #-----------------------------------
     # plot the results
     #-----------------------------------
     sampNVec <- x$sampNVec
     estMat <- x$estMat
-    plot(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$minG2,x$maxG2),
-         type="n",ylab="g2",xlab="Number of Loci", main = "g2 estimates with mean and CI")
-    
+    do.call(what = "plot", args = c(list(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$minG2,x$maxG2),
+         type="n"), args1))
     meanVec <- rep(NA,nrow(estMat))
     sdVec <- rep(NA,nrow(estMat))
     
-    for (j in 1:nrow(estMat))
-    {
+    for (j in 1:nrow(estMat)) {
         meanVec[j] <- mean(estMat[j,])
         sdVec[j] <- sd(estMat[j,])
     }
-    
-    # library(Hmisc)
-    # library(scales)
-    
-    for(i in 1:nrow(estMat))
-    {
+
+    for(i in 1:nrow(estMat)) {
         points(rep(sampNVec[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
     }
     
-    # CI
-    
-#     Hmisc::errbar(x= sampNVec,y= meanVec,yminus=meanVec-sdVec,
-#            yplus = meanVec+sdVec,col="blue",add=TRUE,errbar.col="blue")
     Hmisc::errbar(x= sampNVec,y= meanVec,yminus=x$all_CI[, 1],
-                             yplus = x$all_CI[, 2],col="blue",add=TRUE,errbar.col="blue")
+                  yplus = x$all_CI[, 2],col="blue",add=TRUE,errbar.col="blue")
     lines(sampNVec,meanVec,col="black",lty="dashed")
     }
         

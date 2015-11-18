@@ -17,7 +17,10 @@ loci subsets.
 
 * `g2_resampling` function deleted 
 
-* `simulate_g2` function added
+* `simulate_g2` function added. This function simulates genotypes
+from which different sized marker sets can be independently drawn to
+estimate the precision of g2 for a given dataset. Also works with larger
+SNP datasets.
 
-* `r2_Wf` calculation bug fixed
+
 

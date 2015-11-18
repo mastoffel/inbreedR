@@ -3,12 +3,13 @@
 #' This function can be used to simulate genotype data, draw random subsamples and calculate the
 #' respective g2 values. Every subsample of markers is drawn independently to give insights
 #' into the variation of g2 values calculated from a given number of markers and individuals. 
-#' Empirical genotype data can be used to estimate multilocus heterozygosity (MLH) and provide a distribution
-#' (from mean and sd of MLH) for the simulated genotypes.
+#' If empirical genotypes are given, the funciton will calculate the mean and sd of multilocus heterozygosity (MLH).
+#' Each indiviudals' MLH and the simulated loci are then randomly drawn from a normal distribution with mean = mean(MLH)
+#' and sd = sd(MLH).
 #'
 #' @param n_ind number of individuals to sample from the population
-#' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
-#'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data
+#' @param subsets a vector specifying the sizes of marker-subsets to draw. Specifying  \code{subsets = c(2, 5, 10, 15, 20)} 
+#'        woud draw marker sets of 2 to 20 markers. The minimum number of markers to calculate g2 is 2.
 #' @param reps number of resampling repetitions
 #' @param type specifies g2 formula. Type "snps" for large datasets and "msats" for smaller datasets.
 #' @param genotypes optional: provide genotypes in \code{inbreedR} format to estimate the empirical multilocus heterozygosity
@@ -65,7 +66,8 @@ if (is.null(subsets)) stop("specify the size of loci subsamples in 'subsets', i.
 if (any(subsets < 2)) stop("Specify a minimum of 2 markers in subsets")
 if (!isTRUE(all(subsets == floor(subsets)))) stop("'subsets' must only contain integer values")
 # expected heterozygosity at all loci (assumes expected heterozygosity has zero variance across a the simulated loci)
-if (is.null(mean_MLH)) stop("Specify the mean expected heterozygosity (value between 0-1) with mean_MLH")     
+if (is.null(mean_MLH)) stop("Specify the mean expected heterozygosity (value between 0-1) with mean_MLH")   
+if ((mean_MLH < 0 | mean_MLH > 1)) stop("mean_MLH has to be a value between 0 and 1")
 if (is.null(sd_MLH))  stop("Specify the standard deviation of expected heterozygosity with sd_MLH")
 
     # check g2 function argument
