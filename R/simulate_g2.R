@@ -3,8 +3,8 @@
 #' This function can be used to simulate genotype data, draw random subsamples and calculate the
 #' respective g2 values. Every subsample of markers is drawn independently to give insights
 #' into the variation of g2 values calculated from a given number of markers and individuals. 
-#' If empirical genotypes are given, the funciton will calculate the mean and sd of multilocus heterozygosity (MLH).
-#' Each indiviudals' MLH and the simulated loci are then randomly drawn from a normal distribution with mean = mean(MLH)
+#' If empirical genotypes are given, the function will calculate the mean and sd of multilocus heterozygosity (MLH).
+#' Each indiviudals' MLH and the zygosity of the simulated loci are then randomly drawn from a normal distribution with mean = mean(MLH)
 #' and sd = sd(MLH).
 #'
 #' @param n_ind number of individuals to sample from the population
@@ -35,7 +35,7 @@
 #' @examples 
 #' data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats)
-#' sim_g2 <- simulate_g2(n_ind = 10, subsets = c(2,4,6), reps = 100, genotypes = genotypes)
+#' sim_g2 <- simulate_g2(n_ind = 10, subsets = c(4,6,8,10), reps = 100, genotypes = genotypes)
 #' plot(sim_g2)
 #' @export
 
@@ -164,8 +164,8 @@ res <- list(call=match.call(),
             genotypes = genotypes,
             mean_MLH = mean_MLH,
             sd_MLH = sd_MLH,
-            minG2 = minG2,
-            maxG2 = maxG2,
+            min_val = minG2,
+            max_val = maxG2,
             sampNVec = sampNVec,
             all_CI = all_CI,
             all_sd = all_sd

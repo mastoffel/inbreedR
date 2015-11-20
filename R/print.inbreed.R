@@ -97,7 +97,7 @@ print.inbreed <- function(x, ...) {
     }
     
     # check if simulate_g2
-    if(!is.null(x$mean_MLH)){
+    if(!is.null(x$estMat)){
         cat("\n\n", "Simulation - Expected g2 for an increasing number of genetic markers", "\n",
             "--------------------------------------------------------------------", "\n", sep = "")
         cat("Function call = ", deparse(x$call), "\n", sep = "") 

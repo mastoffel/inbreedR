@@ -190,7 +190,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     #-----------------------------------
     sampNVec <- x$sampNVec
     estMat <- x$estMat
-    do.call(what = "plot", args = c(list(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$minG2,x$maxG2),
+    do.call(what = "plot", args = c(list(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$min_val,x$max_val),
          type="n"), args1))
     meanVec <- rep(NA,nrow(estMat))
     sdVec <- rep(NA,nrow(estMat))
