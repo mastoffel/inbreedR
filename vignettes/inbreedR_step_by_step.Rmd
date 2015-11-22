@@ -53,7 +53,9 @@ library("inbreedR")
   
 * `check_data`: Checks whether the data.frame or matrix has the correct format for the `inbreedR` functions.
   
-* `sMLH`: Computes standardized multilocus heterozygosities [@coltman1999parasite]
+* `sMLH`: Computes standardized multilocus heterozygosities [@coltman1999parasite].
+
+* `MLH`: Computes multilocus heterozygosity.
   
 * `g2_microsats`: Calculates $g_2$, a measure if identity disequlibrium (ID) from smaller datasets, such as microsatellites. Based on the formula from @DAVID:2007kgba. 
   
@@ -67,6 +69,8 @@ library("inbreedR")
 
 * `simulate_g2`: Simulates g2 values based on independently drawn sets of genetic markers. The number of individuals, marker number and the destribution of heterozygosity can be specified by
 the user. This simulation can be used to estimate the precision of g2 for a given dataset.
+
+* `simulate_r2_hf`: Works equivalent to `simulate_g2`. However the estimates are the expected squared correlations between inbreeding and heterozygosity.
   
 * `plot.inbreedR`: Plots the output of `inbreedR` functions  
 
@@ -153,8 +157,6 @@ g2_mouse_microsats <- g2_microsats(mouse_microsats, nperm = 100, nboot = 100, CI
 g2_mouse_snps <- g2_snps(mouse_snps, nperm = 100, nboot = 10, 
                          CI = 0.95, parallel = FALSE, ncores = NULL)
 ```
-
-
 
 
 To display a summary of the results just print the output of an `inbreedR` function. 
@@ -256,25 +258,7 @@ kable(df_msats, digits=3, caption="Descriptors of HFCs",
 
 ## Sensitivity to the number of genetic markers 
 
-Subsampling analysis [@Miller:2013jqbaca; @stoffel2015chemical] can provide insights into the power provided by a given marker panel. 
-  
-For that reason, the sensitivity of $\hat{r}^2(h, f)$ towards the number of markers used can be explored using the `r2_hf` function, which allows specification of the marker subsets and how often each subset should be sampled. 
-
-```{r, echo=TRUE, results='hide'}
-r2_hf_mouse_microsats <- r2_hf(mouse_microsats, subsets = c(2,4,6,8,10,12), 
-                           nboot = 100, type = "msats")
-r2_hf_mouse_snps <- r2_hf(mouse_snps, subsets = c(100, 500, 1000, 2000, 5000, 13000), 
-                          nboot = 10, type = "snps")
-```
-
-```{r r2_hf, echo=FALSE, fig.cap="Expected r2 between inbreeding level (f) and heterozygosity", fig.width=7, fig.height=4}
-par(mfrow = c(1, 2))
-plot(r2_hf_mouse_microsats, main = "Microsatellites", col = "cornflowerblue", cex.axis=0.85)
-plot(r2_hf_mouse_snps, main = "SNPs", col = "darkgoldenrod1", cex.axis=0.85)
-```
-
-
-So far, the uncertainty of a $g_2$ estimate is assessed via bootstrapping and confidence intervals. However, for planning future studies it might be of interest how the uncertainty of $g_2$ changes by increasing or decreasing the number of genetic markers.
+So far, the uncertainty of $g_2$ and other estimates is assessed via bootstrapping and confidence intervals. However, for planning future studies it might be of interest how the uncertainty of $g_2$ changes by increasing or decreasing the number of genetic markers.
 `simulate_g2` allows to explore the precision of $g_2$ by drawing a number of markers repeatedly and independently from a simulated "genome". Next to the number of individuals and the size of marker sets, the user can specify the heterozygosity distribution for the simulated loci. This can happen directly, with the `mean_MLH` argument (should be a number between 0 and 1, whereby 0.5 would mean that on average 50% of the loci ar heterozygous) and the `sd_MLH` argument (standard deviation of multilocus heterozygosity), or will be automatically calculated from empirical genotypes, that can be provided with the `genotypes` argument. The simulation assumes (1) random mating, (2) unlinked loci and (3) the same expected heterozygosity across all loci. Below we run a simulation with 20 individuals for marker sets ranging from 4 to 12 markers, while each set of markers is drawn 100 times.
 
 ```{r, echo=TRUE, results='hide'}
@@ -282,9 +266,25 @@ sim_g2 <- simulate_g2(n_ind = 20, subsets = c(4,6,8,10,12), reps = 100,
                       genotypes = mouse_microsats, type = "msats", CI = 0.95)
 ```
 
+The results can easily be plotted with the `plot` function again.
+
 ```{r sim_g2, echo=FALSE, fig.cap="Simulation: Sensitivity of g2 estimated from an increasing number of markers", fig.width=7, fig.height=4}
-plot(sim_g2)
+plot(sim_g2, main = "Microsatellites", cex.axis=0.85)
 ```
+
+The same simulation can be used to estimate the expected squared correlation between inbreeding and heterozygosity for an increasing number of markers
+with the `simulate_r2_hf` function as shown below. 
+
+```{r, echo=TRUE, results='hide'}
+sim_r2_hf_mouse_microsats <- simulate_r2_hf(n_ind = 20, mouse_microsats, subsets = c(2,4,6,8,10,12), 
+                           reps = 100, genotypes = mouse_microsats, type = "msats")
+```
+
+```{r r2_hf, echo=FALSE, fig.cap="Expected r2 between inbreeding level (f) and heterozygosity", fig.width=7, fig.height=4}
+plot(sim_r2_hf_mouse_microsats, main = "Microsatellites", cex.axis=0.85)
+```
+
+
 
 ## Extracting raw data from inbreedR objects 
 

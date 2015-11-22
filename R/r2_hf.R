@@ -11,9 +11,9 @@
 #' @param ncores Specify number of cores to use for parallelization. By default,
 #'        all available cores but one are used.
 #' @param CI confidence interval (default to 0.95)
-#' @param subsets a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
+#' @param subsets deprecated. a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
 #'        be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data. 
-#' @param nboot_loci number of re-draws per subset of loci.
+#' @param nboot_loci deprecated. number of re-draws per subset of loci.
 #'        
 #' 
 #' @return 
@@ -50,6 +50,14 @@
 r2_hf <- function(genotypes, type = c("msats", "snps"), nboot = NULL, 
                   parallel = FALSE, ncores = NULL, CI = 0.95, subsets = NULL, nboot_loci = 100) {
     
+    
+    # deprecate subsetting
+    if (!is.null(subsets)) {
+        warning("argument subsets is deprecated and will be deleted in the next package version. When you use it anyway, bear in mind
+                that the variance of the estimates is biased due to subsetting from a finite number of markers.", 
+                call. = FALSE)
+    }
+        
 #     if (!(steps > 1) | (steps > ncol(genotypes))) {
 #         stop("steps have to be at least two and smaller or equal than the number of markers used")
 #     }

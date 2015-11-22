@@ -52,7 +52,7 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         # save ellipsis args
         dots <- list(...)
         # if plottype argument not specified, assign boxplot
-        if (length(plottype) == 2) plottype <- plottype[1]
+        if (length(plottype) == 2) plottype <- plottype[2]
 
         # plotting resampling boxplots
         if (plottype == "boxplot") {
