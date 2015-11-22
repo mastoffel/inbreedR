@@ -19,8 +19,14 @@ loci subsets.
 
 * `simulate_g2` function added. This function simulates genotypes
 from which different sized marker sets can be independently drawn to
-estimate the precision of g2 for a given dataset. Also works with larger
-SNP datasets.
+estimate the precision and magnitude of g2 for a given dataset. Also works with larger
+(SNP) datasets.
+
+* `simulate_r2_hf` function added. This function uses the same simulation as `simulate_g2`
+to estimate the expected correlation between heteorzygosity and inbreeding for 
+varying number of markers. Also works with larger (SNP) datasets.
+
+* `MLH` function added. MLH is the unstandardized version of the existing `sMLH` function.
 
 
 

@@ -98,8 +98,14 @@ print.inbreed <- function(x, ...) {
     
     # check if simulate_g2
     if(!is.null(x$estMat)){
+        if(as.character(x$call[[1]]) == "simulate_g2") {
         cat("\n\n", "Simulation - Expected g2 for an increasing number of genetic markers", "\n",
-            "--------------------------------------------------------------------", "\n", sep = "")
+            "--------------------------------------------------------------------", "\n\n", sep = "")
+        } else if (as.character(x$call[[1]]) == "simulate_r2_hf"){
+            cat("\n\n", "Simulation - Expected squared correlation between inbreeding and heterozygosity (r2(h,f))
+for an increasing number of genetic markers", "\n",
+                "------------------------------------------------------------------------------------------", "\n\n", sep = "")
+        }
         cat("Function call = ", deparse(x$call), "\n", sep = "") 
         cat("\n", "Number of individuals: ", x$n_ind, "\n", sep = "")
         cat("Size of genetic marker sets ranging from ", x$subsets[1], " to ", x$subsets[length(x$subsets)], "\n", sep = "")

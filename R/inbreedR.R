@@ -12,6 +12,9 @@
 #' \link{r2_Wf}
 #' \link{HHC}
 #' \link{sMLH}
+#' \link{MLH}
+#' \link{simulate_g2}
+#' \link{simulate_r2_hf}
 #' \link{plot.inbreed}
 #' \link{print.inbreed}
 #' 

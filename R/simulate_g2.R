@@ -1,8 +1,8 @@
 #' Simulate g2 
 #' 
-#' This function can be used to simulate genotype data, draw random subsamples and calculate the
-#' respective g2 values. Every subsample of markers is drawn independently to give insights
-#' into the variation of g2 values calculated from a given number of markers and individuals. 
+#' This function can be used to simulate genotype data, draw subsets of loci and calculate the
+#' respective g2 values. Every subset of markers is drawn independently to give insights
+#' into the variation and precision of g2 calculated from a given number of markers and individuals. 
 #' If empirical genotypes are given, the function will calculate the mean and sd of multilocus heterozygosity (MLH).
 #' Each indiviudals' MLH and the zygosity of the simulated loci are then randomly drawn from a normal distribution with mean = mean(MLH)
 #' and sd = sd(MLH).
