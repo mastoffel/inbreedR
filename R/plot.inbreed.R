@@ -182,6 +182,11 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
         if (!("main" %in% dots)) args1$main <-  "g2 estimates with mean and CI"
         if (!("xlab" %in% dots)) args1$xlab <- "Number of Loci"
         if (!("ylab" %in% dots)) args1$ylab <- "g2"
+        
+        if(as.character(x$call[[1]]) == "simulate_r2_hf") {
+            if (!("main" %in% dots)) args1$main <-  "r2(h, f) estimates with mean and CI"
+            if (!("ylab" %in% dots)) args1$ylab <- "r2(h, f)"
+        } 
         # add names (will be argument names) to args1 values
         args1[names(dots)] <- dots
         
