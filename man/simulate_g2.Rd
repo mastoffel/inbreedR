@@ -4,11 +4,17 @@
 \alias{simulate_g2}
 \title{Simulate g2}
 \usage{
-simulate_g2(n_ind = NULL, subsets = NULL, reps = 100, type = c("msats",
-  "snps"), genotypes = NULL, mean_MLH = NULL, sd_MLH = NULL, CI = 0.95)
+simulate_g2(n_ind = NULL, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+  subsets = NULL, reps = 100, type = c("msats", "snps"), CI = 0.95)
 }
 \arguments{
 \item{n_ind}{number of individuals to sample from the population}
+
+\item{H_nonInb}{true genome-wide heteorzygosity of a non-inbred individual}
+
+\item{meanF}{mean realized inbreeding f}
+
+\item{varF}{variance in realized inbreeding f}
 
 \item{subsets}{a vector specifying the sizes of marker-subsets to draw. Specifying  \code{subsets = c(2, 5, 10, 15, 20)} 
 would draw marker sets of 2 to 20 markers. The minimum number of markers to calculate g2 is 2.}
@@ -16,15 +22,6 @@ would draw marker sets of 2 to 20 markers. The minimum number of markers to calc
 \item{reps}{number of resampling repetitions}
 
 \item{type}{specifies g2 formula. Type "snps" for large datasets and "msats" for smaller datasets.}
-
-\item{genotypes}{optional: provide genotypes in \code{inbreedR} format to estimate the empirical multilocus heterozygosity
-(MLH) and use these estimates to simulate data from the same distribution}
-
-\item{mean_MLH}{mean multilocus heterozygosity. Should range between 0-1. This will be automatically
-calculated from the empirical data when genotypes in \code{inbreedR} format are given.}
-
-\item{sd_MLH}{standard deviation of multilocus heterozygosity. This will be automatically
-calculated from the empirical data when genotypes in \code{inbreedR} format are given.}
 
 \item{CI}{Confidence intervals to calculate (default to 0.95)}
 }
@@ -36,24 +33,20 @@ An `inbreed` object from  \code{simulate_g2} is a list containing the following 
 \item{call}{function call.}
 \item{estMat}{matrix with all r2(h,f) estimates. Each row contains the values for a given subset of markers}
 \item{n_ind}{specified number of individuals}
-\item{n_loc}{maximum number of loci}
-\item{subsets}{vector containing the marker sets}
+\item{subsets}{vector specifying the marker sets}
 \item{reps}{repetitions per subset}
-\item{genotypes}{specified empirical genotypes}
-\item{mean_MLH}{mean of multilocus heterozygosity. Rather prespecified by the user of automatically calculated
-from empirical genotypes}
-\item{min_val}{minimum r2 value}
-\item{max_val}{maximum r2 value}
+\item{H_nonInb}{true genome-wide heteorzygosity of a non-inbred individual}
+\item{meanF}{mean realized inbreeding f}
+\item{varF}{variance in realized inbreeding f}
+\item{min_val}{minimum g2 value}
+\item{max_val}{maximum g2 value}
 \item{all_CI}{confidence intervals for all subsets}
 \item{all_sd}{standard deviations for all subsets}
 }
 \description{
 This function can be used to simulate genotype data, draw subsets of loci and calculate the
 respective g2 values. Every subset of markers is drawn independently to give insights
-into the variation and precision of g2 calculated from a given number of markers and individuals. 
-If empirical genotypes are given, the function will calculate the mean and sd of multilocus heterozygosity (MLH).
-Each indiviudals' MLH and the zygosity of the simulated loci are then randomly drawn from a normal distribution with mean = mean(MLH)
-and sd = sd(MLH).
+into the variation and precision of g2 calculated from a given number of markers and individuals.
 }
 \details{
 The \code{simulate_g2} function can be used to explore the confidence of g2 estimates calculated
@@ -67,8 +60,9 @@ The \code{simulate_g2} function can be used to explore the confidence of g2 esti
 \examples{
 data(mouse_msats)
 genotypes <- convert_raw(mouse_msats)
-sim_g2 <- simulate_g2(n_ind = 10, subsets = c(4,6,8,10), reps = 100, 
-                      genotypes = genotypes, type = "msats")
+sim_g2 <- simulate_g2(n_ind = 10, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+                      subsets = c(4,6,8,10), reps = 100, 
+                      type = "msats")
 plot(sim_g2)
 }
 \author{

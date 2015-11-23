@@ -260,11 +260,12 @@ kable(df_msats, digits=3, caption="Descriptors of HFCs",
 ## Sensitivity to the number of genetic markers 
 
 So far, the uncertainty of $g_2$ and other estimates is assessed via bootstrapping and confidence intervals. However, for planning future studies it might be of interest how the uncertainty of $g_2$ changes by increasing or decreasing the number of genetic markers.
-`simulate_g2` allows to explore the precision of $g_2$ by drawing a number of markers repeatedly and independently from a simulated "genome". Next to the number of individuals and the size of marker sets, the user can specify the heterozygosity distribution for the simulated loci. This can happen directly, with the `mean_MLH` argument (should be a number between 0 and 1, whereby 0.5 would mean that on average 50% of the loci ar heterozygous) and the `sd_MLH` argument (standard deviation of multilocus heterozygosity), or will be automatically calculated from empirical genotypes, that can be provided with the `genotypes` argument. The simulation assumes (1) random mating, (2) unlinked loci and (3) the same expected heterozygosity across all loci. Below we run a simulation with 20 individuals for marker sets ranging from 4 to 12 markers, while each set of markers is drawn 100 times.
+`simulate_g2` allows to explore the precision of $g_2$ by drawing a number of markers repeatedly and independently from a simulated "genome". 
 
 ```{r, echo=TRUE, results='hide'}
-sim_g2 <- simulate_g2(n_ind = 20, subsets = c(4,6,8,10,12), reps = 100, 
-                      genotypes = mouse_microsats, type = "msats", CI = 0.95)
+sim_g2 <- simulate_g2(n_ind = 20, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+                      subsets = c(4,6,8,10,12), reps = 100, 
+                      type = "msats", CI = 0.95)
 ```
 
 The results can easily be plotted with the `plot` function again.
@@ -277,8 +278,9 @@ The same simulation can be used to estimate the expected squared correlation bet
 with the `simulate_r2_hf` function as shown below. 
 
 ```{r, echo=TRUE, results='hide'}
-sim_r2_hf_mouse_microsats <- simulate_r2_hf(n_ind = 20, mouse_microsats, subsets = c(2,4,6,8,10,12), 
-                           reps = 100, genotypes = mouse_microsats, type = "msats")
+sim_r2_hf_mouse_microsats <- simulate_r2_hf(n_ind = 20, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+                                            subsets = c(4,6,8,10,12), reps = 100, 
+                                            type = "msats", CI = 0.95)
 ```
 
 ```{r r2_hf, echo=FALSE, fig.cap="Expected r2 between inbreeding level (f) and heterozygosity", fig.width=7, fig.height=4}

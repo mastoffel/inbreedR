@@ -15,12 +15,12 @@ test_that("nboot = 0 works", {
                  tolerance = 0.001)
 })
 
-test_that("subsets = NULL works", {
-    expect_equal(r2_hf(msats, nboot_loci = 0, type = "msats")$r2_hf_full, 0.2797, tolerance = 0.001)
-    expect_equal(r2_hf(snps, nboot_loci = 0, type = "snps")$r2_hf_full, 0.6698, tolerance = 0.001)
-    expect_equal(r2_hf(msats, nboot_loci = 5, type = "msats")$r2_hf_full, 0.2797, tolerance = 0.001)
-    expect_equal(r2_hf(snps, nboot_loci = 5, type = "snps")$r2_hf_full, 0.6698, tolerance = 0.001)
-})
+# test_that("subsets = NULL works", {
+#     expect_equal(r2_hf(msats, nboot_loci = 0, type = "msats")$r2_hf_full, 0.2797, tolerance = 0.001)
+#     expect_equal(r2_hf(snps, nboot_loci = 0, type = "snps")$r2_hf_full, 0.6698, tolerance = 0.001)
+#     expect_equal(r2_hf(msats, nboot_loci = 5, type = "msats")$r2_hf_full, 0.2797, tolerance = 0.001)
+#     expect_equal(r2_hf(snps, nboot_loci = 5, type = "snps")$r2_hf_full, 0.6698, tolerance = 0.001)
+# })
 
 test_that("Matrix input works", {
     expect_equal(r2_hf(as.matrix(msats), subsets = c(2,4,10), nboot_loci = 0, type = "msats")$r2_hf_full, 

@@ -111,14 +111,8 @@ for an increasing number of genetic markers", "\n",
         cat("Size of genetic marker sets ranging from ", x$subsets[1], " to ", x$subsets[length(x$subsets)], "\n", sep = "")
         cat("Repetitions per marker set: ", x$reps, "\n\n", sep = "")
         
-        if (!is.null(x$genotypes)) {
-            cat("As you provided genotype data, the simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_MLH, 3),
-                "and a standard deviation of", round(x$sd_MLH, 3), ", equivalent to your empirical data", "\n\n")
-        } else {
-            cat("The simulated loci were drawn from a distribution with a mean multilocus heterozygosity of", round(x$mean_MLH, 3),
-                "and a standard deviation of", round(x$sd_MLH, 3), "\n\n")
-        }
-        
+        cat("Mean (var) of realized inbreeding level f: ", x$meanF, " (", x$varF, ")", "\n\n", sep = "")
+     
         num_subsets <- length(x$subsets)
         df <- data.frame("number_of_markers" = x$subsets, "mean" = rep(NA, num_subsets), "sd" = rep(NA, num_subsets), 
                          "CI_lower" = rep(NA, num_subsets), "CI_upper" = rep(NA, num_subsets))
