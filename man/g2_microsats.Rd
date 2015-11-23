@@ -7,10 +7,11 @@
 g2_microsats(genotypes, nperm = 0, nboot = 0, CI = 0.95)
 }
 \arguments{
-\item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
+\item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing)}
 
-\item{nperm}{Number of permutations for testing the hypothesis that the empirical g2-value is higher than by chance}
+\item{nperm}{Number of permutations for testing the hypothesis that the empirical g2-value is higher than the g2 for random associations between 
+individuals and genotypes.}
 
 \item{nboot}{Number of bootstraps for estimating a confidence interval}
 
@@ -20,7 +21,7 @@ containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 g2_microsats returns an object of class "inbreed".
 The functions `print` and `plot` are used to print a summary and to plot the distribution of bootstrapped g2 values and CI.
 
-An `inbreed` object is a list containing the following components:
+An `inbreed` object from \code{g2_microsats} is a list containing the following components:
 
 \item{call}{function call.}
 \item{g2}{g2 value}

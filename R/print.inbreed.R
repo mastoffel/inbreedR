@@ -1,8 +1,8 @@
 #' Print an inbreed object
 #'
-#' Displays the results a inbreed object.
+#' Displays the results a \code{inbreed} object.
 #'
-#' @param x An inbreed object from one of the inbreedR functions.
+#' @param x An \code{inbreed} object from one of the \code{inbreedR} functions.
 #' @param \dots Additional arguments; none are used in this method.
 #'
 #' @author Martin Stoffel (martin.adam.stoffel@@gmail.com)

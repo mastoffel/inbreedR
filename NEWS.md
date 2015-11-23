@@ -28,5 +28,8 @@ varying number of markers. Also works with larger (SNP) datasets.
 
 * `MLH` function added. MLH is the unstandardized version of the existing `sMLH` function.
 
+* `subsets` argument in `r2_hf` function deprecated. Although you can infer the magnitude of
+  the esimate by subsampling, the variation in estimates is biased. It is recommended to
+  use the new `simulate_r2_hf` function instead.
 
 

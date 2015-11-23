@@ -9,8 +9,8 @@ r2_hf(genotypes, type = c("msats", "snps"), nboot = NULL,
   nboot_loci = 100)
 }
 \arguments{
-\item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
+\item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing)}
 
 \item{type}{specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.}
 
@@ -24,10 +24,10 @@ all available cores but one are used.}
 
 \item{CI}{confidence interval (default to 0.95)}
 
-\item{subsets}{a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
+\item{subsets}{deprecated. a vector specifying the sizes of marker-subsets to draw. For a subset of 20 markers, subsets = c(2, 5, 10, 15, 20) could
 be a reasonable choice. The minimum subset size is 2 and the maximum is the number of markers in the data.}
 
-\item{nboot_loci}{number of re-draws per subset of loci.}
+\item{nboot_loci}{deprecated. number of re-draws per subset of loci.}
 }
 \value{
 \item{call}{function call.}

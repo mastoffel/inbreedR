@@ -1,7 +1,7 @@
 #' Oldfield mouse microsatellite data
 #'
 #' Dataset with each microsatellite locus in two adjecent columns (one per allel). 
-#' Missing values are coded as NA.
+#' Missing values are coded as \code{NA}.
 #' 
 #' @format A data frame with 36 observations at 13198 loci.
 #'

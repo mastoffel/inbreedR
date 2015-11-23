@@ -8,7 +8,7 @@ sMLH(genotypes)
 }
 \arguments{
 \item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing)}
 }
 \value{
 Vector of individual standardized multilocus heterozygosities
@@ -22,7 +22,6 @@ subset of loci successfully typed in the focal individual.
 data(mouse_msats)
 genotypes <- convert_raw(mouse_msats)
 het <- sMLH(genotypes)
-het2 <- MLH(genotypes)
 
 }
 \author{

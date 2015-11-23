@@ -4,14 +4,14 @@
 #' Loci are randomly devided into two equal groups and the correlation coefficient
 #' between the resulting sMLH values is calculated.
 #'
-#' @param genotypes data.frame with individuals in rows and loci in columns,
-#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
-#' @param reps number of iterations, i.e. splittings of the dataset 
-#' @param CI calculates a CI around the mean het-het correlation
+#' @param genotypes \code{data.frame} with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing)
+#' @param reps number of repetitions, i.e. splittings of the dataset 
+#' @param CI size of the confidence interval around the mean het-het correlation (default is 0.95)
 #'
 #' @return 
 #' \item{call}{function call.}
-#' \item{HHC_vals}{vector of HHC`s obtained by randomly splitting the dataset}
+#' \item{HHC_vals}{vector of HHC's obtained by randomly splitting the dataset}
 #' \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
 #' \item{nobs}{number of observations}
 #' \item{nloc}{number of markers}

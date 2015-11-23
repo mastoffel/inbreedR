@@ -18,7 +18,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", cache = FALSE,
 
 ## inbreedR
 
-The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. This is the initial version of the package and we are happy about any comments and suggestions. Just write a mail to martin.adam.stoffel[at]gmail.com.
+The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. We are happy about any suggestions and feedback. Just write a mail to martin.adam.stoffel[at]gmail.com.
 
 
 ## Installation
@@ -51,7 +51,7 @@ library("inbreedR")
 
 * `convert_raw`: Converts a common format for genetic markers (two columns per locus) into the `inbreedR` working format, type `?convert_raw` for detailed information.  
   
-* `check_data`: Checks whether the data.frame or matrix has the correct format for the `inbreedR` functions.
+* `check_data`: Checks whether the genotypes `data.frame` or `matrix` has the correct format for the `inbreedR` functions.
   
 * `sMLH`: Computes standardized multilocus heterozygosities [@coltman1999parasite].
 
@@ -65,14 +65,14 @@ library("inbreedR")
   
 * `r2_Wf` : Calculates the expected impact of inbreeding-level (f) on a fitness trait (W) with a formula derived by @szulkin2010heterozygosity.  
   
-* `r2_hf`: Calculates the expected impact of inbreeding-level (f) on heterozygosity (h) with a formula derived by @szulkin2010heterozygosity. Also implements a subsampling analysis to explore the influence of marker number.
+* `r2_hf`: Calculates the expected impact of inbreeding-level (f) on heterozygosity (h) with a formula derived by @szulkin2010heterozygosity.
 
-* `simulate_g2`: Simulates g2 values based on independently drawn sets of genetic markers. The number of individuals, marker number and the destribution of heterozygosity can be specified by
-the user. This simulation can be used to estimate the precision of g2 for a given dataset.
+* `simulate_g2`: Simulates $g_2$ values based on independently drawn sets of genetic markers. The number of individuals, marker number and the distribution of heterozygosity can be specified by
+the user or is automatically calulated from given empirical genotypes. This simulation can be used to estimate the precision of g2 for a given dataset.
 
-* `simulate_r2_hf`: Works equivalent to `simulate_g2`. However the estimates are the expected squared correlations between inbreeding and heterozygosity.
+* `simulate_r2_hf`: Works equivalent to `simulate_g2`. However the estimates are the expected squared correlations between inbreeding and heterozygosity $r^2(h, f)$.
   
-* `plot.inbreedR`: Plots the output of `inbreedR` functions  
+* `plot.inbreed`: Plots for objects of class `inbreed` 
 
 
 ## Example datasets
@@ -128,8 +128,9 @@ Most HFC studies solely report the correlation between heterozygosity (*h*) and 
 
 $$ r(W,h) = r(h,f)r(W,f) $$ (Equation 1)
 
-Thus, empirical data on heterozygosity and fitness, together with the above equation, allow estimation of the impact of **inbreeding** on **fitness**.
-In the absence of a pedigree, *f* cannot be directly estimated.  Instead, one can use the extent to which heterozygosity is correlated across loci, termed identity disequilibrium (ID), as a proxy.  A measure of ID that can be related to HFC theory is the two-locus heterozygosity disequilibrium, $g_2$ [@DAVID:2007kgba], which quantifies the extent to which heterozygosities are correlated across pairs of loci.  Based on $g_2$ as an estimate of ID, it is then possible to calculate $\hat{r}^2(h, f)$ as follows [@szulkin2010heterozygosity]:
+Although we cannot directly measure the inbreeding level *f*, we can use 
+the extent to which heterozygosity is correlated across loci, termed identity disequilibrium (ID), 
+as a proxy to characterize the distribution of *f* in populations. A measure of ID that can be related to HFC theory is the two-locus heterozygosity disequilibrium, $g_2$ [@DAVID:2007kgba], which quantifies the extent to which heterozygosities are correlated across pairs of loci.  Based on $g_2$ as an estimate of ID, it is then possible to calculate $\hat{r}^2(h, f)$ as follows [@szulkin2010heterozygosity]:
 
 $$\hat{r}^2(h, f) = \frac{\hat{g}_{2}}{\hat{\sigma}^2(h)}$$ (Equation 2)
 

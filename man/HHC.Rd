@@ -8,16 +8,16 @@ standardized multilocus heterozygosities (sMLH)}
 HHC(genotypes, reps = 100, CI = 0.95)
 }
 \arguments{
-\item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
+\item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing)}
 
-\item{reps}{number of iterations, i.e. splittings of the dataset}
+\item{reps}{number of repetitions, i.e. splittings of the dataset}
 
-\item{CI}{calculates a CI around the mean het-het correlation}
+\item{CI}{size of the confidence interval around the mean het-het correlation (default is 0.95)}
 }
 \value{
 \item{call}{function call.}
-\item{HHC_vals}{vector of HHC`s obtained by randomly splitting the dataset}
+\item{HHC_vals}{vector of HHC's obtained by randomly splitting the dataset}
 \item{summary_exp_r2}{r2 mean and sd for each number of subsetted loci}
 \item{nobs}{number of observations}
 \item{nloc}{number of markers}

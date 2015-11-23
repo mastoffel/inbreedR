@@ -1,11 +1,11 @@
 #' Plot an inbreed object
 #' 
 #'
-#' @param x An inbreed object.
-#' @param plottype "boxplot" or "histogram" to plot the output of r2_hf() and to show either
+#' @param x An \code{inbreed} object.
+#' @param plottype deprecated. "boxplot" or "histogram" to plot the output of r2_hf() and to show either
 #'        the boxplots through resampling of loci or the histogram from the bootstrapping of 
 #'        r2 over individuals.
-#' @param \dots Additional arguments to the hist() function for the g2 and the HHC functions. 
+#' @param \dots Additional arguments to the hist() function for the g2 and HHC functions. 
 #'              Additional arguments to the boxplot() function for plotting the result of the r2_hf() function.
 #'
 #'
@@ -193,9 +193,9 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     #-----------------------------------
     # plot the results
     #-----------------------------------
-    sampNVec <- x$sampNVec
+    subsets <- x$subsets
     estMat <- x$estMat
-    do.call(what = "plot", args = c(list(x=c(sampNVec[1],sampNVec[length(sampNVec)]),y=c(x$min_val,x$max_val),
+    do.call(what = "plot", args = c(list(x=c(subsets[1],subsets[length(subsets)]),y=c(x$min_val,x$max_val),
          type="n"), args1))
     meanVec <- rep(NA,nrow(estMat))
     sdVec <- rep(NA,nrow(estMat))
@@ -206,12 +206,12 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     }
 
     for(i in 1:nrow(estMat)) {
-        points(rep(sampNVec[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
+        points(rep(subsets[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
     }
     
-    Hmisc::errbar(x= sampNVec,y= meanVec,yminus=x$all_CI[, 1],
+    Hmisc::errbar(x= subsets,y= meanVec,yminus=x$all_CI[, 1],
                   yplus = x$all_CI[, 2],col="blue",add=TRUE,errbar.col="blue")
-    lines(sampNVec,meanVec,col="black",lty="dashed")
+    lines(subsets,meanVec,col="black",lty="dashed")
     }
         
 }

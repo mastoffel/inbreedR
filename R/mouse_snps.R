@@ -1,10 +1,10 @@
 #' Oldfield mouse SNP data
 #'
-#' Mouse snp data in 0 (homozygous), 1(heterzygous) and NA (missing) format.
+#' Mouse snp data in 0 (homozygous), 1(heterzygous) and \code{NA} (missing) format.
 #' Each row represents an individual and each column is a locus.
 #' 
 #'
-#' @format A data frame with 36 observations at 13198 loci.
+#' @format A \code{data.frame} with 36 observations at 13198 loci.
 #'
 #' @references
 #' Hoffman, J.I., Simpson, F., David, P., Rijks, J.M., Kuiken, T., Thorne, M.A.S., Lacey, R.C. & Dasmahapatra, K.K. (2014) High-throughput sequencing reveals inbreeding depression in a natural population.

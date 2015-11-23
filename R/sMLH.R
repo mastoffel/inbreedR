@@ -5,7 +5,7 @@
 #' subset of loci successfully typed in the focal individual.
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
-#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing)
 #'
 #' @return
 #' Vector of individual standardized multilocus heterozygosities
@@ -21,7 +21,6 @@
 #' data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats)
 #' het <- sMLH(genotypes)
-#' het2 <- MLH(genotypes)
 #'
 #' @export
 #'
@@ -54,7 +53,8 @@ sMLH <- function(genotypes) {
 #' Calculate multilocus heterozygosity (MLH) 
 #' 
 #' MLH is defined as the total number of heterozygous loci in an individual divided 
-#' by the number of loci typed in the focal individual.
+#' by the number of loci typed in the focal individual. An MLH of 0.5 thus means
+#' that 50 percent of an indiviudals loci are heterozygous.
 #'
 #' @param genotypes data.frame with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
@@ -68,6 +68,12 @@ sMLH <- function(genotypes) {
 #' island population. Evolution, 1259-1267.
 #'
 #' @author Martin A. Stoffel (martin.adam.stoffel@@gmail.com) 
+#' 
+#' @examples
+#' data(mouse_msats)
+#' genotypes <- convert_raw(mouse_msats)
+#' het <- MLH(genotypes)
+#' 
 #' @export
 #' 
 MLH <- function(genotypes) {

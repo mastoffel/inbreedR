@@ -2,8 +2,8 @@
 #' 
 #' 
 #'
-#' @param genotypes data.frame with individuals in rows and loci in columns,
-#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
+#' @param genotypes \code{data.frame} with individuals in rows and loci in columns,
+#'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing)
 #' @param type specifies g2 formula to take. Type "snps" for large datasets and "msats" for smaller datasets.
 #' @param nboot number of bootstraps over individuals to estimate a confidence interval
 #'        around r2(h, f)

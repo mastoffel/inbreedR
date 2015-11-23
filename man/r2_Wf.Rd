@@ -8,8 +8,8 @@ r2_Wf(genotypes, trait, family = "gaussian", type = c("msats", "snps"),
   nboot = NULL, parallel = FALSE, ncores = NULL, CI = 0.95)
 }
 \arguments{
-\item{genotypes}{data.frame with individuals in rows and loci in columns,
-containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing).}
+\item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
+containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing).}
 
 \item{trait}{vector of any type which can be specified in R's glm() function}
 

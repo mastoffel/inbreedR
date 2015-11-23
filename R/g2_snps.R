@@ -1,9 +1,9 @@
-#' Estimating g2 from SNP data
+#' Estimating g2 from larger datasets, such as SNPs
 #'
-#' @param genotypes data.frame with individuals in rows and loci in columns,
+#' @param genotypes \code{data.frame} with individuals in rows and loci in columns,
 #'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
-#' @param nperm number or permutations for calculating the p-value
-#' @param nboot number of bootstraps for CI
+#' @param nperm number or permutations for to estimate a p-value
+#' @param nboot number of bootstraps to estimate a confidence interval
 #' @param CI confidence interval (default to 0.95)
 #' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
 #' @param ncores Specify number of cores to use for parallelization. By default,
@@ -17,7 +17,7 @@
 #' g2_snps returns an object of class "inbreed".
 #' The functions `print` and `plot` are used to print a summary and to plot the distribution of bootstrapped g2 values and CI.
 #' 
-#' An `inbreed` object is a list containing the following components:
+#' An `inbreed` object from \code{g2_snps} is a list containing the following components:
 #' \item{call}{function call.}
 #' \item{g2}{g2 value}
 #' \item{p_val}{p value from permutation test}

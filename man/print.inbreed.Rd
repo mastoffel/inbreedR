@@ -7,12 +7,12 @@
 \method{print}{inbreed}(x, ...)
 }
 \arguments{
-\item{x}{An inbreed object from one of the inbreedR functions.}
+\item{x}{An \code{inbreed} object from one of the \code{inbreedR} functions.}
 
 \item{\dots}{Additional arguments; none are used in this method.}
 }
 \description{
-Displays the results a inbreed object.
+Displays the results a \code{inbreed} object.
 }
 \author{
 Martin Stoffel (martin.adam.stoffel@gmail.com)

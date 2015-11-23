@@ -7,13 +7,13 @@
 \method{plot}{inbreed}(x, plottype = c("boxplot", "histogram"), ...)
 }
 \arguments{
-\item{x}{An inbreed object.}
+\item{x}{An \code{inbreed} object.}
 
-\item{plottype}{"boxplot" or "histogram" to plot the output of r2_hf() and to show either
+\item{plottype}{deprecated. "boxplot" or "histogram" to plot the output of r2_hf() and to show either
 the boxplots through resampling of loci or the histogram from the bootstrapping of 
 r2 over individuals.}
 
-\item{\dots}{Additional arguments to the hist() function for the g2 and the HHC functions. 
+\item{\dots}{Additional arguments to the hist() function for the g2 and HHC functions. 
 Additional arguments to the boxplot() function for plotting the result of the r2_hf() function.}
 }
 \description{

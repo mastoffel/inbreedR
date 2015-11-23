@@ -3,9 +3,9 @@
 \name{mouse_snps}
 \alias{mouse_snps}
 \title{Oldfield mouse SNP data}
-\format{A data frame with 36 observations at 13198 loci.}
+\format{A \code{data.frame} with 36 observations at 13198 loci.}
 \description{
-Mouse snp data in 0 (homozygous), 1(heterzygous) and NA (missing) format.
+Mouse snp data in 0 (homozygous), 1(heterzygous) and \code{NA} (missing) format.
 Each row represents an individual and each column is a locus.
 }
 \references{

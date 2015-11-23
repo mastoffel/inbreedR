@@ -6,7 +6,7 @@
 \alias{inbreedR-package}
 \title{inbreedR: Workflows for analysing variance in inbreeding and HFCs based on SNP or microsatellite markers.}
 \description{
-inbreedR contains the following functions:
+\code{inbreedR} contains the following functions:
 
 \link{g2_microsats}
 \link{g2_snps}
@@ -16,6 +16,9 @@ inbreedR contains the following functions:
 \link{r2_Wf}
 \link{HHC}
 \link{sMLH}
+\link{MLH}
+\link{simulate_g2}
+\link{simulate_r2_hf}
 \link{plot.inbreed}
 \link{print.inbreed}
 }
@@ -33,7 +36,7 @@ the correlation of heterozygosity across markers, called identity disequilibrium
 The package has three main goals:
 
 \itemize{
-\item Assessing identity disequilibria and the potential to detect heterozygosity-fitness correlations based on global effects
+\item Assessing identity disequilibria and the potential to detect heterozygosity-fitness correlations 
 \item Providing insights on the sensitivity of these measures based on the number/type of molecular markers used
 \item Implementing computationally efficient functions in a flexible environment for analysing 
 inbreeding and HFC`s with both small and large datasets.

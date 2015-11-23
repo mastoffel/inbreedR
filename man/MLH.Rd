@@ -15,7 +15,14 @@ Vector of individual multilocus heterozygosities
 }
 \description{
 MLH is defined as the total number of heterozygous loci in an individual divided 
-by the number of loci typed in the focal individual.
+by the number of loci typed in the focal individual. An MLH of 0.5 thus means
+that 50 percent of an indiviudals loci are heterozygous.
+}
+\examples{
+data(mouse_msats)
+genotypes <- convert_raw(mouse_msats)
+het <- MLH(genotypes)
+
 }
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)

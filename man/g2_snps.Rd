@@ -2,18 +2,18 @@
 % Please edit documentation in R/g2_snps.R
 \name{g2_snps}
 \alias{g2_snps}
-\title{Estimating g2 from SNP data}
+\title{Estimating g2 from larger datasets, such as SNPs}
 \usage{
 g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE,
   ncores = NULL)
 }
 \arguments{
-\item{genotypes}{data.frame with individuals in rows and loci in columns,
+\item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
 containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
-\item{nperm}{number or permutations for calculating the p-value}
+\item{nperm}{number or permutations for to estimate a p-value}
 
-\item{nboot}{number of bootstraps for CI}
+\item{nboot}{number of bootstraps to estimate a confidence interval}
 
 \item{CI}{confidence interval (default to 0.95)}
 
@@ -26,7 +26,7 @@ all available cores are used.}
 g2_snps returns an object of class "inbreed".
 The functions `print` and `plot` are used to print a summary and to plot the distribution of bootstrapped g2 values and CI.
 
-An `inbreed` object is a list containing the following components:
+An `inbreed` object from \code{g2_snps} is a list containing the following components:
 \item{call}{function call.}
 \item{g2}{g2 value}
 \item{p_val}{p value from permutation test}
@@ -38,7 +38,7 @@ An `inbreed` object is a list containing the following components:
 \item{nloc}{number of markers}
 }
 \description{
-Estimating g2 from SNP data
+Estimating g2 from larger datasets, such as SNPs
 }
 \details{
 Calculates g2 from SNP datasets. Use convert_raw to convert raw genotypes (with 2 columns per locus) into
