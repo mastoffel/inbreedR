@@ -4,7 +4,7 @@
 \alias{simulate_r2_hf}
 \title{Calculates the expected squared correlation between heteorzygosity and inbreeding for simulated marker sets}
 \usage{
-simulate_r2_hf(n_ind = NULL, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+simulate_r2_hf(n_ind = NULL, H_nonInb = 0.5, meanF = 0.2, varF = 0.03,
   subsets = NULL, reps = 100, type = c("msats", "snps"), CI = 0.95)
 }
 \arguments{
@@ -53,15 +53,15 @@ into the magnitude and variation of r2(h,f) values calculated from a given numbe
 The \code{simulate_g2} function can be used to explore the confidence of g2 estimates calculated
          from marker sets of different sizes. Every new locus set is drawn independently.
          The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci 
-         and the same expected multilocus heterozygosity and (3) random mating. The mean and standard 
-         deviation of genome-wide expected heterozygosity can either be specified with 
-         the \code{mean_MLH} and \code{sd_MLH} arguments or will be calculated 
-         from emprical genotypes when these are specified in the \code{genotypes} argument.
+         and the same expected multilocus heterozygosity and (3) random mating. The mean and variance 
+         of realized inbreeding in the simulation can be specified with \code{meanF} and 
+         \code{varF} and the average heterozygosity of a non-inbred individual (which serves as a 
+         baseline) with \code{H_nonInb}.
 }
 \examples{
 data(mouse_msats)
 genotypes <- convert_raw(mouse_msats)
-sim_r2 <- simulate_r2_hf(n_ind = 10, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+sim_r2 <- simulate_r2_hf(n_ind = 10, H_nonInb = 0.5, meanF = 0.2, varF = 0.03,
                       subsets = c(4,6,8,10), reps = 100, 
                       type = "msats")
 plot(sim_r2)

@@ -18,10 +18,10 @@
 #' @details The \code{simulate_g2} function can be used to explore the confidence of g2 estimates calculated
 #'          from marker sets of different sizes. Every new locus set is drawn independently.
 #'          The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci and  
-#'          the same expected multilocus heterozygosity and (3) random mating.  and (3) random mating. The mean and standard 
-#'          deviation of genome-wide expected heterozygosity can either be specified with 
-#'          the \code{mean_MLH} and \code{sd_MLH} arguments or will be calculated 
-#'          from emprical genotypes when these are specified in the \code{genotypes} argument.
+#'          the same expected multilocus heterozygosity and (3) random mating.  and (3) random mating. The mean and variance 
+#'          of realized inbreeding in the simulation can be specified with \code{meanF} and 
+#'          \code{varF} and the average heterozygosity of a non-inbred individual (which serves as a 
+#'          baseline) with \code{H_nonInb}.
 #'          
 #' @return
 #' \code{simulate_g2} returns an object of class "inbreed".
@@ -48,21 +48,23 @@
 #' @examples 
 #' data(mouse_msats)
 #' genotypes <- convert_raw(mouse_msats)
-#' sim_g2 <- simulate_g2(n_ind = 10, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+#' sim_g2 <- simulate_g2(n_ind = 10, H_nonInb = 0.5, meanF = 0.2, varF = 0.03,
 #'                       subsets = c(4,6,8,10), reps = 100, 
 #'                       type = "msats")
 #' plot(sim_g2)
 #' @export
 
 
-simulate_g2 <- function(n_ind = NULL, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
+simulate_g2 <- function(n_ind = NULL, H_nonInb = 0.5, meanF = 0.2, varF = 0.03,
                         subsets = NULL, reps = 100, type = c("msats", "snps"),
                         CI = 0.95) {
 ################################################################################
 # simulate a population with variable inbreeding
 # then estimate g2 from independently sampled / non-overlapping subsets of loci 
 ################################################################################
-
+    if ((H_nonInb > 1) | (H_nonInb < 0)) stop("H_nonInb has to be a value between 0 and 1")
+    if ((meanF > 1) | (meanF < 0)) stop("meanF has to be a value between 0 and 1")
+    if (varF < 0) stop("meanF has to be a value between 0 and 1")
 
 # number of individuals to sample from the population
 if (is.null(n_ind))   stop("Specify the number of individuals to sample with n_ind")  
@@ -100,7 +102,7 @@ alpha <- ((1 - meanF) / varF - (1 / meanF)) * meanF ^ 2    # parameters of the b
 beta <- alpha * ((1 / meanF) - 1)
 
 Fs <- rbeta(n_ind, alpha, beta)   # vector of realized F for the simulated individuals
-true_g2 <- var(Fs)/(1-mean(Fs))^2
+true_g2 <- var(Fs)/((1-mean(Fs))^2)
 
 #-------------------------
 # simulate the individual 
