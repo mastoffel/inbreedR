@@ -216,7 +216,7 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
     if (true_g2 == FALSE) lines(subsets,meanVec,col="black",lty=2)
 
     if (true_g2 == TRUE) {
-        lines (c(0,sampNVec[length(sampNVec)]),c(x$true_g2,x$true_g2),lty="dashed")
+        lines (c(0,subsets[length(subsets)]),c(x$true_g2,x$true_g2),lty="dashed")
         legend("bottomright", legend = "true g2", lty = 2, lwd = 1.5, col = "black")
     }
    

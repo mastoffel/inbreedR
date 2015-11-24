@@ -4,10 +4,14 @@
 \alias{plot.inbreed}
 \title{Plot an inbreed object}
 \usage{
-\method{plot}{inbreed}(x, plottype = c("boxplot", "histogram"), ...)
+\method{plot}{inbreed}(x, true_g2 = FALSE, plottype = c("boxplot",
+  "histogram"), ...)
 }
 \arguments{
 \item{x}{An \code{inbreed} object.}
+
+\item{true_g2}{For plotting a \code{simulate_g2} output. If TRUE, plots the real g2 (based on realized f)
+as a reference line.}
 
 \item{plottype}{deprecated. "boxplot" or "histogram" to plot the output of r2_hf() and to show either
 the boxplots through resampling of loci or the histogram from the bootstrapping of 
