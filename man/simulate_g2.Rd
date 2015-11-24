@@ -32,6 +32,7 @@ The functions `print` and `plot` are used to print a summary and to plot the g2 
 An `inbreed` object from  \code{simulate_g2} is a list containing the following components:
 \item{call}{function call.}
 \item{estMat}{matrix with all r2(h,f) estimates. Each row contains the values for a given subset of markers}
+\item{true_g2}{"true" g2 value based on the assigned realized inbreeding values}
 \item{n_ind}{specified number of individuals}
 \item{subsets}{vector specifying the marker sets}
 \item{reps}{repetitions per subset}

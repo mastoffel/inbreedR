@@ -2,6 +2,8 @@
 #' 
 #'
 #' @param x An \code{inbreed} object.
+#' @param true_g2 For plotting a \code{simulate_g2} output. If TRUE, plots the real g2 (based on realized f)
+#'        as a reference line.
 #' @param plottype deprecated. "boxplot" or "histogram" to plot the output of r2_hf() and to show either
 #'        the boxplots through resampling of loci or the histogram from the bootstrapping of 
 #'        r2 over individuals.
@@ -17,7 +19,7 @@
 #' @importFrom Hmisc errbar
 #' @importFrom scales alpha
 
-plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
+plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"), ...) {
     # check if its a g2 calculater
     if (!is.null(x[["g2"]])) {
         if (is.na(x$g2_se)) stop("Number of bootstraps specified in g2 function was 0, so there is nothing to plot")
@@ -211,7 +213,14 @@ plot.inbreed <- function(x, plottype = c("boxplot", "histogram"), ...) {
     
     Hmisc::errbar(x= subsets,y= meanVec,yminus=x$all_CI[, 1],
                   yplus = x$all_CI[, 2],col="blue",add=TRUE,errbar.col="blue")
-    lines(subsets,meanVec,col="black",lty="dashed")
+    if (true_g2 == FALSE) lines(subsets,meanVec,col="black",lty=2)
+
+    if (true_g2 == TRUE) {
+        lines (c(0,sampNVec[length(sampNVec)]),c(x$true_g2,x$true_g2),lty="dashed")
+        legend("bottomright", legend = "true g2", lty = 2, lwd = 1.5, col = "black")
+    }
+   
+    
     }
         
 }

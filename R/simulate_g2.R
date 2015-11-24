@@ -30,6 +30,7 @@
 #' An `inbreed` object from  \code{simulate_g2} is a list containing the following components:
 #' \item{call}{function call.}
 #' \item{estMat}{matrix with all r2(h,f) estimates. Each row contains the values for a given subset of markers}
+#' \item{true_g2}{"true" g2 value based on the assigned realized inbreeding values}
 #' \item{n_ind}{specified number of individuals}
 #' \item{subsets}{vector specifying the marker sets}
 #' \item{reps}{repetitions per subset}
@@ -99,6 +100,7 @@ alpha <- ((1 - meanF) / varF - (1 / meanF)) * meanF ^ 2    # parameters of the b
 beta <- alpha * ((1 / meanF) - 1)
 
 Fs <- rbeta(n_ind, alpha, beta)   # vector of realized F for the simulated individuals
+true_g2 <- var(Fs)/(1-mean(Fs))^2
 
 #-------------------------
 # simulate the individual 
@@ -168,6 +170,7 @@ all_sd <- apply(estMat, 1, sd)
 
 res <- list(call=match.call(),
             estMat = estMat,
+            true_g2 = true_g2,
             n_ind = n_ind,
             subsets = subsets,
             reps = reps,
