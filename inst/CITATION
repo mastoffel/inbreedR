@@ -1,4 +1,4 @@
-citHeader("To cite inbreedR in publications use:")
+citHeader("To cite inbreedR in publications please refer to our article:")
 
 citEntry(entry = "Article",
          title        = "inbreedR: An R package for the analysis of inbreeding based on genetic markers",
@@ -8,7 +8,7 @@ citEntry(entry = "Article",
                                    as.person("Marty Kardos"),
                                    as.person("Patrice David"),
                                    as.person("Joseph I. Hoffman")),
-         journal      = "Methods in Ecology and Evolution",
+         journal      = "xx",
          year         = "2015",
          volume       = "xx",
          number       = "x",
@@ -17,6 +17,6 @@ citEntry(entry = "Article",
          textVersion  =
              paste("Stoffel MA; Esser, M; Nichols, H; Kardos, M; David, P; Hoffman, JI (2015).",
                    "inbreedR: An R package for the analysis of inbreeding based on genetic markers",
-                   "Methods in Ecology and Evolution, xx(x), x-xx.")
+                   "xx, xx(x), x-xx.")
          
 )
