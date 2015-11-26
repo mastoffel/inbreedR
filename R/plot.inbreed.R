@@ -204,11 +204,11 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
     
     for (j in 1:nrow(estMat)) {
         meanVec[j] <- mean(estMat[j,])
-        sdVec[j] <- sd(estMat[j,])
+        sdVec[j] <- stats::sd(estMat[j,])
     }
 
     for(i in 1:nrow(estMat)) {
-        points(rep(subsets[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
+        graphics::points(rep(subsets[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
     }
     
     Hmisc::errbar(x= subsets,y= meanVec,yminus=x$all_CI[, 1],
@@ -216,8 +216,8 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
     if (true_g2 == FALSE) lines(subsets,meanVec,col="black",lty=2)
 
     if (true_g2 == TRUE) {
-        lines (c(0,subsets[length(subsets)]),c(x$true_g2,x$true_g2),lty="dashed")
-        legend("bottomright", legend = "true g2", lty = 2, lwd = 1.5, col = "black")
+        graphics::lines (c(0,subsets[length(subsets)]),c(x$true_g2,x$true_g2),lty="dashed")
+        graphics::legend("bottomright", legend = "true g2", lty = 2, lwd = 1.5, col = "black")
     }
    
     

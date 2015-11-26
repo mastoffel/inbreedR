@@ -101,7 +101,7 @@ allLoci <- reps*n_loc
 alpha <- ((1 - meanF) / varF - (1 / meanF)) * meanF ^ 2    # parameters of the beta distribution given the mean and variance of realized F
 beta <- alpha * ((1 / meanF) - 1)
 
-Fs <- rbeta(n_ind, alpha, beta)   # vector of realized F for the simulated individuals
+Fs <- stats::rbeta(n_ind, alpha, beta)   # vector of realized F for the simulated individuals
 true_g2 <- var(Fs)/((1-mean(Fs))^2)
 
 #-------------------------
@@ -117,7 +117,7 @@ for (i in 1:n_ind) {
 	thisHet <- H_nonInb*(1-Fs[i])
 
 	rands <- NULL                         # randomly generated numbers between 0 and 1 that are used to determine whether the individual is heterozygous at each locus
-	rands <- runif(allLoci,min=0,max=1)
+	rands <- stats::runif(allLoci,min=0,max=1)
 
 	theseHets <- NULL
 	theseHets <- as.numeric(rands < thisHet)
@@ -168,7 +168,7 @@ calc_CI <- function(estMat_subset) {
 }
 
 all_CI <- t(apply(estMat, 1, calc_CI))
-all_sd <- apply(estMat, 1, sd)
+all_sd <- apply(estMat, 1, stats::sd)
 
 res <- list(call=match.call(),
             estMat = estMat,
