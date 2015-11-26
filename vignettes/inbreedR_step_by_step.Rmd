@@ -259,8 +259,12 @@ kable(df_msats, digits=3, caption="Descriptors of HFCs",
 
 ## Sensitivity to the number of genetic markers 
 
-So far, the uncertainty of $g_2$ and other estimates is assessed via bootstrapping and confidence intervals. However, for planning future studies it might be of interest how the uncertainty of $g_2$ changes by increasing or decreasing the number of genetic markers.
-`simulate_g2` allows to explore the precision of $g_2$ by drawing a number of markers repeatedly and independently from a simulated "genome". 
+So far, the uncertainty of $g_2$ and other estimates is assessed via bootstrapping and confidence intervals. However, for planning future studies it might be of interest how the uncertainty of $g_2$ changes by increasing or decreasing the number of genetic markers.`simulate_g2` allows to explore the precision of $g_2$ by drawing a number of markers repeatedly and independently from a simulated "genome". Here, we use an individual based simulation that assumeslinkage equilibrium between loci, random mating and the same expected
+heterozygosity for all loci. Genotypes are stochastically assigned and depend on the inbreeding level *f* of the simulated individuals. The user also defines the heterozygosity of non-inbred individuals at 
+the simulated loci (`H_nonInb`), the mean (`meanF`) and variance (`varF`) of *f* in the 
+population, the number of repetitions per subset (`reps`), and the number of 
+individuals (`n_ind`). The `type` argument specifies the $g_2$ formula to use. With `type = snps`,
+simulations with larger loci sets are possible. However, bear in mind that the function creates independent loci for every repition, which leads to a rapid increase in working memory use and computation time.
 
 ```{r, echo=TRUE, results='hide'}
 sim_g2 <- simulate_g2(n_ind = 20, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
@@ -272,6 +276,13 @@ The results can easily be plotted with the `plot` function again.
 
 ```{r sim_g2, echo=FALSE, fig.cap="Simulation: Sensitivity of g2 estimated from an increasing number of markers", fig.width=7, fig.height=4}
 plot(sim_g2, main = "Microsatellites", cex.axis=0.85)
+```
+
+Also, the plot function allows to plot the *real* $g_2$ value, which is directly computed from the realized
+inbreeding values of the individuals. 
+
+```{r sim_g2_true, echo=FALSE, fig.cap="Simulation: Sensitivity of g2 estimated from an increasing number of markers with true g2 value", fig.width=7, fig.height=4}
+plot(sim_g2, true_g2 = TRUE, main = "Microsatellites", cex.axis=0.85)
 ```
 
 The same simulation can be used to estimate the expected squared correlation between inbreeding and heterozygosity for an increasing number of markers
