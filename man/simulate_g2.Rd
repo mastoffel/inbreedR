@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_g2.R
 \name{simulate_g2}
 \alias{simulate_g2}
-\title{Simulate g2}
+\title{Simulate \eqn{g2}}
 \usage{
 simulate_g2(n_ind = NULL, H_nonInb = 0.5, meanF = 0.2, varF = 0.03,
   subsets = NULL, reps = 100, type = c("msats", "snps"), CI = 0.95)
@@ -46,17 +46,23 @@ An `inbreed` object from  \code{simulate_g2} is a list containing the following 
 }
 \description{
 This function can be used to simulate genotype data, draw subsets of loci and calculate the
-respective g2 values. Every subset of markers is drawn independently to give insights
-into the variation and precision of g2 calculated from a given number of markers and individuals.
+respective \eqn{g2} values. Every subset of markers is drawn independently to give insights
+into the variation and precision of \eqn{g2} calculated from a given number of markers and individuals.
 }
 \details{
-The \code{simulate_g2} function can be used to explore the confidence of g2 estimates calculated
-         from marker sets of different sizes. Every new locus set is drawn independently.
-         The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci and  
-         the same expected multilocus heterozygosity and (3) random mating.  and (3) random mating. The mean and variance 
-         of realized inbreeding in the simulation can be specified with \code{meanF} and 
-         \code{varF} and the average heterozygosity of a non-inbred individual (which serves as a 
-         baseline) with \code{H_nonInb}.
+The \code{simulate_g2} function simulates genotypes from which subsets of loci can be sampled independently. 
+         These simulations can be used to evaluate the effects of the number of individuals 
+         and loci on the precision and magnitude of \eqn{g2}. The user specifies the number of simulated individuals (\code{n_ind}), the subsets of 
+         loci (\code{subsets}) to be drawn, the heterozygosity of non-inbred individuals (\code{H_nonInb}) and the 
+         distribution of \emph{f} among the simulated individuals. The \emph{f} values of the simulated individuals are sampled
+         randomly from a beta distribution with mean (\code{meanF}) and variance (\code{varF}) specified by the user 
+         (e.g. as in wang2011). This enables the simulation to mimic populations with known inbreeding 
+         characteristics, or to simulate hypothetical scenarios of interest. For computational simplicity, allele 
+         frequencies are assumed to be constant across all loci and the simulated loci are unlinked. Genotypes
+         (i.e. the heterozygosity/homozygosity status at each locus) are assigned stochastically based on the \emph{f}
+         values of the simulated individuals. Specifically, the probability of an individual being heterozygous at
+         any given locus (\eqn{H}) is expressed as \eqn{H = H0(1-f)} , where \eqn{H0} is the user-specified heterozygosity of a 
+         non-inbred individual and \emph{f} is an individual's inbreeding coefficient drawn from the beta distribution.
 }
 \examples{
 data(mouse_msats)

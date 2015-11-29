@@ -17,7 +17,7 @@ simulate_r2_hf(n_ind = NULL, H_nonInb = 0.5, meanF = 0.2, varF = 0.03,
 \item{varF}{variance in realized inbreeding f}
 
 \item{subsets}{a vector specifying the sizes of marker-subsets to draw. Specifying  \code{subsets = c(2, 5, 10, 15, 20)} 
-would draw marker sets of 2 to 20 markers. The minimum number of markers to calculate (underlying) g2 is 2.}
+would draw marker sets of 2 to 20 markers. The minimum number of markers is 2.}
 
 \item{reps}{number of resampling repetitions}
 
@@ -45,18 +45,25 @@ An `inbreed` object from  \code{simulate_g2} is a list containing the following 
 }
 \description{
 This function can be used to simulate genotype data, draw random subsamples and calculate the
-respective expected squared correlations between heterozygosity and fitness (r2(h,f)). 
-Every subsample of markers is drawn independently to give insights
-into the magnitude and variation of r2(h,f) values calculated from a given number of markers and individuals.
+expected squared correlations between heterozygosity and fitness (\eqn{r2(h, f)}).
+Every subset of markers is drawn independently to give insights
+into the variation and precision of \eqn{r2(h, f)} calculated from a given number of markers and individuals.
 }
 \details{
-The \code{simulate_g2} function can be used to explore the confidence of g2 estimates calculated
-         from marker sets of different sizes. Every new locus set is drawn independently.
-         The simulation assumes (1) unlinked loci, (2) equal allele frequencies among all loci 
-         and the same expected multilocus heterozygosity and (3) random mating. The mean and variance 
-         of realized inbreeding in the simulation can be specified with \code{meanF} and 
-         \code{varF} and the average heterozygosity of a non-inbred individual (which serves as a 
-         baseline) with \code{H_nonInb}.
+The \code{simulate_r2_hf} function simulates genotypes from which subsets of loci can be sampled independently. 
+         These simulations can be used to evaluate the effects of the number of individuals 
+         and loci on the precision and magnitude of the expected squared correlation between heterozygosity and inbreeding 
+         (\eqn{r2(h, f)}). The user specifies the number of simulated individuals (\code{n_ind}), the subsets of 
+         loci (\code{subsets}) to be drawn, the heterozygosity of non-inbred individuals (\code{H_nonInb}) and the 
+         distribution of \emph{f} among the simulated individuals. The \emph{f} values of the simulated individuals are sampled
+         randomly from a beta distribution with mean (\code{meanF}) and variance (\code{varF}) specified by the user 
+         (e.g. as in wang2011). This enables the simulation to mimic populations with known inbreeding 
+         characteristics, or to simulate hypothetical scenarios of interest. For computational simplicity, allele 
+         frequencies are assumed to be constant across all loci and the simulated loci are unlinked. Genotypes
+         (i.e. the heterozygosity/homozygosity status at each locus) are assigned stochastically based on the \emph{f}
+         values of the simulated individuals. Specifically, the probability of an individual being heterozygous at
+         any given locus (\eqn{H}) is expressed as \eqn{H = H0(1-f)} , where \eqn{H0} is the user-specified heterozygosity of a 
+         non-inbred individual and \emph{f} is an individual's inbreeding coefficient drawn from the beta distribution.
 }
 \examples{
 data(mouse_msats)
