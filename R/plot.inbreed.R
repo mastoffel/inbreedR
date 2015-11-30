@@ -213,7 +213,7 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
     
     Hmisc::errbar(x= subsets,y= meanVec,yminus=x$all_CI[, 1],
                   yplus = x$all_CI[, 2],col="blue",add=TRUE,errbar.col="blue")
-    if (true_g2 == FALSE) lines(subsets,meanVec,col="black",lty=2)
+    if (true_g2 == FALSE) graphics::lines(subsets,meanVec,col="black",lty=2)
 
     if (true_g2 == TRUE) {
         graphics::lines (c(0,subsets[length(subsets)]),c(x$true_g2,x$true_g2),lty="dashed")

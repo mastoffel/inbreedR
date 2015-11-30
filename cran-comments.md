@@ -1,20 +1,26 @@
-This is a resubmission
 
 ## Release summary
 
-* Bootstrapping over individuals for `r2_hf()` and `r2_Wf()`
+* `g2_resampling` function deleted 
 
-* plotting histograms with CI for `r2_hf()` and `r2_Wf()`
+* Two simulation functions added
 
-* some changes to the vignette made
+* `MLH` function added. MLH is the unstandardized version of the existing `sMLH` function.
 
+* `subsets` argument in `r2_hf` function deprecated.
+  
+  
 ## Test environments
-* local Windows 8.1, R 3.2.2
-* ubuntu (on travis-ci), R 3.2.2
-* win-builder (release)
+* win_build()
+* local Mac OS X El Capitan 10.11
+* Travis-CI
 
 ## R CMD check results
-There were no ERRORs or WARNINGs 
+There were no ERRORs or WARNINGs or Notes 
+
+## win_build check results
+There were no ERRORs or WARNINGs or Notes 
+
 
 There were 2 Notes on travis-ci
 
@@ -23,5 +29,5 @@ There were 2 Notes on travis-ci
 * checking package dependencies ... NOTE
   No repository set, so cyclic dependency check skipped
   
-  CRAN Mirror set in Rprofile.site didn´t change this note.
+
 

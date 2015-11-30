@@ -108,7 +108,7 @@ alpha <- ((1 - meanF) / varF - (1 / meanF)) * meanF ^ 2    # parameters of the b
 beta <- alpha * ((1 / meanF) - 1)
 
 Fs <- stats::rbeta(n_ind, alpha, beta)   # vector of realized F for the simulated individuals
-true_g2 <- var(Fs)/((1-mean(Fs))^2)
+true_g2 <- stats::var(Fs)/((1-mean(Fs))^2)
 
 #-------------------------
 # simulate the individual 
