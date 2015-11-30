@@ -1,6 +1,6 @@
 ---
 title: "inbreedR step by step"
-author: "Martin A. Stoffel, Mareike Esser, Hazel Nichols, Marty Kardos, Patrice David, Joe Hoffman"
+author: "Martin A. Stoffel"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: bibliography.bib
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", cache = FALSE,
 
 ## inbreedR
 
-The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. We are happy about any suggestions and feedback. Just write a mail to martin.adam.stoffel[at]gmail.com.
+The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. This vignette gives a practical introduction into the concept of the package and how to use the functions. For a more concise theoretical background and a citeable source please read our paper. We are happy about any suggestions and feedback on the package. Just write a mail to martin.adam.stoffel[at]gmail.com.
 
 
 ## Installation
@@ -67,8 +67,7 @@ library("inbreedR")
   
 * `r2_hf`: Calculates the expected impact of inbreeding-level (f) on heterozygosity (h) with a formula derived by @szulkin2010heterozygosity.
 
-* `simulate_g2`: Simulates $g_2$ values based on independently drawn sets of genetic markers. The number of individuals, marker number and the distribution of heterozygosity can be specified by
-the user or is automatically calulated from given empirical genotypes. This simulation can be used to estimate the precision of g2 for a given dataset.
+* `simulate_g2`: A simulation that allows the user to draw different numbers of markers independently from a simulated genome and calculate respective $g_2$ values. Can be used to evaluate the effects of the number of individuals and loci on the precision and magnitude of $g_2$. 
 
 * `simulate_r2_hf`: Works equivalent to `simulate_g2`. However the estimates are the expected squared correlations between inbreeding and heterozygosity $r^2(h, f)$.
   
@@ -259,11 +258,7 @@ kable(df_msats, digits=3, caption="Descriptors of HFCs",
 
 ## Sensitivity to the number of genetic markers 
 
-So far, the uncertainty of $g_2$ and other estimates is assessed via bootstrapping and confidence intervals. However, for planning future studies it might be of interest how the uncertainty of $g_2$ changes by increasing or decreasing the number of genetic markers.`simulate_g2` allows to explore the precision of $g_2$ by drawing a number of markers repeatedly and independently from a simulated "genome". Here, we use an individual based simulation that assumeslinkage equilibrium between loci, random mating and the same expected
-heterozygosity for all loci. Genotypes are stochastically assigned and depend on the inbreeding level *f* of the simulated individuals. The user also defines the heterozygosity of non-inbred individuals at 
-the simulated loci (`H_nonInb`), the mean (`meanF`) and variance (`varF`) of *f* in the 
-population, the number of repetitions per subset (`reps`), and the number of 
-individuals (`n_ind`). The `type` argument specifies the $g_2$ formula to use. With `type = snps`,
+So far, the uncertainty of $g_2$ and other estimates is assessed via bootstrapping and confidence intervals. However, for planning future studies it might be of interest how the uncertainty of $g_2$ changes by increasing or decreasing the number of genetic markers.`simulate_g2` can be used to evaluate the effects of the number of individuals and loci on the precision and magnitude of $g_2$. The user specifies the number of simulated individuals (`n_ind`), the subsets of loci (`subsets`) to be drawn, the heterozygosity of non-inbred individuals (`H_nonInb`) and the distribution of *f* among the simulated individuals. The *f* values of the simulated individuals are sampled randomly from a beta distribution with mean (`meanF`) and variance (`varF`) specified by the user (e.g. as in [@wang2011]). This enables the simulation to mimic populations with known inbreeding characteristics, or to simulate hypothetical scenarios of interest. For computational simplicity, allele frequencies are assumed to be constant across all loci and the simulated loci are unlinked. Genotypes (i.e. the heterozygosity/homozygosity status at each locus) are assigned stochastically based on the *f* values of the simulated individuals. Specifically, the probability of an individual being heterozygous at any given locus ($H$) is expressed as $H = H0(1-\f)$ , where $H0$ is the user-specified heterozygosity of a non-inbred individual and *f* is an individual's inbreeding coefficient drawn from the beta distribution. The `type` argument specifies the $g_2$ formula to use. With `type = snps`,
 simulations with larger loci sets are possible. However, bear in mind that the function creates independent loci for every repition, which leads to a rapid increase in working memory use and computation time.
 
 ```{r, echo=TRUE, results='hide'}
@@ -285,8 +280,7 @@ inbreeding values of the individuals.
 plot(sim_g2, true_g2 = TRUE, main = "Microsatellites", cex.axis=0.85)
 ```
 
-The same simulation can be used to estimate the expected squared correlation between inbreeding and heterozygosity for an increasing number of markers
-with the `simulate_r2_hf` function as shown below. 
+The same simulation can be used to estimate the expected squared correlation between inbreeding and heterozygosity for an increasing number of markers with the `simulate_r2_hf` function as shown below. 
 
 ```{r, echo=TRUE, results='hide'}
 sim_r2_hf_mouse_microsats <- simulate_r2_hf(n_ind = 20, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
