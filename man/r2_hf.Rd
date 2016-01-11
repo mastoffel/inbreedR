@@ -45,8 +45,7 @@ Expected r2 between standardized multilocus heterozygosity (h) and inbreeding le
 \examples{
 data(mouse_msats)
 genotypes <- convert_raw(mouse_msats)
-(out <- r2_hf(genotypes, nboot = 100, type = "msats", parallel = FALSE, 
-              subsets = c(2,4,6,8,10,12), nboot_loci = 100))
+(out <- r2_hf(genotypes, nboot = 100, type = "msats", parallel = FALSE, nboot_loci = 100))
 plot(out)
 }
 \author{

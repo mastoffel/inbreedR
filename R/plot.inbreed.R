@@ -16,8 +16,6 @@
 #' @seealso \link{g2_snps}, \link{g2_microsats}
 #'
 #' @export
-#' @importFrom Hmisc errbar
-#' @importFrom scales alpha
 
 plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"), ...) {
     # check if its a g2 calculater
@@ -208,11 +206,15 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
     }
 
     for(i in 1:nrow(estMat)) {
-        graphics::points(rep(subsets[i],ncol(estMat)),estMat[i,],col=scales::alpha("orange",0.4))
+        graphics::points(rep(subsets[i],ncol(estMat)),estMat[i,],col=rgb(1, 0.647, 0, 0.4))
     }
     
-    Hmisc::errbar(x= subsets,y= meanVec,yminus=x$all_CI[, 1],
-                  yplus = x$all_CI[, 2],col="blue",add=TRUE,errbar.col="blue")
+    graphics::segments(subsets,(x$all_CI[, 1]),subsets,(x$all_CI[, 2]), col="blue")
+    epsilon <- 0.05
+    graphics::segments(subsets-epsilon,(x$all_CI[, 1]),subsets+epsilon,(x$all_CI[, 1]), col="blue")
+    graphics::segments(subsets-epsilon,(x$all_CI[, 2]),subsets+epsilon,(x$all_CI[, 2]), col="blue")
+    
+
     if (true_g2 == FALSE) graphics::lines(subsets,meanVec,col="black",lty=2)
 
     if (true_g2 == TRUE) {

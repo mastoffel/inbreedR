@@ -4,9 +4,11 @@ Version: 0.3.0
 Authors@R: c(
         person(c("Martin", "A."), "Stoffel", 
                email= "martin.adam.stoffel@gmail.com", role = c("aut", "cre")),
-        person("Mareike", "Esser", email = "messer@uni-bielefeld.de" ,role = c("aut")))
+        person("Mareike", "Esser", email = "messer@uni-bielefeld.de" ,role = c("aut")),
+        person("Joseph", "Hoffman", email = "j_i_hoffman@hotmail.com", role = c("aut")),
+        person("Marty", "Kardos", email = "marty.kardos@ebc.uu.se", role = c("aut")))
 Description: A framework for analysing inbreeding and heterozygosity-fitness
-    correlations (HFCs) from microsatellite and SNP markers.
+    correlations (HFCs) based on microsatellite and SNP markers.
 Depends:
     R (>= 3.2.1)
 License: GPL-2
@@ -15,9 +17,7 @@ Imports:
     data.table (>= 1.9.4),
     parallel,
     stats,
-    graphics,
-    Hmisc,
-    scales
+    graphics
 Suggests:
     testthat (>= 0.10.0),
     knitr

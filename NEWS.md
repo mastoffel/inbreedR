@@ -32,4 +32,8 @@ varying number of markers. Also works with larger (SNP) datasets.
   the esimate by subsampling, the variation in estimates is biased. It is recommended to
   use the new `simulate_r2_hf` function instead.
 
+# inbreedR 0.3.1
 
+* deleted packages Hmisc and scales and exchanged with base R code
+
+* authors added
