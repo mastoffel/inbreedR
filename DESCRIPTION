@@ -2,8 +2,8 @@ Package: inbreedR
 Title: Analysing Inbreeding Based on Genetic Markers
 Version: 0.3.0
 Authors@R: c(
-        person(c("Martin", "A."), "Stoffel", 
-               email= "martin.adam.stoffel@gmail.com", role = c("aut", "cre")),
+        person(c("Martin", "A."), "Stoffel", email= "martin.adam.stoffel@gmail.com", 
+        role = c("aut", "cre")),
         person("Mareike", "Esser", email = "messer@uni-bielefeld.de" ,role = c("aut")),
         person("Joseph", "Hoffman", email = "j_i_hoffman@hotmail.com", role = c("aut")),
         person("Marty", "Kardos", email = "marty.kardos@ebc.uu.se", role = c("aut")))
