@@ -206,7 +206,7 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
     }
 
     for(i in 1:nrow(estMat)) {
-        graphics::points(rep(subsets[i],ncol(estMat)),estMat[i,],col=rgb(1, 0.647, 0, 0.4))
+        graphics::points(rep(subsets[i],ncol(estMat)),estMat[i,],col=grDevices::rgb(1, 0.647, 0, 0.4))
     }
     
     graphics::segments(subsets,(x$all_CI[, 1]),subsets,(x$all_CI[, 2]), col="blue")
