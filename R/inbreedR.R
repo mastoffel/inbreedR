@@ -21,7 +21,8 @@
 #'
 #' @details 
 #' 
-#' A correlation between heterozygosity (h) and fitness (W) requires a simultaneous effect of inbreeding level (f) on both of them.
+#' A correlation between heterozygosity (h) and fitness (W) requires a simultaneous effect of 
+#' inbreeding level (f) on both of them.
 #' A heterozygosity-fitness correlation (HFC) thus is the product of two correlations, 
 #' which can be summarized in the following equation:
 #' 
