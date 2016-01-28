@@ -37,7 +37,7 @@ print.inbreed <- function(x, ...) {
     
     
     # check if its r2_hf
-    if(!is.null(x$r2_hf_res)) {
+    if(as.character((x$call))[1] == "r2_hf") {
         cat("\n\n", "Calculation of expected r2 between inbreeding level (f) and heterozygosity (sMLH)", "\n",
                     "---------------------------------------------------------------------------------", "\n\n", sep = "")
         cat("\n", "Data: ", x$nobs, " observations at ", x$nloc, " markers", "\n",
@@ -47,10 +47,6 @@ print.inbreed <- function(x, ...) {
         cat("Confidence interval for r2 based on bootstrapping over individuals:", "\n")
         print(x$CI_boot)
         cat("\n")
-        if(is.data.frame(x$summary_r2_hf_res)){
-            cat("Average expected r2 of each marker subset: ", "\n\n")
-            print(format(x$summary_r2_hf_res, digits = 2))
-        }
     }
     
     # check if its r2_Wf

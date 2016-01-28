@@ -26,7 +26,7 @@ The idea behind `inbreedR` is to provide a consistent framework for the analysis
 `inbreedR` is available on [CRAN](http://cran.r-project.org/). Here is the code to download and install the current stable release.
 
 ```{r, eval = FALSE}
-install.packages("inbeedR")
+install.packages("inbreedR")
 ```
 
 The latest version can be downloaded from [GitHub](https://github.com/mastoffel/inbreedR) with the following code:
@@ -212,11 +212,10 @@ In addition, bootstrapping over individuals can be used to estimate confidence i
 hf <- r2_hf(genotypes = mouse_microsats, nboot = 100, type = "msats", parallel = FALSE)
 ```
 
-Note: For plotting the histogram with confidence interval for `r2_hf` you have to specify an additional argument to the
-`plot` function, because there will be another plotting possibility for the output of this function as you will read later in this vignette.
+Plotting the histogram with confidence interval for `r2_hf`.
 
 ```{r}
-plot(hf, plottype = "histogram")
+plot(hf)
 ```
 
 
@@ -279,19 +278,6 @@ inbreeding values of the individuals.
 ```{r sim_g2_true, echo=FALSE, fig.cap="Simulation: Sensitivity of g2 estimated from an increasing number of markers with true g2 value", fig.width=7, fig.height=4}
 plot(sim_g2, true_g2 = TRUE, main = "Microsatellites", cex.axis=0.85)
 ```
-
-The same simulation can be used to estimate the expected squared correlation between inbreeding and heterozygosity for an increasing number of markers with the `simulate_r2_hf` function as shown below. 
-
-```{r, echo=TRUE, results='hide'}
-sim_r2_hf_mouse_microsats <- simulate_r2_hf(n_ind = 20, H_nonInb = 0.5, meanF = 0.2, varF = 0.05,
-                                            subsets = c(4,6,8,10,12), reps = 100, 
-                                            type = "msats", CI = 0.95)
-```
-
-```{r r2_hf, echo=FALSE, fig.cap="Expected r2 between inbreeding level (f) and heterozygosity", fig.width=7, fig.height=4}
-plot(sim_r2_hf_mouse_microsats, main = "Microsatellites", cex.axis=0.85)
-```
-
 
 
 ## Extracting raw data from inbreedR objects 

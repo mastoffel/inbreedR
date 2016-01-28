@@ -51,30 +51,6 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
     if (as.character(x$call[[1]]) == "r2_hf") {
         # save ellipsis args
         dots <- list(...)
-        # if plottype argument not specified, assign boxplot
-        if (length(plottype) == 2) plottype <- plottype[2]
-
-        # plotting resampling boxplots
-        if (plottype == "boxplot") {
-            
-        if(!is.null(x$r2_hf_res)) {
-        # check whether values available
-        if(!is.data.frame(x$summary_r2_hf_res)) stop("No resampling done, so nothing to plot")
-        
-        # make empty arguments list
-        args1 <- list()
-        
-        if (!("main" %in% dots)) args1$main <- "Expected r2 between f and sMLH"
-        if (!("xlab" %in% dots)) args1$xlab <- "number of loci"
-        if (!("ylab" %in% dots)) args1$ylab <- "r2"
-        
-        # add names (will be argument names) to args1 values
-        args1[names(dots)] <- dots
-        
-        do.call(graphics::boxplot, c(list(formula = r2 ~ nloc, data = x$r2_hf_res,
-                pch = 16, outcol ="black"), args1))
-        }
-        } else if (plottype == "histogram") {
             if (length(x$r2_hf_boot) < 2) stop("No bootstrapping done, so nothing to plot")
             
             # make empty arguments list
@@ -103,8 +79,8 @@ plot.inbreed <- function(x, true_g2 = FALSE, plottype = c("boxplot", "histogram"
             boot_hist_r2_hf(r2_hf_full = x$r2_hf_full, r2_hf_boot = x$r2_hf_boot, 
                       CI.l = unname(x$CI_boot[1]), 
                       CI.u = unname(x$CI_boot[2]), args1 = args1)
-        }
     }
+
     
     # check if its r2_Wf
     if (as.character(x$call[[1]]) == "r2_Wf") {
