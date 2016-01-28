@@ -81,7 +81,7 @@ r2_Wf <- function(genotypes, trait, family = "gaussian", type = c("msats", "snps
         # Regression of trait on heterozygosity
         mod <- stats::glm(trait ~ het, family = family)
         # beta coefficient
-        beta_Wh <- stats::coef(mod)[2]
+        # beta_Wh <- stats::coef(mod)[2]
         # R2 Wh
         R2 <- stats::cor(trait,stats::predict(mod))^2
         # g2
@@ -90,7 +90,7 @@ r2_Wf <- function(genotypes, trait, family = "gaussian", type = c("msats", "snps
         if (g2 < 0) return( r2_Wf_res <- 0)
         # squared correlation between inbreeding and the fitness trait
         # According to szulkin et al. 2010, table 2
-        r2_Wf_res <- (R2 / g2) * stats::var(het, na.rm = TRUE)
+        r2_Wf_res <- R2 * stats::var(het, na.rm = TRUE) / g2 
     }
     
     # r2_Wf for the full dataset 
