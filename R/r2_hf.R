@@ -70,6 +70,7 @@ r2_hf <- function(genotypes, type = c("msats", "snps"), nboot = NULL,
             if (g2 < 0) return(r2 <- 0)
             var_sh <- stats::var(sMLH(gtypes))
             r2 <- g2/var_sh
+            if (r2 > 1) r2 <- 1
             r2
     }
     

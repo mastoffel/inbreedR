@@ -4,7 +4,7 @@
 \alias{g2_microsats}
 \title{Estimating g2 from microsatellite data}
 \usage{
-g2_microsats(genotypes, nperm = 0, nboot = 0, CI = 0.95)
+g2_microsats(genotypes, nperm = 0, nboot = 0, CI = 0.95, verbose = TRUE)
 }
 \arguments{
 \item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
@@ -16,6 +16,8 @@ individuals and genotypes.}
 \item{nboot}{Number of bootstraps for estimating a confidence interval}
 
 \item{CI}{Confidence interval (default to 0.95)}
+
+\item{verbose}{If FALSE, nothing will be printed to show the status of bootstraps and permutations.}
 }
 \value{
 g2_microsats returns an object of class "inbreed".

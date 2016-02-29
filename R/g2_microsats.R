@@ -6,6 +6,7 @@
 #'        individuals and genotypes.
 #' @param nboot Number of bootstraps for estimating a confidence interval
 #' @param CI Confidence interval (default to 0.95)
+#' @param verbose If FALSE, nothing will be printed to show the status of bootstraps and permutations.
 #'
 #' @details Calculates g2 from smaller datasets. The underlying formula is compationally expensive 
 #'          due to double summations over all paits of loci (see David et al. 2007). 
@@ -47,7 +48,7 @@
 #'
 
 
-g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
+g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, verbose = TRUE) {
     
     genotypes <- as.matrix(genotypes)
     # transpose
@@ -104,19 +105,19 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95) {
         denominator <- sum(denominator_mat, na.rm = TRUE)
         
         g2_emp <- (numerator / denominator) - 1
-        
-        if (perm %% 20 == 0) {
-            cat("\n", perm, "permutations done")
-        } else if (perm == nperm-1) {
-            cat("\n", "### permutations finished ###")
+        if (verbose == TRUE) {
+            if (perm %% 20 == 0) {
+                cat("\n", perm, "permutations done")
+            } else if (perm == nperm-1) {
+                cat("\n", "### permutations finished ###")
+            }
+            
+            if (boot %% 20 == 0) {
+                cat("\n", boot, "bootstraps done")
+            } else if (boot == nboot-1) {
+                cat("\n", "### bootstrapping finished, hell yeah!! ###")
+            }
         }
-        
-        if (boot %% 20 == 0) {
-            cat("\n", boot, "bootstraps done")
-        } else if (boot == nboot-1) {
-            cat("\n", "### bootstrapping finished, hell yeah!! ###")
-        }
-        
         g2_emp
     }
     

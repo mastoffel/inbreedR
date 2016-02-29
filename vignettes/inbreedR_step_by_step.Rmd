@@ -29,7 +29,7 @@ The idea behind `inbreedR` is to provide a consistent framework for the analysis
 install.packages("inbreedR")
 ```
 
-The latest version can be downloaded from [GitHub](https://github.com/mastoffel/inbreedR) with the following code:
+The development version can be downloaded from [GitHub](https://github.com/mastoffel/inbreedR) with the following code:
 
 ```{r, eval = FALSE}
 install.packages("devtools")
@@ -63,9 +63,9 @@ library("inbreedR")
   
 * `HHC`: Computes heterozygosity-heterozygosity correlations, another measure of identity disequilibrium [@balloux2004does].  
   
-* `r2_Wf` : Calculates the expected impact of inbreeding-level (f) on a fitness trait (W) with a formula derived by @szulkin2010heterozygosity.  
+* `r2_Wf` : Calculates the expected squared correlation of inbreeding-level (f) with a fitness trait (W) according to @szulkin2010heterozygosity.  
   
-* `r2_hf`: Calculates the expected impact of inbreeding-level (f) on heterozygosity (h) with a formula derived by @szulkin2010heterozygosity.
+* `r2_hf`: Calculates the expected quared correlation of inbreeding-level (f) with multilocus heterozygosity (h) according to @szulkin2010heterozygosity.
 
 * `simulate_g2`: A simulation that allows the user to draw different numbers of markers independently from a simulated genome and calculate respective $g_2$ values. Can be used to evaluate the effects of the number of individuals and loci on the precision and magnitude of $g_2$. 
 
@@ -147,7 +147,7 @@ The package provides two functions to calculate **$g_2$**, a proxy for Identity 
   
 * For large datasets, e.g. SNPs, the `g2_snps` function implements a computationally more feasible formula. This function also provides an additional argument for parallelization which distributes bootstrapping and permutation across cores.  The results of both functions can be plotted as histograms with CIs.       
 
-Have a look at the help files with `?g2_microsats` and `?g2_snps` for more information on the formulae. 
+Have a look at the help files with `?g2_microsats` and `?g2_snps` for more information on the formulas. 
 
 For both microsatellites and SNPs, `inbreedR` calculates confidence intervals by bootstrapping over individuals.  It also permutes the genetic data to generate a P-value for the null hypothesis of no variance in inbreeding in the sample (i.e. $g_2$ = 0). 
 
@@ -196,7 +196,7 @@ plot(HHC_mouse_snps, main = "SNPs",
 
 ## HFC parameters
 
-Assuming that HFCs are due to inbreeding depression, it is possible to calculate both the expected correlation between heterozygosity and inbreeding level ($\hat{r}^2(h, f)$) and the expected correlation between a fitness trait and inbreeding ($\hat{r}^2(W, f)$) as described in Equation 1.  These are implemented in `inbreedR` using the functions `r2_hf` and `r2_Wf`.  Equal to the `glm` function, the distribution of the fitness trait can be specified in the `family` argument, as shown below:
+Assuming that HFCs are due to inbreeding, it is possible to calculate both the expected correlation between heterozygosity and inbreeding level ($\hat{r}^2(h, f)$) and the expected correlation between a fitness trait and inbreeding ($\hat{r}^2(W, f)$) as described in Equation 1.  These are implemented in `inbreedR` using the functions `r2_hf` and `r2_Wf`.  Equal to the `glm` function, the distribution of the fitness trait can be specified in the `family` argument, as shown below:
 
 ```{r, echo=TRUE}
 # r^2 between inbreeding and heterozygosity

@@ -5,7 +5,7 @@
 \title{Estimating g2 from larger datasets, such as SNPs}
 \usage{
 g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE,
-  ncores = NULL)
+  ncores = NULL, verbose = TRUE)
 }
 \arguments{
 \item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
@@ -21,6 +21,8 @@ containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 
 \item{ncores}{Specify number of cores to use for parallelization. By default,
 all available cores are used.}
+
+\item{verbose}{If FALSE, nothing will be printed to show the status of bootstraps and permutations.}
 }
 \value{
 g2_snps returns an object of class "inbreed".

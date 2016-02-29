@@ -8,10 +8,11 @@ r2_Wf(genotypes, trait, family = "gaussian", type = c("msats", "snps"),
   nboot = NULL, parallel = FALSE, ncores = NULL, CI = 0.95)
 }
 \arguments{
-\item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
+\item{genotypes}{A \code{data.frame} with individuals in rows and loci in columns,
 containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (missing).}
 
-\item{trait}{vector of any type which can be specified in R's glm() function}
+\item{trait}{vector of any type which can be specified in R's glm() function. Sequence of individuals has to
+match sequence of individuals in the rows of the \code{genotypes} \code{data.frame}.}
 
 \item{family}{distribution of the trait. Default is gaussian. For other distributions, just naming the distribution
 (e.g. binomial) will use the default link function (see ?family). Specifying another
