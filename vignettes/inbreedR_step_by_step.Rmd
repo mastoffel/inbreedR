@@ -121,6 +121,33 @@ mouse_microsats[1:8, 1:8]
 
 The same procedure works when you have letters (e.g. basepairs 'A', 'T') in two adjacent columns instead of microsatellite allele lengths.
 
+### Loading and extracting genotype information from VCF files
+
+SNP data will naturally occur as VCF file after variant calling. Here is a short workflow how
+to load a VCF file into R with the `vcfR package`, extract the genotypes and transform them 
+into a 0/1 format to be used within `inbreedR`.
+
+```{r, eval = FALSE}
+# install.packages("vcfR")
+# install.packages("reshape")
+library(vcfR)
+library(reshape2)
+vcf_file <- "yourvcffile.vcf"
+# read vcf
+vcf <- read.vcfR(vcf_file, verbose = FALSE )
+# extract genotypes
+gt <- extract.gt(vcf)
+# transpose and data.frame
+gt <- as.data.frame(t(gt), stringsAsFactors = FALSE)
+# NA handling
+gt[gt == "."] <- NA
+# split columns
+snp_geno <- do.call(cbind, apply(gt, 2, function(x) colsplit(x, "/", c("a","b"))))
+# convert
+mouse_snp_genotypes <- inbreedR::convert_raw(snp_geno)
+```
+
+
 ## A short theory of heterozygosity-fitness correlations (HFC)
 
 Most HFC studies solely report the correlation between heterozygosity (*h*) and fitness (*W*).  However, according to HFC theory, this correlation results from the simultaneous effects of inbreeding level (*f*) on fitness ($r(W,f)$) and heterozygosity ($r(h,f$)) [@Slate:2004iibacadaeafagahaia; @szulkin2010heterozygosity]: 

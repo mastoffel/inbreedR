@@ -39,4 +39,7 @@ varying number of markers. Also works with larger (SNP) datasets.
 * authors added
 
 * `r2_hf()` bound to 0-1
+
 * verbose argument added to `g2_microsats` and `g2_snps`
+
+* section on how to extract genotypes from VCF file added to vignette
