@@ -31,7 +31,7 @@ You can install:
     devtools::install_github("mastoffel/inbreedR", build_vignettes = TRUE)
     ```
 
-If you encounter a clear bug or if you have any suggestions for improvement, just contact me: martin.adam.stoffel[at]gmail.com
+If you encounter bug or if you have any suggestions for improvement, just contact me: martin.adam.stoffel\[at\]gmail.com
 
 Get started with inbreedR
 -------------------------
