@@ -21,14 +21,13 @@
 There were no ERRORs or WARNINGs or Notes 
 
 ## win_build check results
+There were no ERRORs or WARNINGs and 1 Note:
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Martin A. Stoffel <martin.adam.stoffel@gmail.com>'
+
+## travis-ci results
 There were no ERRORs or WARNINGs or Notes 
 
-There were 2 Notes on travis-ci
-
-* checking CRAN incoming feasibility ... NOTE
-  Maintainer: 'Martin A. Stoffel <martin.adam.stoffel@gmail.com>'
-* checking package dependencies ... NOTE
-  No repository set, so cyclic dependency check skipped
   
 
 
