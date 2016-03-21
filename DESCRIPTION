@@ -14,7 +14,7 @@ Depends:
 License: GPL-2
 LazyData: true
 Imports:
-    data.table (>= 1.9.4),
+    data.table (>= 1.9.6),
     parallel,
     stats,
     graphics

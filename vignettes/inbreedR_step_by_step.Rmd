@@ -18,7 +18,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", cache = FALSE,
 
 ## inbreedR
 
-The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. This vignette gives a practical introduction into the concept of the package and how to use the functions. For a more concise theoretical background and a citeable source please read our paper. We are happy about any suggestions and feedback on the package. Just write a mail to martin.adam.stoffel[at]gmail.com.
+The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. This vignette gives a practical introduction into the concept of the package and how to use the functions. For a more concise theoretical background and a citeable source please read our paper (*will be published soon*). We are happy about any suggestions and feedback on the package. Just write a mail to martin.adam.stoffel[at]gmail.com.
 
 
 ## Installation
@@ -145,6 +145,8 @@ gt[gt == "."] <- NA
 snp_geno <- do.call(cbind, apply(gt, 2, function(x) colsplit(x, "/", c("a","b"))))
 # convert
 mouse_snp_genotypes <- inbreedR::convert_raw(snp_geno)
+# check data
+check_data(mouse_snp_genotypes)
 ```
 
 

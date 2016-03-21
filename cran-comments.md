@@ -1,14 +1,16 @@
 
 ## Release summary
 
-* `g2_resampling` function deleted 
+* deleted packages Hmisc and scales
 
-* Two simulation functions added
+* authors added
 
-* `MLH` function added. MLH is the unstandardized version of the existing `sMLH` function.
+* `r2_hf()` bound to 0-1
 
-* `subsets` argument in `r2_hf` function deprecated.
-  
+* verbose argument added to `g2_microsats` and `g2_snps`
+
+* section on how to extract genotypes from VCF file added to vignette
+
   
 ## Test environments
 * win_build()
@@ -20,7 +22,6 @@ There were no ERRORs or WARNINGs or Notes
 
 ## win_build check results
 There were no ERRORs or WARNINGs or Notes 
-
 
 There were 2 Notes on travis-ci
 
