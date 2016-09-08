@@ -18,7 +18,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", cache = FALSE,
 
 ## inbreedR
 
-The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. This vignette gives a practical introduction into the concept of the package and how to use the functions. For a more concise theoretical background and a citeable source please read our paper (*will be published soon*). We are happy about any suggestions and feedback on the package. Just write a mail to martin.adam.stoffel[at]gmail.com.
+The idea behind `inbreedR` is to provide a consistent framework for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on genetic markers. This vignette gives a practical introduction into the concept of the package and how to use the functions. For a more concise theoretical background and a citation, please refer to our paper [@stoffel2016inbreedr]. We are happy about any suggestions and feedback on the package. Just write a mail to martin.adam.stoffel[at]gmail.com.
 
 
 ## Installation
@@ -307,6 +307,19 @@ inbreeding values of the individuals.
 ```{r sim_g2_true, echo=FALSE, fig.cap="Simulation: Sensitivity of g2 estimated from an increasing number of markers with true g2 value", fig.width=7, fig.height=4}
 plot(sim_g2, true_g2 = TRUE, main = "Microsatellites", cex.axis=0.85)
 ```
+
+## Note on calculating g2 for real-world SNP datasets
+
+SNP datasets obtained by most sequencing approaches will yield a high proportion of missing data. It is important to be aware that
+the $g_2$ formula for SNPs is fast because it relies on the assumption that missing values don't vary much
+between loci. We thus advice to calculate $g_2$ for datasets which are as complete as possible. In many situations,
+it might therefore be necessary to reduce the amount of SNPs by filtering for SNPs which have been genotyped 
+in most individuals. Calculating confidence intervals around $g_2$ in combination with estimating 
+the correlation between marker heterozygosity and inbreeding with the $r2_hf$ function will give you
+insights on whether the SNP density is sufficient to estimate $g_2$. Also, @huisman2016inbreeding
+show how to combine $g_2$ and other inbreeding estimates in the framework described above, thereby
+giving a good guideline for future studies.
+
 
 
 ## Extracting raw data from inbreedR objects 

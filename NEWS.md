@@ -43,3 +43,9 @@ varying number of markers. Also works with larger (SNP) datasets.
 * verbose argument added to `g2_microsats` and `g2_snps`
 
 * section on how to extract genotypes from VCF file added to vignette
+
+# inbreedR 0.3.2
+
+* added citation
+
+* added section to vignette on calculating g2 in real-world SNP datasets
