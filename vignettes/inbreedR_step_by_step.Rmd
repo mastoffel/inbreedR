@@ -23,7 +23,7 @@ The idea behind `inbreedR` is to provide a consistent framework for the analysis
 
 ## Installation
 
-`inbreedR` is available on [CRAN](http://cran.r-project.org/). Here is the code to download and install the current stable release.
+`inbreedR` is available on [CRAN](https://cran.r-project.org/). Here is the code to download and install the current stable release.
 
 ```{r, eval = FALSE}
 install.packages("inbreedR")
