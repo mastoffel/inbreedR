@@ -15,8 +15,6 @@ citEntry(entry = "Article",
          url = "http://onlinelibrary.wiley.com/wol1/doi/10.1111/2041-210X.12588/full",
          
          textVersion  =
-             paste("Stoffel MA; Esser, M; Kardos, M; Humble, E; Nichols, H;  David, P; Hoffman, JI (2016).",
-                   "inbreedR: An R package for the analysis of inbreeding based on genetic markers",
-                   "Methods in Ecology and Evolution (2016)")
+             paste("Stoffel, M. A., Esser, M., Kardos, M., Humble, E., Nichols, H., David, P., & Hoffman, J. I. (2016). inbreedR: An R package for                     the analysis of inbreeding based on genetic markers. Methods in Ecology and Evolution.")
          
 )
