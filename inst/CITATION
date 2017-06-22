@@ -1,4 +1,4 @@
-citHeader("To cite inbreedR in publications please refer to our article (currently in early view):")
+citHeader("To cite inbreedR in publications please refer to our article:")
 
 citEntry(entry = "Article",
          title        = "inbreedR: An R package for the analysis of inbreeding based on genetic markers",
