@@ -23,10 +23,9 @@ Additional arguments to the boxplot() function for plotting the result of the r2
 \description{
 Plot an inbreed object
 }
-\author{
-Martin Stoffel (martin.adam.stoffel@gmail.com)
-}
 \seealso{
 \link{g2_snps}, \link{g2_microsats}
 }
-
+\author{
+Martin Stoffel (martin.adam.stoffel@gmail.com)
+}

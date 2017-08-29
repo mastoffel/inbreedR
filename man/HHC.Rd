@@ -32,11 +32,10 @@ genotypes <- convert_raw(mouse_msats)
 (out <- HHC(genotypes, reps = 100, CI = 0.95))
 
 }
-\author{
-Martin A. Stoffel (martin.adam.stoffel@gmail.com)
-}
 \references{
 Balloux, F., Amos, W., & Coulson, T. (2004). Does heterozygosity estimate inbreeding
 in real populations?. Molecular Ecology, 13(10), 3021-3031.
 }
-
+\author{
+Martin A. Stoffel (martin.adam.stoffel@gmail.com)
+}

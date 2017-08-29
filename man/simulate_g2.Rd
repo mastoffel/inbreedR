@@ -76,4 +76,3 @@ plot(sim_g2)
 Marty Kardos (marty.kardos@ebc.uu.se) &
          Martin A. Stoffel (martin.adam.stoffel@gmail.com)
 }
-

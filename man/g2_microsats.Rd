@@ -4,7 +4,8 @@
 \alias{g2_microsats}
 \title{Estimating g2 from microsatellite data}
 \usage{
-g2_microsats(genotypes, nperm = 0, nboot = 0, CI = 0.95, verbose = TRUE)
+g2_microsats(genotypes, nperm = 0, nboot = 0, boot_over = "inds",
+  CI = 0.95, verbose = TRUE)
 }
 \arguments{
 \item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
@@ -14,6 +15,8 @@ containing genotypes coded as 0 (homozygote), 1 (heterozygote) and \code{NA} (mi
 individuals and genotypes.}
 
 \item{nboot}{Number of bootstraps for estimating a confidence interval}
+
+\item{boot_over}{Bootstrap over individuals by specifying "inds" and over loci with "loci". Defaults to "ind".}
 
 \item{CI}{Confidence interval (default to 0.95)}
 
@@ -48,16 +51,15 @@ Calculates g2 from smaller datasets. The underlying formula is compationally exp
 data(mouse_msats)
 # tranform raw genotypes into 0/1 format
 genotypes <- convert_raw(mouse_msats)
-(g2_mouse <- g2_microsats(genotypes, nperm = 1000, nboot = 100, CI = 0.95))
+(g2_mouse <- g2_microsats(genotypes, nperm = 1000, nboot = 100, boot_over = "inds", CI = 0.95))
 
-}
-\author{
-Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
-        Mareike Esser (messer@techfak.uni-bielefeld.de)
 }
 \references{
 David, P., Pujol, B., Viard, F., Castella, V. and Goudet, J. (2007),
 Reliable selfing rate estimates from imperfect population genetic data. Molecular Ecology,
 16: 2474
 }
-
+\author{
+Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
+        Mareike Esser (messer@techfak.uni-bielefeld.de)
+}

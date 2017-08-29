@@ -42,4 +42,3 @@ check_data(genotypes, num_ind = 36, num_loci = 12)
 \author{
 Martin A. Stoffel (martin.adam.stoffel@gmail.com)
 }
-

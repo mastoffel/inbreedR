@@ -4,6 +4,7 @@
 #'        containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)
 #' @param nperm number or permutations for to estimate a p-value
 #' @param nboot number of bootstraps to estimate a confidence interval
+#' @param boot_over Bootstrap over individuals by specifying "inds" and over loci with "loci". Defaults to "ind".
 #' @param CI confidence interval (default to 0.95)
 #' @param parallel Default is FALSE. If TRUE, bootstrapping and permutation tests are parallelized 
 #' @param ncores Specify number of cores to use for parallelization. By default,
@@ -40,7 +41,7 @@
 #' # load SNP genotypes in 0 (homozygous), 1 (heterozygous), NA (missing) format.
 #' # low number of bootstraps and permutations for computational reasons.
 #' data(mouse_snps)
-#' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
+#' (g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95, boot_over = "loci"))
 #' 
 #' # parallelized version for more bootstraps or permutations
 #' \dontrun{
@@ -51,7 +52,11 @@
 #' @import data.table
 #' @export
 
-g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE, ncores = NULL, verbose = TRUE) { 
+g2_snps <- function(genotypes, nperm = 0, nboot = 0, boot_over = "inds", 
+    CI = 0.95, parallel = FALSE, ncores = NULL, verbose = TRUE) { 
+    
+    # bootstrap over individuals or loci
+    if (boot_over != "inds" & boot_over != "loci") stop("specify boot_over with inds or loci")
     
     # transpose for congruency with formulae in paper
     origin <- data.table::as.data.table(t(genotypes))
@@ -192,10 +197,20 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
     
     
     # bootstap function
-    boot_genotypes <- function(boot, origin) {
-        origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE), with = FALSE]
-        g2 <- calc_g2(origin_boot, boot = boot)
+    if (boot_over == "inds") {
+        boot_genotypes <- function(boot, origin) {
+            origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE), with = FALSE]
+            g2 <- calc_g2(origin_boot, boot = boot)
+        }
     }
+ 
+    if (boot_over == "loci") {
+        boot_genotypes <- function(boot, origin) {
+            origin_boot <- origin[sample(.N, replace = TRUE)]
+            g2 <- calc_g2(origin_boot, boot = boot)
+        }
+    }
+   
     
     if (nboot == 1) nboot <- 2
     
@@ -217,7 +232,7 @@ g2_snps <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE
         parallel::stopCluster(cl)
         g2_se <- stats::sd(g2_boot)
         CI_boot <- stats::quantile(g2_boot, c((1-CI)/2,1-(1-CI)/2), na.rm=TRUE)
-        
+
         #             R.boot <- unname(parallel::parApply(cl, Ysim, 2, R.pe, groups = groups))
         #             parallel::stopCluster(cl)
         

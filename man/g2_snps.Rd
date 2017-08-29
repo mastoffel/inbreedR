@@ -4,8 +4,8 @@
 \alias{g2_snps}
 \title{Estimating g2 from larger datasets, such as SNPs}
 \usage{
-g2_snps(genotypes, nperm = 0, nboot = 0, CI = 0.95, parallel = FALSE,
-  ncores = NULL, verbose = TRUE)
+g2_snps(genotypes, nperm = 0, nboot = 0, boot_over = "inds", CI = 0.95,
+  parallel = FALSE, ncores = NULL, verbose = TRUE)
 }
 \arguments{
 \item{genotypes}{\code{data.frame} with individuals in rows and loci in columns,
@@ -14,6 +14,8 @@ containing genotypes coded as 0 (homozygote), 1 (heterozygote) and NA (missing)}
 \item{nperm}{number or permutations for to estimate a p-value}
 
 \item{nboot}{number of bootstraps to estimate a confidence interval}
+
+\item{boot_over}{Bootstrap over individuals by specifying "inds" and over loci with "loci". Defaults to "ind".}
 
 \item{CI}{confidence interval (default to 0.95)}
 
@@ -50,7 +52,7 @@ Calculates g2 from SNP datasets. Use convert_raw to convert raw genotypes (with 
 # load SNP genotypes in 0 (homozygous), 1 (heterozygous), NA (missing) format.
 # low number of bootstraps and permutations for computational reasons.
 data(mouse_snps)
-(g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95))
+(g2_mouse <- g2_snps(mouse_snps, nperm = 10, nboot = 10, CI = 0.95, boot_over = "loci"))
 
 # parallelized version for more bootstraps or permutations
 \dontrun{
@@ -59,12 +61,11 @@ data(mouse_snps)
 }
 
 }
-\author{
-Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
-        Mareike Esser (messer@techfak.uni-bielefeld.de)
-}
 \references{
 Hoffman, J.I., Simpson, F., David, P., Rijks, J.M., Kuiken, T., Thorne, M.A.S., Lacey, R.C. & Dasmahapatra, K.K. (2014) High-throughput sequencing reveals inbreeding depression in a natural population.
 Proceedings of the National Academy of Sciences of the United States of America, 111: 3775-3780. Doi: 10.1073/pnas.1318945111
 }
-
+\author{
+Martin A. Stoffel (martin.adam.stoffel@gmail.com) &
+        Mareike Esser (messer@techfak.uni-bielefeld.de)
+}

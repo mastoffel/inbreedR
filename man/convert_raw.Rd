@@ -31,4 +31,3 @@ head(genotypes)
 \author{
 Martin Stoffel (martin.adam.stoffel@gmail.com)
 }
-

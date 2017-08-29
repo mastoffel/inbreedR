@@ -40,9 +40,6 @@ genotypes <- convert_raw(mouse_msats)
 (out <- r2_hf(genotypes, nboot = 100, type = "msats", parallel = FALSE))
 plot(out)
 }
-\author{
-Martin A. Stoffel (martin.adam.stoffel@gmail.com)
-}
 \references{
 Slate, J., David, P., Dodds, K. G., Veenvliet, B. A., Glass, B. C., Broad, T. E., & McEwan, J. C. (2004). 
 Understanding the relationship between the inbreeding coefficient 
@@ -51,4 +48,6 @@ and multilocus heterozygosity: theoretical expectations and empirical data. Here
 Szulkin, M., Bierne, N., & David, P. (2010). HETEROZYGOSITY-FITNESS CORRELATIONS: A TIME FOR REAPPRAISAL. 
 Evolution, 64(5), 1202-1217.
 }
-
+\author{
+Martin A. Stoffel (martin.adam.stoffel@gmail.com)
+}

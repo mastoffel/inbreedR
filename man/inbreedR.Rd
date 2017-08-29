@@ -46,9 +46,6 @@ inbreeding and HFC`s with both small and large datasets.
 For a short introduction to inbreedR start with the vignette:
 \code{browseVignettes(package = "inbreedR")}
 }
-\author{
-Martin Stoffel (martin.adam.stoffel@gmail.com), Mareike Esser (messer@uni-bielefeld.de)
-}
 \references{
 Slate, J., David, P., Dodds, K. G., Veenvliet, B. A., Glass, B. C., Broad, T. E., & McEwan, J. C. (2004). 
 Understanding the relationship between the inbreeding coefficient 
@@ -64,4 +61,6 @@ Reliable selfing rate estimates from imperfect population genetic data. Molecula
 Hoffman, J.I., Simpson, F., David, P., Rijks, J.M., Kuiken, T., Thorne, M.A.S., Lacey, R.C. & Dasmahapatra, K.K. (2014) High-throughput sequencing reveals inbreeding depression in a natural population.
 Proceedings of the National Academy of Sciences of the United States of America, 111: 3775-3780.
 }
-
+\author{
+Martin Stoffel (martin.adam.stoffel@gmail.com), Mareike Esser (messer@uni-bielefeld.de)
+}

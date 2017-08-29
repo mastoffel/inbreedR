@@ -14,10 +14,9 @@
 \description{
 Displays the results a \code{inbreed} object.
 }
-\author{
-Martin Stoffel (martin.adam.stoffel@gmail.com)
-}
 \seealso{
 \link{g2_snps}, \link{g2_microsats}, \link{plot}
 }
-
+\author{
+Martin Stoffel (martin.adam.stoffel@gmail.com)
+}

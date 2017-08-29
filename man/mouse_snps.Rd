@@ -15,4 +15,3 @@ Proceedings of the National Academy of Sciences of the United States of America,
 Dasmahapatra KK, Lacy RC, Amos W (2007) Estimating levels of inbreeding using AFLP markers. Heredity 100:286-295.
 }
 \keyword{datasets}
-

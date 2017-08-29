@@ -5,6 +5,7 @@
 #' @param nperm Number of permutations for testing the hypothesis that the empirical g2-value is higher than the g2 for random associations between 
 #'        individuals and genotypes.
 #' @param nboot Number of bootstraps for estimating a confidence interval
+#' @param boot_over Bootstrap over individuals by specifying "inds" and over loci with "loci". Defaults to "ind".
 #' @param CI Confidence interval (default to 0.95)
 #' @param verbose If FALSE, nothing will be printed to show the status of bootstraps and permutations.
 #'
@@ -42,19 +43,22 @@
 #' data(mouse_msats)
 #' # tranform raw genotypes into 0/1 format
 #' genotypes <- convert_raw(mouse_msats)
-#' (g2_mouse <- g2_microsats(genotypes, nperm = 1000, nboot = 100, CI = 0.95))
+#' (g2_mouse <- g2_microsats(genotypes, nperm = 1000, nboot = 100, boot_over = "inds", CI = 0.95))
 #'
 #' @export
 #'
 
 
-g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, verbose = TRUE) {
+g2_microsats <- function(genotypes, nperm = 0, nboot = 0, boot_over = "inds", CI = 0.95, verbose = TRUE) {
     
     genotypes <- as.matrix(genotypes)
     # transpose
     origin <- (t(genotypes)) 
     origin[(origin!=0) & (origin!=1)] <- -1
     origin[is.na(origin)] <- -1
+    
+    # bootstrap over individuals or loci
+    if (boot_over != "inds" & boot_over != "loci") stop("specify boot_over with inds or loci")
     
     calc_g2 <- function(origin, perm = 1, boot = 1) {
         # define matrix with 1 for missing and 0 for all others
@@ -148,11 +152,22 @@ g2_microsats <- function(genotypes, nperm = 0, nboot = 0, CI = 0.95, verbose = T
     
     if (nboot > 0) {
         
-        boot_genotypes <- function(boot, origin) {
-            # bootstrap over individuals in columns
-            origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
-            g2 <- calc_g2(origin_boot, boot = boot)
+        if (boot_over == "inds") {
+            boot_genotypes <- function(boot, origin) {
+                # bootstrap over individuals in columns
+                origin_boot <- origin[, sample(1:ncol(origin), replace = TRUE)]
+                g2 <- calc_g2(origin_boot, boot = boot)
+            }
         }
+        
+        if (boot_over == "loci") {
+            boot_genotypes <- function(boot, origin) {
+                # bootstrap over individuals in columns
+                origin_boot <- origin[sample(1:nrow(origin), replace = TRUE), ]
+                g2 <- calc_g2(origin_boot, boot = boot)
+            }
+        }
+    
         if (nboot == 1) nboot <- 2
         g2_boot <- c(g2_emp, sapply(1:(nboot-1), boot_genotypes, origin = origin))
         g2_se <- stats::sd(g2_boot)

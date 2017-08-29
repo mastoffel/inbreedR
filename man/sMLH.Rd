@@ -24,12 +24,11 @@ genotypes <- convert_raw(mouse_msats)
 het <- sMLH(genotypes)
 
 }
-\author{
-Martin A. Stoffel (martin.adam.stoffel@gmail.com)
-}
 \references{
 Coltman, D. W., Pilkington, J. G., Smith, J. A., & Pemberton, J. M. (1999). 
 Parasite-mediated selection against inbred Soay sheep in a free-living, 
 island population. Evolution, 1259-1267.
 }
-
+\author{
+Martin A. Stoffel (martin.adam.stoffel@gmail.com)
+}
