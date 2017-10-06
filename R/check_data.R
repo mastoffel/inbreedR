@@ -50,9 +50,12 @@ if (!(0 %in% (unique(unlist(vals))))) {
     stop("Homozygosity at a locus is not coded as 0")
 }
 
-if (!(NA %in% (unique(unlist(vals))))) {
-    stop("Missing values have to be coded as NA")
+if (any(!(unique(unlist(vals)) %in% c(0,1)))){
+    if (!(NA %in% (unique(unlist(vals))))) {
+        stop("Missing values have to be coded as NA")
+    }
 }
+
 
 if (!is.null(num_ind)) {
     if (num_ind != nrow(genotypes)) {
