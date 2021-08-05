@@ -6,6 +6,8 @@
 ![Build
 Status](https://travis-ci.org/mastoffel/inbreedR.svg?branch=master)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/inbreedR)](https://cran.r-project.org/package=inbreedR)
+[![Codecov test
+coverage](https://codecov.io/gh/mastoffel/inbreedR/branch/master/graph/badge.svg)](https://codecov.io/gh/mastoffel/inbreedR?branch=master)
 
 `inbreedR` provides functions and workflows for the analysis of
 inbreeding and heterozygosity-fitness correlations (HFCs) based on
