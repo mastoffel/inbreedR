@@ -9,6 +9,8 @@ Status](https://travis-ci.org/mastoffel/inbreedR.svg?branch=master)
 [![Codecov test
 coverage](https://codecov.io/gh/mastoffel/inbreedR/branch/master/graph/badge.svg)](https://codecov.io/gh/mastoffel/inbreedR?branch=master)
 
+### Goal
+
 `inbreedR` provides functions and workflows for the analysis of
 inbreeding and heterozygosity-fitness correlations (HFCs) based on
 molecular markers such as microsatellites and SNPs. In case of genomic
