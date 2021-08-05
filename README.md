@@ -1,40 +1,55 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-inbreedR
-========
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/inbreedR)](https://cran.r-project.org/package=inbreedR) ![Build Status](https://travis-ci.org/mastoffel/inbreedR.svg?branch=master) [![](http://cranlogs.r-pkg.org/badges/grand-total/inbreedR)](https://cran.r-project.org/package=inbreedR)
+# inbreedR
 
-`inbreedR` provides functions and workflows for the analysis of inbreeding and heterozygosity-fitness correlations (HFCs) based on molecular markers such as microsatellites and SNPs. It has four main application areas:
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/inbreedR)](https://cran.r-project.org/package=inbreedR)
+![Build
+Status](https://travis-ci.org/mastoffel/inbreedR.svg?branch=master)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/inbreedR)](https://cran.r-project.org/package=inbreedR)
 
--   Quantifying variance in inbreeding through estimation of identitiy disequilibria (g2), heterozygosity-heterozygosity correlations (HHC) and variance in standardized multilocus heterozygosity (sMLH)
+`inbreedR` provides functions and workflows for the analysis of
+inbreeding and heterozygosity-fitness correlations (HFCs) based on
+molecular markers such as microsatellites and SNPs. In case of genomic
+data, it’s most useful for lower density datasets where it is unclear
+whether genotyped markers represent genome-wide diversity / inbreeding.
+It has four main application areas:
 
--   Calculating g2 for small and large SNP datasets. The use of `data.table` and parallelization speed up bootstrapping and permutation tests
+-   Quantifying variance in inbreeding through estimation of identitiy
+    disequilibria (g2), heterozygosity-heterozygosity correlations (HHC)
+    and variance in standardized multilocus heterozygosity (sMLH)
 
--   Estimating central parameters within HFC theory, such as the influence of inbreeding on heterozygosity and fitness, and their confidence intervals.
+-   Calculating g2 for small and large SNP datasets. The use of
+    `data.table` and parallelization speed up bootstrapping and
+    permutation tests
 
--   Exploring the sensitivity of these measures towards the number of genetic markers using simulations
+-   Estimating central parameters within HFC theory, such as the
+    influence of inbreeding on heterozygosity and fitness, and their
+    confidence intervals.
 
-You can install:
+-   Exploring the sensitivity of these measures towards the number of
+    genetic markers using simulations
 
--   the latest released version from CRAN with
+### Installation
 
-    ``` r
-    install.packages("inbreedR")
-    ```
+You can install the stable version of `inbreedR` from CRAN with:
 
--   the latest development version from github with
+``` r
+install.packages("rptR")
+```
 
-    ``` r
-    if (packageVersion("devtools") < 1.6) {
-      install.packages("devtools")
-    }
-    devtools::install_github("mastoffel/inbreedR", build_vignettes = TRUE)
-    ```
+Or the development version from GitHub with:
 
-If you encounter bug or if you have any suggestions for improvement, just contact me: martin.adam.stoffel\[at\]gmail.com
+``` r
+# install.packages("remotes")
+remotes::install_github("mastoffel/inbreedR", build_vignettes = TRUE, dependencies = TRUE) 
+# manual
+browseVignettes("inbreedR")
+```
 
-Get started with inbreedR
--------------------------
+If you find a bug, please report a minimal reproducible example in the
+[issues](https://github.com/mastoffel/inbreedR/issues).
+
+## Get started with inbreedR
 
 To get started read the vignette:
 
@@ -44,4 +59,7 @@ vignette("inbreedR_step_by_step", package = "inbreedR")
 
 ### Citation
 
-Stoffel, M. A., Esser, M., Kardos, M., Humble, E., Nichols, H., David, P., & Hoffman, J. I. (2016). inbreedR: an R package for the analysis of inbreeding based on genetic markers. Methods in Ecology and Evolution, 7(11), 1331-1339. <doi:10.1111/2041-210X.12588>
+Stoffel, M. A., Esser, M., Kardos, M., Humble, E., Nichols, H., David,
+P., & Hoffman, J. I. (2016). inbreedR: an R package for the analysis of
+inbreeding based on genetic markers. *Methods in Ecology and Evolution*,
+**7**(11), 1331-1339. <doi:10.1111/2041-210X.12588>
