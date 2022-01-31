@@ -1,6 +1,6 @@
 
 ## Release summary
-* fixed g2 NA test error 
+* fixed test NA error thrown by r-devel-linux-x86_64-fedora-gcc
   
 ## Test environments
 * win_build()
