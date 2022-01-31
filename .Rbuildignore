@@ -5,6 +5,5 @@
 ^README-.*\.png$
 ^cran-comments\.md$
 ^revdep$
-^NEWS\.md$
 ^codecov\.yml$
 ^\.github$
