@@ -49,3 +49,7 @@ varying number of markers. Also works with larger (SNP) datasets.
 * added citation
 
 * added section to vignette on calculating g2 in real-world SNP datasets
+
+# inbreedR 0.3.3
+
+* fixed linux CRAN built
