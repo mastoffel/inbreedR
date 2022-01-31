@@ -1,14 +1,27 @@
-# inbreedR 0.2.0
 
-## Improvements
+# inbreedR 0.3.3
 
-* Bootstrapping over individuals for `r2_hf()` and `r2_Wf()`
+* fixed linux CRAN built
 
-* plotting histograms with CI for `r2_hf()` and `r2_Wf()`
 
-* `r2_hf()` has an additional plot argument now, specify `plottype = "histogram"`to visualize
-bootstrapping or `plottype = "boxplot"` to show the boxplots resulting from resampling of different
-loci subsets.
+# inbreedR 0.3.2
+
+* added citation
+
+* added section to vignette on calculating g2 in real-world SNP datasets
+
+
+# inbreedR 0.3.1
+
+* deleted packages Hmisc and scales and exchanged with base R code
+
+* authors added
+
+* `r2_hf()` bound to 0-1
+
+* verbose argument added to `g2_microsats` and `g2_snps`
+
+* section on how to extract genotypes from VCF file added to vignette
 
 
 # inbreedR 0.3.0
@@ -31,25 +44,19 @@ varying number of markers. Also works with larger (SNP) datasets.
 * `subsets` argument in `r2_hf` function deprecated. Although you can infer the magnitude of
   the esimate by subsampling, the variation in estimates is biased. It is recommended to
   use the new `simulate_r2_hf` function instead.
+  
 
-# inbreedR 0.3.1
+# inbreedR 0.2.0
 
-* deleted packages Hmisc and scales and exchanged with base R code
+## Improvements
 
-* authors added
+* Bootstrapping over individuals for `r2_hf()` and `r2_Wf()`
 
-* `r2_hf()` bound to 0-1
+* plotting histograms with CI for `r2_hf()` and `r2_Wf()`
 
-* verbose argument added to `g2_microsats` and `g2_snps`
+* `r2_hf()` has an additional plot argument now, specify `plottype = "histogram"`to visualize
+bootstrapping or `plottype = "boxplot"` to show the boxplots resulting from resampling of different
+loci subsets.
 
-* section on how to extract genotypes from VCF file added to vignette
 
-# inbreedR 0.3.2
 
-* added citation
-
-* added section to vignette on calculating g2 in real-world SNP datasets
-
-# inbreedR 0.3.3
-
-* fixed linux CRAN built
