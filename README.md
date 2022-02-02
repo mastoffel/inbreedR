@@ -7,7 +7,7 @@
 Status](https://travis-ci.org/mastoffel/inbreedR.svg?branch=master)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/inbreedR)](https://cran.r-project.org/package=inbreedR)
 [![Codecov test
-coverage](https://codecov.io/gh/mastoffel/inbreedR/branch/master/graph/badge.svg)](https://codecov.io/gh/mastoffel/inbreedR?branch=master)
+coverage](https://codecov.io/gh/mastoffel/inbreedR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mastoffel/inbreedR?branch=master)
 
 ### Goal
 
@@ -66,4 +66,4 @@ vignette("inbreedR_step_by_step", package = "inbreedR")
 Stoffel, M. A., Esser, M., Kardos, M., Humble, E., Nichols, H., David,
 P., & Hoffman, J. I. (2016). inbreedR: an R package for the analysis of
 inbreeding based on genetic markers. *Methods in Ecology and Evolution*,
-**7**(11), 1331-1339. <doi:10.1111/2041-210X.12588>
+**7**(11), 1331-1339.
