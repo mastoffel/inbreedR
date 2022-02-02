@@ -1,3 +1,7 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* removed/modified three URLs in README.md and CITATION
 
 ## Release summary
 * fixed test NA error thrown by r-devel-linux-x86_64-fedora-gcc
