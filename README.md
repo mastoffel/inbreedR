@@ -3,8 +3,6 @@
 # inbreedR
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inbreedR)](https://cran.r-project.org/package=inbreedR)
-![Build
-Status](https://travis-ci.org/mastoffel/inbreedR.svg?branch=master)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/inbreedR)](https://cran.r-project.org/package=inbreedR)
 [![Codecov test
 coverage](https://codecov.io/gh/mastoffel/inbreedR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mastoffel/inbreedR?branch=master)
